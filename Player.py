@@ -58,17 +58,12 @@ class Player:
         if secondWord == None:
             self.textUI.printtoTextUI("Talk to whom?")
 
-        if secondWord == "LISA" and self.currentRoom.name == "lobby":
-            self.hasShoppingList = True
-            self.textUI.printtoTextUI("Hello and welcome to Adventure World Supermarket! We have been waiting for you.")
-            self.textUI.printtoTextUI("Here is your shopping list:")
-            self.textUI.printtoTextUI(self.shoppingList)
-            self.textUI.printtoTextUI("Your goal is to fill your basket with as many of these items as possible.")
-            self.textUI.printtoTextUI("You can check your list using the command word 'list'")
-            self.textUI.printtoTextUI("To check what items you have in you basket, use the command word 'basket'")
-            self.textUI.printtoTextUI("To see which items you still need to collect, use the command word 'compare'")
+        if self.currentRoom.npc != None and secondWord == self.currentRoom.npc.name:
+            self.currentRoom.npc.speakDialogue()
+            if secondWord == "LISA" and self.currentRoom.name == "lobby":
+                self.hasShoppingList = True
         else:
-            self.textUI.printtoTextUI("There is no person with such name")
+            self.textUI.printtoTextUI(f"There is no {secondWord} here.")
 
     def doTake(self, secondWord):
         """
@@ -102,7 +97,12 @@ class Player:
 
 
     def doCompare(self):
-        pass
+        if self.basket != None and self.hasShoppingList:
+            self.textUI.printtoTextUI(f'You still need to collect: {self.shoppingList - set(self.basket)}')
+        else:
+            self.textUI.printtoTextUI('You can\'t compare yet.')
+
+
 
     def doSeeBasket(self):
         print(f'Your basket contains:{self.basket}')

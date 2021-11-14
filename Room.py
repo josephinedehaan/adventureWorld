@@ -6,17 +6,22 @@
 
 
 class Room:
-    def __init__(self, name, description, items):
+    def __init__(self, name, description, items, bonusItem):
         """
             Constructor method
         :param name: text description for this room
         :param description: detailed description of the surroundings
         to help player collect items.
         """
+        self.bonusItem = bonusItem
         self.items = items
         self.name = name
         self.description = description
         self.exits = {}     # Dictionary
+        self.npc = None
+
+    def setNpc(self, npc):
+        self.npc = npc
 
     def setExit(self, direction, neighbour):
         """

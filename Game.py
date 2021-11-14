@@ -1,6 +1,7 @@
 from Player import Player
 from Room import Room
 from TextUI import TextUI
+from Npc import Npc
 
 import random
 
@@ -15,56 +16,71 @@ import random
     and David J. Barnes. The original was written in Java and has been
     simplified and converted to Python by Kingsley Sage
 """
+
+
 class Game:
 
     def __init__(self):
         """
         Initialises the game
         """
-        self.createRooms()
+        self.setupWorld()
         self.textUI = TextUI()
         self.player = Player(self.outside)
-        # player.setShoppingList(shoppingList) # This now gives that shopping list to the player. The
-        # player has a self.ShoppingList which the passed in variable gets set to via this function.
-        # the player will technically have the shopping list before they collect it. but u can do a
-        # boolean in player class like 'hasShoppingList' which prevents them from using it before they
-        # tke it from lisa.
         self.tempShoppingList = []
+        # self.tempBonusItem =
         self.createShoppingList()
         self.player.setShoppingList(self.tempShoppingList)
         self.inAisle = False
 
-
-    def createRooms(self):
+    def setupWorld(self):
         """
             Sets up all room assets
         :return: None
         """
 
-        self.outside = Room("outside", "There's not much out here... Try going inside!", None)
+        lisa = Npc("LISA")
+        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.")
+        lisa.addLine("I have made a shopping list for you.")
+        lisa.addLine("Your goal is to fill your basket with as many of items on the list as possible.")
+        lisa.addLine("To see your list just use the command 'list'")
+        lisa.addLine("To check what items you have in you basket, use the command word 'basket'")
+        lisa.addLine("To see which items you still need to collect, use the command word 'compare'")
+
+
+        self.outside = Room("outside", "There's not much out here... Try going inside!", None, None)
 
         self.lobby = Room("lobby", "There is a stack of baskets next to you and a friendly store worker, Lisa",
-                          None)
+                          None, None)
+
+        self.lobby.setNpc(lisa)
 
         self.aisleOne = Room("aisle 1", "There are mounds of colourful fruits and vegetables",
-                             ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'])
+                             ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
+                             {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
 
         self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meats and eggs",
-                             ['EGGS', 'YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'])
+                             ['YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'],
+                             {"EDAM": "The item you are looking for is a cheese which is made backwards",
+                              "EGG": "The item you are looking for is one of the two main characters of a "
+                                     "famous causality dilemma"})
 
         self.aisleThree = Room("aisle 3", "There are tins of soup and beans; packets of dry pasta, rice and pulses",
-                               ['RICE', 'PASTA', 'SPAGHETTI', 'LENTILS', 'BEANS', 'SOUP', 'CRACKERS'])
+                               ['RICE', 'PASTA', 'SPAGHETTI', 'LENTILS', 'BEANS', 'SOUP', 'CRACKERS'],
+                               {"HONEY": "The item you are looking for is known to never spoil.",
+                                "BARLEY": "The item you are looking for was one of the first forms of"
+                                          "currency used in ancient Mesopotamia."})
 
         self.aisleFour = Room("aisle 4", "There are rows upon rows of juices, sodas, mineral water and squash",
-                              ['RED WINE', 'LEMONADE', 'JUICE', 'WATER', 'COCA COLA', 'ICED TEA'])
+                              ['RED WINE', 'LEMONADE', 'JUICE', 'COCA COLA', 'ICED TEA'],
+                              {"WATER": "The item you are looking for has the chemical formula H2O"})
 
         self.aisleFive = Room("aisle 5", "There are boxes of tissues, a cornucopia of cleaning products and tools",
-                              ['TOILET ROLL', 'KITCHEN ROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABY WIPES'])
+                              ['TOILET ROLL', 'KITCHEN ROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABY WIPES'], None)
 
-        self.checkout = Room("checkout", "There is a friendly store worker at the checkout", None)
+        self.checkout = Room("checkout", "There is a friendly store worker at the checkout", None, None)
 
         self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
-
 
         self.outside.setExit("NORTH", self.lobby)
         self.lobby.setExit("NORTH", self.aisleOne)
@@ -85,8 +101,14 @@ class Game:
     def createShoppingList(self):
         for aisle in self.aisles:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
-
         return self.tempShoppingList
+
+    # def selectBonusItem(self):
+    #     for aisle in self.aisles:
+    #         if aisle.bonusItem != None:
+    #             self.tempBonusItem.append(aisle.bonusItem)
+    #
+
 
     def play(self):
         """
@@ -96,7 +118,7 @@ class Game:
         self.printWelcome()
         finished = False
         while (finished == False):
-            command = self.textUI.getCommand()      # Returns a 2-tuple
+            command = self.textUI.getCommand()  # Returns a 2-tuple
             finished = self.processCommand(command)
 
         print("Thank you for playing!")
@@ -118,8 +140,6 @@ class Game:
         :return: None
         """
         return ['help', 'go', 'quit', 'look', 'take', 'talk to', 'list', 'basket', 'compare']
-
-
 
     def processCommand(self, command):
         """
@@ -148,6 +168,8 @@ class Game:
             self.player.doReadShoppingList()
         elif commandWord == "BASKET":
             self.player.doSeeBasket()
+        elif commandWord == "COMPARE":
+            self.player.doCompare()
         elif commandWord == "QUIT":
             wantToQuit = True
         else:
@@ -170,6 +192,7 @@ class Game:
 def main():
     game = Game()
     game.play()
+
 
 if __name__ == "__main__":
     main()
