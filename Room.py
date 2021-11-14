@@ -6,15 +6,16 @@
 
 
 class Room:
-    def __init__(self, description, surroundings):
+    def __init__(self, name, description, items):
         """
             Constructor method
-        :param description: text description for this room
-        :param surroundings: detailed description of the surroundings
+        :param name: text description for this room
+        :param description: detailed description of the surroundings
         to help player collect items.
         """
+        self.items = items
+        self.name = name
         self.description = description
-        self.surroundings = surroundings
         self.exits = {}     # Dictionary
 
     def setExit(self, direction, neighbour):
@@ -27,19 +28,19 @@ class Room:
         """
         self.exits[direction] = neighbour
 
-    def getShortDescription(self):
+    def getRoomName(self):
         """
-            Fetch a short text description
+            Fetch name of room
         :return: text description
         """
-        return f'Location: {self.description}, Possible directions: {self.getExits()} '
+        return f'Location: {self.name}, Possible directions: {self.getExits()} '
 
-    def getLongDescription(self):
+    def getRoomDescription(self):
         """
-            Fetch a longer description including available exits
+            Fetch a  description including available exits
         :return: text description
         """
-        return f'You are {self.description}. {self.surroundings}. Possible directions: {self.getExits()} '
+        return f'You are {self.name}. {self.description}. Possible directions: {self.getExits()} '
 
     def getExits(self):
         """
