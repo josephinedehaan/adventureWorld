@@ -11,7 +11,9 @@ class Room:
             Constructor method
         :param name: text description for this room
         :param description: detailed description of the surroundings
-        to help player collect items.
+                            to help player collect items.
+        :param items: items stored in this room (if any)
+        :param bonusItems: bonus 'secret' items stored in this room (if any)
         """
         self.bonusItem = bonusItem
         self.items = items
@@ -21,6 +23,11 @@ class Room:
         self.npc = None
 
     def setNpc(self, npc):
+        """
+            Adds non playable characters to selected rooms.
+        :param npc: The name of the non playable character
+        :return: None
+        """
         self.npc = npc
 
     def setExit(self, direction, neighbour):

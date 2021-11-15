@@ -28,14 +28,16 @@ class Game:
         self.textUI = TextUI()
         self.player = Player(self.outside)
         self.tempShoppingList = []
-        # self.tempBonusItem =
         self.createShoppingList()
         self.player.setShoppingList(self.tempShoppingList)
         self.inAisle = False
+        self.selectedBonusItem = {}
+        self.setBonusItem()
+        self.player.setBonusItem(self.selectedBonusItem)
 
     def setupWorld(self):
         """
-            Sets up all room assets
+            Sets up all world assets
         :return: None
         """
 
@@ -47,23 +49,36 @@ class Game:
         lisa.addLine("To check what items you have in you basket, use the command word 'basket'")
         lisa.addLine("To see which items you still need to collect, use the command word 'compare'")
 
+        sam = Npc("SAM")
+        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.")
+        sam.addLine("I have a riddle that may help you find the bonus item.")
+        sam.addLine("The item could belong to any of the aisles, not necessarily this one.")
+        sam.addLine("The answer to this riddle is the name of the item you need to find:")
+
+        dot = Npc("DOT")
+        dot.addLine("You must be ready to check out!")
+        dot.addLine("Here is your receipt. Enjoy the rest of your day!")
+
 
         self.outside = Room("outside", "There's not much out here... Try going inside!", None, None)
 
         self.lobby = Room("lobby", "There is a stack of baskets next to you and a friendly store worker, Lisa",
                           None, None)
 
-        self.lobby.setNpc(lisa)
+        self.lobby.setNpc(lisa)      # adds store worker to lobby
 
         self.aisleOne = Room("aisle 1", "There are mounds of colourful fruits and vegetables",
                              ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
                              {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
 
-        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meats and eggs",
+        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meats and eggs"
+                                        "and a friendly store worker, Sam.",
                              ['YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'],
                              {"EDAM": "The item you are looking for is a cheese which is made backwards",
                               "EGG": "The item you are looking for is one of the two main characters of a "
                                      "famous causality dilemma"})
+
+        self.aisleTwo.setNpc(sam)   # adds store worker to aisle 2
 
         self.aisleThree = Room("aisle 3", "There are tins of soup and beans; packets of dry pasta, rice and pulses",
                                ['RICE', 'PASTA', 'SPAGHETTI', 'LENTILS', 'BEANS', 'SOUP', 'CRACKERS'],
@@ -79,6 +94,8 @@ class Game:
                               ['TOILET ROLL', 'KITCHEN ROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABY WIPES'], None)
 
         self.checkout = Room("checkout", "There is a friendly store worker at the checkout", None, None)
+
+        self.checkout.setNpc(dot)
 
         self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
 
@@ -103,12 +120,16 @@ class Game:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
         return self.tempShoppingList
 
-    # def selectBonusItem(self):
-    #     for aisle in self.aisles:
-    #         if aisle.bonusItem != None:
-    #             self.tempBonusItem.append(aisle.bonusItem)
-    #
+    def setBonusItem(self):
+        bonusItems = {}
 
+        for aisle in self.aisles:
+            if aisle.bonusItem != None:
+                for item in aisle.bonusItem:
+                    bonusItems[item] = aisle.bonusItem[item]
+
+        randItem = random.choice(list(bonusItems))
+        self.selectedBonusItem[randItem] = bonusItems[randItem]
 
     def play(self):
         """
@@ -191,6 +212,7 @@ class Game:
 
 def main():
     game = Game()
+    print(game.selectedBonusItem)
     game.play()
 
 
