@@ -21,6 +21,8 @@ class Player:
         self.shoppingList = []
         self.hasShoppingList = False
         self.bonusItem = {}
+        self.bonusItemGuessed = False
+        self.checkOut = False
 
     def setShoppingList(self, shoppingList):
         """
@@ -29,7 +31,7 @@ class Player:
         :param shoppingList:
         :return: None
         """
-        self.shoppingList = set(shoppingList)
+        self.shoppingList = shoppingList
 
     def setBonusItem(self, bonusItem):
         """
@@ -38,7 +40,6 @@ class Player:
         :return: None
         """
         self.bonusItem = bonusItem
-
 
     def doReadShoppingList(self):
         """
@@ -92,8 +93,19 @@ class Player:
                 self.hasShoppingList = True
             if secondWord == "SAM" and self.currentRoom.name == "aisle 2":
                 print(list(self.bonusItem.values())[0])
+            if secondWord == "DOT" and self.currentRoom.name == "checkout":
+                self.doCheckOut()
         else:
             self.textUI.printtoTextUI(f"There is no one called {secondWord} here.")
+
+    def doTakeBasket(self):
+        if self.basket != None:
+            self.textUI.printtoTextUI('You already have a basket!')
+        if self.currentRoom.name != "lobby":
+            self.textUI.printtoTextUI('There are no baskets here. Try going to the lobby.')
+        if self.currentRoom.name == "lobby":
+            self.basket = []
+            self.textUI.printtoTextUI('You now have a basket.')
 
     def doTake(self, secondWord):
         """
@@ -106,13 +118,8 @@ class Player:
         if secondWord == None:
             self.textUI.printtoTextUI("Take what?")
 
-        if secondWord == "BASKET" and self.basket != None:
-            self.textUI.printtoTextUI('You already have a basket!')
-        elif secondWord == "BASKET" and self.currentRoom.name == "outside":
-            self.textUI.printtoTextUI('There are no baskets here. Try going to the lobby.')
-        elif secondWord == "BASKET" and self.currentRoom.name == "lobby":
-            self.basket = []
-            self.textUI.printtoTextUI('You now have a basket.')
+        if secondWord == "BASKET":
+            self.doTakeBasket()
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList:  # checks if item is in shopping list
                 if self.currentRoom.items == None:
@@ -128,6 +135,17 @@ class Player:
             else:
                 self.textUI.printtoTextUI('Not sure what you mean.')
 
+
+    def doGuess(self, secondWord):
+        if secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
+            self.textUI.printtoTextUI('You have guessed the correct item! It has now been added to your basket')
+            self.basket.extend(list(self.bonusItem.keys()))         # adds to basket
+            self.bonusItemGuessed = True
+        elif self.basket == None:
+            self.textUI.printtoTextUI('You can\'t guess yet, get a basket first!')
+        else:
+            self.textUI.printtoTextUI('That\'s not the correct item, try again')
+
     def doCompare(self):
         """
             Compares shopping list to current basket and prints the items
@@ -135,10 +153,13 @@ class Player:
         :param: None
         :return: None
         """
+        itemsLeft = set(self.shoppingList) - set(self.basket)
         if self.basket != None and self.hasShoppingList:
-            self.textUI.printtoTextUI(f'You still need to collect: {self.shoppingList - set(self.basket)}')
+            self.textUI.printtoTextUI(f'You still need to collect: {itemsLeft}')
         else:
             self.textUI.printtoTextUI('You can\'t compare yet.')
+
+        return itemsLeft
 
     def doSeeBasket(self):
         """
@@ -147,4 +168,17 @@ class Player:
         :return: None
         """
         print(f'Your basket contains:{self.basket}')
+
+    def doCheckOut(self):
+            if self.bonusItemGuessed:
+                self.shoppingList.extend(list(self.bonusItem.keys()))   # adds to shopping list for
+                if len(self.doCompare()) == 0:                                 # comparison
+                    print('You have got all the items!')
+                    exit()
+            elif not self.bonusItemGuessed:
+                if len(self.doCompare()) == 0:
+                    print('You have got all the items except for the bonus item!')
+                    exit()
+            else:
+                print("You can't checkout until you have collected all the items on your shopping list!")
 

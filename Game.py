@@ -52,7 +52,8 @@ class Game:
         sam = Npc("SAM")
         sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.")
         sam.addLine("I have a riddle that may help you find the bonus item.")
-        sam.addLine("The item could belong to any of the aisles, not necessarily this one.")
+        sam.addLine("If you think you have guessed the item, use the command word 'guess'.")
+        sam.addLine("The item will automatically be added to your basket.")
         sam.addLine("The answer to this riddle is the name of the item you need to find:")
 
         dot = Npc("DOT")
@@ -65,20 +66,16 @@ class Game:
         self.lobby = Room("lobby", "There is a stack of baskets next to you and a friendly store worker, Lisa",
                           None, None)
 
-        self.lobby.setNpc(lisa)      # adds store worker to lobby
-
         self.aisleOne = Room("aisle 1", "There are mounds of colourful fruits and vegetables",
                              ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
                              {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
 
         self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meats and eggs"
-                                        "and a friendly store worker, Sam.",
+                                        "and a friendly store worker, Sam",
                              ['YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'],
                              {"EDAM": "The item you are looking for is a cheese which is made backwards",
                               "EGG": "The item you are looking for is one of the two main characters of a "
                                      "famous causality dilemma"})
-
-        self.aisleTwo.setNpc(sam)   # adds store worker to aisle 2
 
         self.aisleThree = Room("aisle 3", "There are tins of soup and beans; packets of dry pasta, rice and pulses",
                                ['RICE', 'PASTA', 'SPAGHETTI', 'LENTILS', 'BEANS', 'SOUP', 'CRACKERS'],
@@ -87,17 +84,21 @@ class Game:
                                           "currency used in ancient Mesopotamia."})
 
         self.aisleFour = Room("aisle 4", "There are rows upon rows of juices, sodas, mineral water and squash",
-                              ['RED WINE', 'LEMONADE', 'JUICE', 'COCA COLA', 'ICED TEA'],
+                              ['WINE', 'LEMONADE', 'JUICE', 'COCACOLA', 'ICEDTEA'],
                               {"WATER": "The item you are looking for has the chemical formula H2O"})
 
         self.aisleFive = Room("aisle 5", "There are boxes of tissues, a cornucopia of cleaning products and tools",
-                              ['TOILET ROLL', 'KITCHEN ROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABY WIPES'], None)
+                              ['TOILETROLL', 'KITCHENROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABYWIPES'], None)
 
-        self.checkout = Room("checkout", "There is a friendly store worker at the checkout", None, None)
-
-        self.checkout.setNpc(dot)
+        self.checkout = Room("checkout", "There is a friendly store worker, Dot, at the checkout. "
+                                         ""
+                                         "Talk to her if you are ready to checkout", None, None)
 
         self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
+
+        self.lobby.setNpc(lisa)      # adds store worker to lobby
+        self.aisleTwo.setNpc(sam)   # adds store worker to aisle 2
+        self.checkout.setNpc(dot)   # adds store worker to checkout
 
         self.outside.setExit("NORTH", self.lobby)
         self.lobby.setExit("NORTH", self.aisleOne)
@@ -116,11 +117,24 @@ class Game:
         self.checkout.setExit("SOUTH", self.outside)
 
     def createShoppingList(self):
+        """
+            Iterates through a list of aisles
+            then selects two random items from each aisle and creates
+            a list with the selected items..
+        :return self.tempShoppingList: a temporary shopping list to be
+                passed into the permanent shopping list.
+        """
         for aisle in self.aisles:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
         return self.tempShoppingList
 
     def setBonusItem(self):
+        """
+            Creates a dictionary from the various Room() dictionary parameters
+            and selects a random item from it, which is the put into a new
+            dictionary.
+        :return: None
+        """
         bonusItems = {}
 
         for aisle in self.aisles:
@@ -191,6 +205,8 @@ class Game:
             self.player.doSeeBasket()
         elif commandWord == "COMPARE":
             self.player.doCompare()
+        elif commandWord == "GUESS":
+            self.player.doGuess(secondWord)
         elif commandWord == "QUIT":
             wantToQuit = True
         else:
