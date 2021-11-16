@@ -24,7 +24,8 @@ class Game:
         """
         Initialises the game
         """
-        self.setupWorld()
+        self.setupSupermarket()
+        self.setupNPCs()
         self.textUI = TextUI()
         self.player = Player(self.outside)
         self.tempShoppingList = []
@@ -34,71 +35,45 @@ class Game:
         self.selectedBonusItem = {}
         self.setBonusItem()
         self.player.setBonusItem(self.selectedBonusItem)
+        self.wantToQuit = False
 
-    def setupWorld(self):
+    def setupSupermarket(self):
         """
-            Sets up all world assets
+            Sets up all supermarket assets
         :return: None
         """
-
-        lisa = Npc("LISA")
-        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.")
-        lisa.addLine("I have made a shopping list for you.")
-        lisa.addLine("Your goal is to fill your basket with as many of items on the list as possible.")
-        lisa.addLine("To see your list just use the command 'list'")
-        lisa.addLine("To check what items you have in you basket, use the command word 'basket'")
-        lisa.addLine("To see which items you still need to collect, use the command word 'compare'")
-
-        sam = Npc("SAM")
-        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.")
-        sam.addLine("I have a riddle that may help you find the bonus item.")
-        sam.addLine("If you think you have guessed the item, use the command word 'guess'.")
-        sam.addLine("The item will automatically be added to your basket.")
-        sam.addLine("The answer to this riddle is the name of the item you need to find:")
-
-        dot = Npc("DOT")
-        dot.addLine("You must be ready to check out!")
-        dot.addLine("Here is your receipt. Enjoy the rest of your day!")
-
-
         self.outside = Room("outside", "There's not much out here... Try going inside!", None, None)
 
         self.lobby = Room("lobby", "There is a stack of baskets next to you and a friendly store worker, Lisa",
                           None, None)
 
-        self.aisleOne = Room("aisle 1", "There are mounds of colourful fruits and vegetables",
+        self.aisleOne = Room("aisle 1", "There are piles of colourful fresh fruits and vegetables",
                              ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
                              {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
 
-        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meats and eggs"
+        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meat, fish and eggs"
                                         "and a friendly store worker, Sam",
                              ['YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'],
                              {"EDAM": "The item you are looking for is a cheese which is made backwards",
                               "EGG": "The item you are looking for is one of the two main characters of a "
                                      "famous causality dilemma"})
 
-        self.aisleThree = Room("aisle 3", "There are tins of soup and beans; packets of dry pasta, rice and pulses",
+        self.aisleThree = Room("aisle 3", "There are dry goods: tins of soup, beans, pasta, rice and pulses",
                                ['RICE', 'PASTA', 'SPAGHETTI', 'LENTILS', 'BEANS', 'SOUP', 'CRACKERS'],
                                {"HONEY": "The item you are looking for is known to never spoil.",
-                                "BARLEY": "The item you are looking for was one of the first forms of"
+                                "BARLEY": "The item you are looking for was one of the first forms of "
                                           "currency used in ancient Mesopotamia."})
 
-        self.aisleFour = Room("aisle 4", "There are rows upon rows of juices, sodas, mineral water and squash",
-                              ['WINE', 'LEMONADE', 'JUICE', 'COCACOLA', 'ICEDTEA'],
+        self.aisleFour = Room("aisle 4", "There bottles of juice, soda, mineral water and squash",
+                              ['WINE', 'WATER', 'LEMONADE', 'JUICE', 'BEER', 'FANTA', 'PEPSI', 'SPRITE'],
                               {"WATER": "The item you are looking for has the chemical formula H2O"})
 
-        self.aisleFive = Room("aisle 5", "There are boxes of tissues, a cornucopia of cleaning products and tools",
-                              ['TOILETROLL', 'KITCHENROLL', 'TISSUES', 'BLEACH', 'SPONGES', 'BABYWIPES'], None)
+        self.aisleFive = Room("aisle 5", "There are freshly baked loaves of bread, cakes and pastries",
+                              ['BREAD', 'BAGUETTE', 'CUPCAKES', 'CROISSANTS', 'BAGELS', 'TORTILLAS'], None)
 
         self.checkout = Room("checkout", "There is a friendly store worker, Dot, at the checkout. "
                                          ""
                                          "Talk to her if you are ready to checkout", None, None)
-
-        self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
-
-        self.lobby.setNpc(lisa)      # adds store worker to lobby
-        self.aisleTwo.setNpc(sam)   # adds store worker to aisle 2
-        self.checkout.setNpc(dot)   # adds store worker to checkout
 
         self.outside.setExit("NORTH", self.lobby)
         self.lobby.setExit("NORTH", self.aisleOne)
@@ -116,13 +91,39 @@ class Game:
         self.checkout.setExit("NORTH", self.aisleFive)
         self.checkout.setExit("SOUTH", self.outside)
 
+        self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
+
+    def setupNPCs(self):
+        """
+            Sets up all NPC names, dialogue lines and location.
+        :return: None
+        """
+        lisa = Npc("LISA")
+        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.")
+        lisa.addLine("I have made a shopping list for you. To see your list just use the command 'list'.")
+        lisa.addLine("Your goal is to fill your basket with as many of items on the list as possible.")
+        lisa.addLine("To check what items you have in you basket, use the command word 'basket'.")
+        lisa.addLine("To see which items you still need to collect, use the command word 'compare'.")
+
+        sam = Npc("SAM")
+        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.")
+        sam.addLine("I have a riddle that may help you find the bonus item.")
+        sam.addLine("If you think you have guessed the item, use the command word 'guess'.")
+        sam.addLine("The item will automatically be added to your basket.")
+
+        dot = Npc("DOT")
+        dot.addLine("You must be ready to check out! Let's see how you've done.")
+
+        self.lobby.setNpc(lisa)      # adds Lisa to lobby
+        self.aisleTwo.setNpc(sam)   # adds Sam to aisle 2
+        self.checkout.setNpc(dot)   # adds Dot to checkout
+
+
     def createShoppingList(self):
         """
-            Iterates through a list of aisles
-            then selects two random items from each aisle and creates
-            a list with the selected items..
-        :return self.tempShoppingList: a temporary shopping list to be
-                passed into the permanent shopping list.
+            Iterates through a list of aisles then selects two random items
+            from each aisle and creates a list with the selected items..
+        :return self.tempShoppingList: a temporary shopping list to be passed into the permanent shopping list.
         """
         for aisle in self.aisles:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
@@ -174,7 +175,7 @@ class Game:
             Show a list of available commands
         :return: None
         """
-        return ['help', 'go', 'quit', 'look', 'take', 'talk to', 'list', 'basket', 'compare']
+        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALK', 'LIST', 'BASKET', 'COMPARE']
 
     def processCommand(self, command):
         """
@@ -188,7 +189,6 @@ class Game:
         if secondWord != None:
             secondWord = secondWord.upper()
 
-        wantToQuit = False
         if commandWord == "HELP":
             self.doPrintHelp()
         elif commandWord == "GO":
@@ -208,27 +208,28 @@ class Game:
         elif commandWord == "GUESS":
             self.player.doGuess(secondWord)
         elif commandWord == "QUIT":
-            wantToQuit = True
+            self.wantToQuit = True
         else:
             # Unknown command ...
             self.textUI.printtoTextUI("Don't know what you mean")
 
-        return wantToQuit
+        return self.wantToQuit
+
+    # def gameComplete(self):
+    #     if self.player.doCheckOut():
+    #         self.wantToQuit = True
 
     def doPrintHelp(self):
         """
             Display some useful help text
         :return: None
         """
-        self.textUI.printtoTextUI("Welcome to Adventure World Supermarket!")
-        self.textUI.printtoTextUI("You are outside the supermarket. The entrance is up north.")
-        self.textUI.printtoTextUI("")
         self.textUI.printtoTextUI(f'Your command words are: {self.showCommandWords()}')
+
 
 
 def main():
     game = Game()
-    print(game.selectedBonusItem)
     game.play()
 
 

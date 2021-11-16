@@ -52,7 +52,7 @@ class Room:
             Fetch a  description including available exits
         :return: text description
         """
-        return f'You are {self.name}. {self.description}. Possible directions: {self.getExits()} '
+        return f'{self.description}. Possible directions: {self.getExits()} '
 
     def getExits(self):
         """
