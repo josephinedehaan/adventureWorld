@@ -6,7 +6,6 @@
 class TextUI:
 
     def __init__(self):
-        # Nothing to do ...
         pass
 
     def getCommand(self):

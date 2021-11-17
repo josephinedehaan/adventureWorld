@@ -7,14 +7,10 @@ import random
 
 """
     This class is the main class of the "Adventure World" application. 
-
     This main class creates and initialises all the others: it creates all
     rooms, creates the parser and starts the game.  It also evaluates and
     executes the commands that the parser returns.
-    
-    This game is adapted from the 'World of Zuul' by Michael Kolling
-    and David J. Barnes. The original was written in Java and has been
-    simplified and converted to Python by Kingsley Sage
+
 """
 
 
@@ -122,8 +118,8 @@ class Game:
     def createShoppingList(self):
         """
             Iterates through a list of aisles then selects two random items
-            from each aisle and creates a list with the selected items..
-        :return self.tempShoppingList: a temporary shopping list to be passed into the permanent shopping list.
+            from each aisle items list and creates a new list with the selected items.
+        :return: list to be passed into the permanent shopping list.
         """
         for aisle in self.aisles:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
@@ -131,7 +127,7 @@ class Game:
 
     def setBonusItem(self):
         """
-            Creates a dictionary from the various Room() dictionary parameters
+            Creates a new dictionary from the various Room() dictionary parameters
             and selects a random item from it, which is the put into a new
             dictionary.
         :return: None
@@ -148,7 +144,7 @@ class Game:
 
     def play(self):
         """
-            The main play loop
+            The main play loop.
         :return: None
         """
         self.printWelcome()
@@ -161,8 +157,8 @@ class Game:
 
     def printWelcome(self):
         """
-            Displays a welcome message
-        :return:
+            Displays a welcome message.
+        :return: None
         """
         self.textUI.printtoTextUI("Welcome to Adventure World Supermarket!")
         self.textUI.printtoTextUI(f'Your command words are: {self.showCommandWords()}')
@@ -172,10 +168,10 @@ class Game:
 
     def showCommandWords(self):
         """
-            Show a list of available commands
+            Show a list of available commands.
         :return: None
         """
-        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALK', 'LIST', 'BASKET', 'COMPARE']
+        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE']
 
     def processCommand(self, command):
         """
@@ -195,7 +191,7 @@ class Game:
             self.player.doGoCommand(secondWord)
         elif commandWord == "LOOK":
             self.player.doLookAround()
-        elif commandWord == "TALK":
+        elif commandWord == "TALKTO":
             self.player.doSpeak(secondWord)
         elif commandWord == "TAKE":
             self.player.doTake(secondWord)
@@ -215,17 +211,12 @@ class Game:
 
         return self.wantToQuit
 
-    # def gameComplete(self):
-    #     if self.player.doCheckOut():
-    #         self.wantToQuit = True
-
     def doPrintHelp(self):
         """
             Display some useful help text
         :return: None
         """
         self.textUI.printtoTextUI(f'Your command words are: {self.showCommandWords()}')
-
 
 
 def main():

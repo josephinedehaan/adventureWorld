@@ -1,31 +1,30 @@
 """
-    Create a room described "description". Initially, it has
-    no exits. 'description' is something like 'kitchen' or
-    'an open court yard'
+    A room class which provides a framework
+    for setting up all room assets.
 """
 
 
 class Room:
     def __init__(self, name, description, items, bonusItem):
         """
-            Constructor method
-        :param name: text description for this room
+            Constructor method.
+        :param name: text description for this room.
         :param description: detailed description of the surroundings
                             to help player collect items.
-        :param items: items stored in this room (if any)
-        :param bonusItems: bonus 'secret' items stored in this room (if any)
+        :param items: items stored in this room (if any).
+        :param bonusItems: bonus 'secret' items stored in this room (if any).
         """
         self.bonusItem = bonusItem
         self.items = items
         self.name = name
         self.description = description
-        self.exits = {}     # Dictionary
+        self.exits = {}
         self.npc = None
 
     def setNpc(self, npc):
         """
-            Adds non playable characters to selected rooms.
-        :param npc: The name of the non playable character
+            Assigns non playable characters to selected rooms.
+        :param npc: The name of the non playable character.
         :return: None
         """
         self.npc = npc
@@ -33,24 +32,24 @@ class Room:
     def setExit(self, direction, neighbour):
         """
             Adds an exit for a room. The exit is stored as a dictionary
-            entry of the (key, value) pair (direction, room)
-        :param direction: The direction leading out of this room
-        :param neighbour: The room that this direction takes you to
+            entry of the (key, value) pair (direction, room).
+        :param direction: The direction leading out of this room.
+        :param neighbour: The room that this direction takes you to.
         :return: None
         """
         self.exits[direction] = neighbour
 
     def getRoomName(self):
         """
-            Fetch name of room
-        :return: text description
+            Fetch name of room.
+        :return: text description.
         """
         return f'Location: {self.name}, Possible directions: {self.getExits()} '
 
     def getRoomDescription(self):
         """
             Fetch a  description including available exits
-        :return: text description
+        :return: text description.
         """
         return f'{self.description}. Possible directions: {self.getExits()} '
 
