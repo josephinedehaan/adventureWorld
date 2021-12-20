@@ -29,4 +29,3 @@ class Npc:
         """
         for line in self.dialogue:
             print(line)
-

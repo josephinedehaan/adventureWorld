@@ -13,7 +13,6 @@ import random
 
 """
 
-
 class Game:
 
     def __init__(self):
@@ -171,7 +170,7 @@ class Game:
             Show a list of available commands.
         :return: None
         """
-        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE']
+        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE']
 
     def processCommand(self, command):
         """
@@ -201,8 +200,12 @@ class Game:
             self.player.doSeeBasket()
         elif commandWord == "COMPARE":
             self.player.doCompare()
+        elif commandWord == "SCORE":
+            self.player.doSeePoints()
         elif commandWord == "GUESS":
             self.player.doGuess(secondWord)
+        elif commandWord == "TIME":
+            self.player.doCheckTime()
         elif commandWord == "QUIT":
             self.wantToQuit = True
         else:

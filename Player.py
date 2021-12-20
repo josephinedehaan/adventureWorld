@@ -1,9 +1,13 @@
 from TextUI import TextUI
+import time
+
+
 """
     A player class, to store all functions related to
     the player: these include shopping basket and
     shopping list.
 """
+
 
 class Player:
     def __init__(self, currentRoom):
@@ -19,6 +23,9 @@ class Player:
         self.hasShoppingList = False
         self.bonusItem = {}
         self.bonusItemGuessed = False
+        self.points = 0
+        self.startTime = None
+
 
     def setShoppingList(self, shoppingList):
         """
@@ -43,8 +50,8 @@ class Player:
         :param: None
         :return: None
         """
-        if self.hasShoppingList:        # hasShoppingList becomes True when player speaks to Lisa
-            print(', '.join(self.shoppingList))    # to prevent player from seeing list before entering supermarket.
+        if self.hasShoppingList:  # hasShoppingList becomes True when player speaks to Lisa
+            print(', '.join(self.shoppingList))  # to prevent player from seeing list before entering supermarket.
         else:
             print("You do not have a shopping list yet.")
 
@@ -101,7 +108,7 @@ class Player:
             Allows the player to take a basket and to take items to store in the basket.
         :return: None
         """
-        if self.basket != None:     # so that user can only have one basket
+        if self.basket != None:  # so that user can only have one basket
             self.textUI.printtoTextUI('You already have a basket!')
             return
         elif self.currentRoom.name != "lobby":  # so that user can only take basket in lobby
@@ -109,6 +116,7 @@ class Player:
         elif self.currentRoom.name == "lobby" and self.basket == None:  # creates basket
             self.basket = []
             self.textUI.printtoTextUI('You now have a basket.')
+            self.startTime = time.time()
 
     def doTake(self, secondWord):
         """
@@ -118,24 +126,25 @@ class Player:
                 a grocery item which is stored in the basket list.
         """
         if secondWord == None:
-            self.textUI.printtoTextUI("Take what?")     # makes sure user typed 2nd word
+            self.textUI.printtoTextUI("Take what?")  # makes sure user typed 2nd word
         elif secondWord == "BASKET":
-            self.doTakeBasket()     # if 2nd word is right user takes basket
+            self.doTakeBasket()  # if 2nd word is right user takes basket
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items
                     self.textUI.printtoTextUI('No shopping items to collect here. Go in an aisle.')
                 elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
                     self.textUI.printtoTextUI('This item is not in this aisle, try looking somewhere else.')
-                elif secondWord in self.currentRoom.items:    # checks it item is in aisle
-                    if secondWord in self.basket:   # user has already taken item
+                    self.points -= 1
+                elif secondWord in self.currentRoom.items:  # checks it item is in aisle
+                    if secondWord in self.basket:  # user has already taken item
                         self.textUI.printtoTextUI('You already have collected this item.')
                     else:
                         self.basket.append(secondWord)
                         self.textUI.printtoTextUI(f'You have added {secondWord} to your basket.')
+                        self.points += 1
             else:
                 self.textUI.printtoTextUI('Not sure what you mean.')
-
 
     def doGuess(self, secondWord):
         """
@@ -145,15 +154,15 @@ class Player:
         """
         if secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
             self.textUI.printtoTextUI('You have guessed the correct item! It has now been added to your basket')
-            self.basket.extend(list(self.bonusItem.keys()))         # adds to basket
+            self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
             self.bonusItemGuessed = True
-        elif self.basket == None:   # user can only guess with basket
+        elif self.basket == None:  # user can only guess with basket
             self.textUI.printtoTextUI('You can\'t guess yet, get a basket first!')
-        elif secondWord == None:     # alerts user that they need a 2nd word
+        elif secondWord == None:  # alerts user that they need a 2nd word
             self.textUI.printtoTextUI("Guess what?")
-        elif self.bonusItemGuessed:     # bonus item has already been guessed
+        elif self.bonusItemGuessed:  # bonus item has already been guessed
             self.textUI.printtoTextUI("You've already guessed the bonus item!")
-        else:        # if user types incorrect answer
+        else:  # if user types incorrect answer
             self.textUI.printtoTextUI('That\'s not the correct item, try again')
 
     def getRemainingItems(self):
@@ -161,9 +170,9 @@ class Player:
             Checks difference between shopping list and basket
         :return: Set containing difference
         """
-        if self.basket == None:     # ensures user has basket
+        if self.basket == None:  # ensures user has basket
             return None
-        else:   # executes comparison
+        else:  # executes comparison
             return set(self.shoppingList) - set(self.basket)
 
     def doCompare(self):
@@ -181,7 +190,7 @@ class Player:
 
         if self.hasShoppingList == False:
             self.textUI.printtoTextUI('You need a basket and a shopping list to compare!')
-        elif self.hasShoppingList and itemsLeft != 0:   # displays items left to collect
+        elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
             self.textUI.printtoTextUI(f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}')
         else:
             self.textUI.printtoTextUI("Nothing left to collect! Go to checkout.")
@@ -194,12 +203,38 @@ class Player:
         :param: None
         :return: None
         """
-        if self.basket is None:     # alerts user can only check basket if they have a basket
+        if self.basket is None:  # alerts user can only check basket if they have a basket
             self.textUI.printtoTextUI("You still need to take a basket.")
-        elif len(self.basket) == 0:     # alerts user that basket is empty
+        elif len(self.basket) == 0:  # alerts user that basket is empty
             self.textUI.printtoTextUI("Your basket is empty. Go fill it up!")
-        else:       # displays items in basket
+        else:  # displays items in basket
             self.textUI.printtoTextUI(f'Your basket contains: {", ".join(self.basket)}')
+
+    def doSeePoints(self):
+        """
+            Displays score.
+        :param: None
+        :return: None
+        """
+        self.textUI.printtoTextUI(f'Your score: {self.points}')
+
+    def doCheckTime(self):
+        """
+            Checks timer.
+        :param: None
+        :return: None
+        """
+        currentTime = time.time()
+        showTimer = currentTime - self.startTime
+        minutes = int(showTimer/60)
+        seconds = int(showTimer % 60)
+
+        if self.basket is not None:
+            self.textUI.printtoTextUI(f'Time: {minutes}:{seconds}')
+        else:
+            self.textUI.printtoTextUI('Timer starts once you have collected your basket.')
+
+        return minutes
 
     def doCheckOut(self):
         """
@@ -212,14 +247,27 @@ class Player:
             return
 
         if self.bonusItemGuessed:
-            self.shoppingList.extend(list(self.bonusItem.keys()))   # adds to shopping list for correct comparison
+            self.points *= 2
+            self.shoppingList.extend(list(self.bonusItem.keys()))  # adds to shopping list for correct comparison
             if len(self.getRemainingItems()) == 0:  # executes comparison
                 self.textUI.printtoTextUI('CONGRATULATIONS! You have got all the items!')
+                self.doCheckTime()
+                if self.doCheckTime() < 3:
+                    self.points *= 2    # doubles points for fast play
+                elif self.doCheckTime() > 8:
+                    self.points /= 2    # halves points for slow play
+                self.doSeePoints()
                 exit()
         elif not self.bonusItemGuessed:
             if len(self.getRemainingItems()) == 0:  # executes comparison
                 self.textUI.printtoTextUI('You have got all the items except for the bonus item!')
+                self.doCheckTime()
+                if self.doCheckTime() < 3:
+                    self.points *= 2    # doubles points for fast play
+                elif self.doCheckTime() > 8:
+                    self.points /= 2    # halves points for slow play
+                self.doSeePoints()
                 exit()
-        else:   # alerts user that they have not collected all items
-            self.textUI.printtoTextUI("You can't checkout until you have collected all the items on your shopping list!")
-
+        else:  # alerts user that they have not collected all items
+            self.textUI.printtoTextUI(
+                "You can't checkout until you have collected all the items on your shopping list!")
