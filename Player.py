@@ -25,6 +25,7 @@ class Player:
         self.bonusItemGuessed = False
         self.points = 0
         self.startTime = None
+        self.hasKey = False
 
 
     def setShoppingList(self, shoppingList):
@@ -113,10 +114,26 @@ class Player:
             return
         elif self.currentRoom.name != "lobby":  # so that user can only take basket in lobby
             self.textUI.printtoTextUI('There are no baskets here. Try going to the lobby.')
-        elif self.currentRoom.name == "lobby" and self.basket == None:  # creates basket
+        elif self.currentRoom.name == "lobby" and self.basket is None:  # creates basket
             self.basket = []
             self.textUI.printtoTextUI('You now have a basket.')
             self.startTime = time.time()
+
+    def doTakeKey(self):
+        """
+
+        :return:
+        """
+        if self.hasKey:       # player cannot take the key more than once.
+            self.textUI.printtoTextUI('You already have taken the key')
+        elif self.currentRoom.name != "aisle 4":  # so that user can only take key is aisle 4
+            self.textUI.printtoTextUI('There are no keys here')
+        elif not self.hasKey and self.currentRoom.name == "aisle 4":
+            self.textUI.printtoTextUI('Key taken. Find the locked door!')
+            self.hasKey = True
+
+
+
 
     def doTake(self, secondWord):
         """
@@ -129,6 +146,8 @@ class Player:
             self.textUI.printtoTextUI("Take what?")  # makes sure user typed 2nd word
         elif secondWord == "BASKET":
             self.doTakeBasket()  # if 2nd word is right user takes basket
+        elif secondWord == "KEY":
+            self.doTakeKey()
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items

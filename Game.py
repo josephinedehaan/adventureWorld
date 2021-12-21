@@ -59,12 +59,19 @@ class Game:
                                 "BARLEY": "The item you are looking for was one of the first forms of "
                                           "currency used in ancient Mesopotamia."})
 
-        self.aisleFour = Room("aisle 4", "There bottles of juice, soda, mineral water and squash",
+        self.aisleFour = Room("aisle 4", "There bottles of juice, soda, mineral water and squash. There is a key on the"
+                                         "ground",
                               ['WINE', 'WATER', 'LEMONADE', 'JUICE', 'BEER', 'FANTA', 'PEPSI', 'SPRITE'],
                               {"WATER": "The item you are looking for has the chemical formula H2O"})
 
-        self.aisleFive = Room("aisle 5", "There are freshly baked loaves of bread, cakes and pastries",
+        self.aisleFive = Room("aisle 5", "There are freshly baked loaves of bread, cakes and pastries. There is also a "
+                                         "locked door",
                               ['BREAD', 'BAGUETTE', 'CUPCAKES', 'CROISSANTS', 'BAGELS', 'TORTILLAS'], None)
+
+        self.secretAisle = Room("'secret' aisle 6", "You are in what looks like a store room and there is a friendly "
+                                                    "store worker, Eddy, who wants to talk to you.",
+                                {"PINEAPPLE": 6, "CHOCOLATE": 4, "PRETZELS": 8, "PIZZA": 8, "CHEESECAKE": 5,}, None)
+
 
         self.checkout = Room("checkout", "There is a friendly store worker, Dot, at the checkout. "
                                          ""
@@ -88,6 +95,7 @@ class Game:
 
         self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
 
+
     def setupNPCs(self):
         """
             Sets up all NPC names, dialogue lines and location.
@@ -109,10 +117,27 @@ class Game:
         dot = Npc("DOT")
         dot.addLine("You must be ready to check out! Let's see how you've done.")
 
-        self.lobby.setNpc(lisa)      # adds Lisa to lobby
-        self.aisleTwo.setNpc(sam)   # adds Sam to aisle 2
-        self.checkout.setNpc(dot)   # adds Dot to checkout
+        eddy = Npc("EDDY")
+        eddy.addLine("You've made it to the secret room!")
+        eddy.addLine("You are free to take 1 item from this room.")
+        eddy.addLine("All items are worth points, but I cannot tell you which one is worth more.")
+        eddy.addLine("Here is a list of the items. Good luck!")
+        eddy.addLine(list(self.secretAisle.items.keys()))
 
+        self.lobby.setNpc(lisa)         # assigns NPCs to various rooms
+        self.aisleTwo.setNpc(sam)
+        self.secretAisle.setNpc(eddy)
+        self.checkout.setNpc(dot)
+
+    def createSecretRoom(self):
+        if self.player.hasKey and self.player.currentRoom is self.aisleFive:
+            self.secretAisle.setExit("WEST", self.aisleFive)
+            self.aisleFive.setExit("EAST", self.secretAisle)
+            self.textUI.printtoTextUI("Door unlocked. Go east to enter the secret aisle.")
+        elif not self.player.hasKey:
+            self.textUI.printtoTextUI("You can't unlock unless you have found the key.")
+        elif self.player.currentRoom != self.aisleFive:
+            self.textUI.printtoTextUI("There are no doors to unlock here... Try going somewhere else!")
 
     def createShoppingList(self):
         """
@@ -170,7 +195,7 @@ class Game:
             Show a list of available commands.
         :return: None
         """
-        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE']
+        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
 
     def processCommand(self, command):
         """
@@ -206,6 +231,8 @@ class Game:
             self.player.doGuess(secondWord)
         elif commandWord == "TIME":
             self.player.doCheckTime()
+        elif commandWord == "UNLOCK":
+            self.createSecretRoom()
         elif commandWord == "QUIT":
             self.wantToQuit = True
         else:
