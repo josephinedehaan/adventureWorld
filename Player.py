@@ -26,6 +26,9 @@ class Player:
         self.points = 0
         self.startTime = None
         self.hasKey = False
+        self.secretItems = {}
+        self.secretItemChosen = False
+
 
 
     def setShoppingList(self, shoppingList):
@@ -44,6 +47,19 @@ class Player:
         :return: None
         """
         self.bonusItem = bonusItem
+
+    def setSecretIems(self, secretItems):
+        """
+            Retrieves secret items from Game.
+        :param bonusItem:
+        :return: None
+        """
+        self.secretItems = secretItems
+
+
+    def test(self):
+        print(self.secretItems)
+
 
     def doReadShoppingList(self):
         """
@@ -121,7 +137,7 @@ class Player:
 
     def doTakeKey(self):
         """
-
+                TO DO
         :return:
         """
         if self.hasKey:       # player cannot take the key more than once.
@@ -129,10 +145,19 @@ class Player:
         elif self.currentRoom.name != "aisle 4":  # so that user can only take key is aisle 4
             self.textUI.printtoTextUI('There are no keys here')
         elif not self.hasKey and self.currentRoom.name == "aisle 4":
-            self.textUI.printtoTextUI('Key taken. Find the locked door!')
+            self.textUI.printtoTextUI("Key taken. Find the locked door! Remember to use the command 'UNLOCK to open it ")
             self.hasKey = True
 
-
+    def doTakeSecretItem(self, secondWord):
+        """
+                TO DO
+        :return:
+        """
+        if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
+            self.points = self.secretItems.get(secondWord) + self.points
+            self.secretItemChosen = True
+            self.textUI.printtoTextUI(f'Your have chosen {secondWord}. {self.secretItems.get(secondWord)} points'
+                                      f' have been added to your score.')
 
 
     def doTake(self, secondWord):
@@ -148,20 +173,22 @@ class Player:
             self.doTakeBasket()  # if 2nd word is right user takes basket
         elif secondWord == "KEY":
             self.doTakeKey()
+        elif secondWord in self.secretItems.keys():
+            self.doTakeSecretItem(secondWord)
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items
                     self.textUI.printtoTextUI('No shopping items to collect here. Go in an aisle.')
                 elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
                     self.textUI.printtoTextUI('This item is not in this aisle, try looking somewhere else.')
-                    self.points -= 1
+                    self.points -= 2
                 elif secondWord in self.currentRoom.items:  # checks it item is in aisle
                     if secondWord in self.basket:  # user has already taken item
                         self.textUI.printtoTextUI('You already have collected this item.')
                     else:
                         self.basket.append(secondWord)
                         self.textUI.printtoTextUI(f'You have added {secondWord} to your basket.')
-                        self.points += 1
+                        self.points += 2
             else:
                 self.textUI.printtoTextUI('Not sure what you mean.')
 
@@ -243,17 +270,18 @@ class Player:
         :param: None
         :return: None
         """
-        currentTime = time.time()
-        showTimer = currentTime - self.startTime
-        minutes = int(showTimer/60)
-        seconds = int(showTimer % 60)
 
-        if self.basket is not None:
+        if self.basket is not None and self.startTime is not None:
+            currentTime = time.time()
+            showTimer = currentTime - self.startTime
+            minutes = int(showTimer / 60)
+            seconds = int(showTimer % 60)
             self.textUI.printtoTextUI(f'Time: {minutes}:{seconds}')
+            return minutes
         else:
             self.textUI.printtoTextUI('Timer starts once you have collected your basket.')
 
-        return minutes
+
 
     def doCheckOut(self):
         """

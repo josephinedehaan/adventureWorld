@@ -13,6 +13,7 @@ import random
 
 """
 
+
 class Game:
 
     def __init__(self):
@@ -30,6 +31,9 @@ class Game:
         self.selectedBonusItem = {}
         self.setBonusItem()
         self.player.setBonusItem(self.selectedBonusItem)
+        self.secretItems = {}
+        self.getSecretItems()
+        self.player.setSecretIems(self.secretItems)
         self.wantToQuit = False
 
     def setupSupermarket(self):
@@ -68,7 +72,7 @@ class Game:
                                          "locked door",
                               ['BREAD', 'BAGUETTE', 'CUPCAKES', 'CROISSANTS', 'BAGELS', 'TORTILLAS'], None)
 
-        self.secretAisle = Room("'secret' aisle 6", "You are in what looks like a store room and there is a friendly "
+        self.secretAisle = Room("secret aisle", "You are in what looks like a store room and there is a friendly "
                                                     "store worker, Eddy, who wants to talk to you.",
                                 {"PINEAPPLE": 6, "CHOCOLATE": 4, "PRETZELS": 8, "PIZZA": 8, "CHEESECAKE": 5,}, None)
 
@@ -114,15 +118,15 @@ class Game:
         sam.addLine("If you think you have guessed the item, use the command word 'guess'.")
         sam.addLine("The item will automatically be added to your basket.")
 
-        dot = Npc("DOT")
-        dot.addLine("You must be ready to check out! Let's see how you've done.")
-
         eddy = Npc("EDDY")
         eddy.addLine("You've made it to the secret room!")
-        eddy.addLine("You are free to take 1 item from this room.")
+        eddy.addLine("You must be hungry. You are allowed to snack on one of these items.")
         eddy.addLine("All items are worth points, but I cannot tell you which one is worth more.")
-        eddy.addLine("Here is a list of the items. Good luck!")
+        eddy.addLine("Here is what's on the menu. Take one! Choose wisely. Good luck!")
         eddy.addLine(list(self.secretAisle.items.keys()))
+
+        dot = Npc("DOT")
+        dot.addLine("You must be ready to check out! Let's see how you've done.")
 
         self.lobby.setNpc(lisa)         # assigns NPCs to various rooms
         self.aisleTwo.setNpc(sam)
@@ -130,6 +134,10 @@ class Game:
         self.checkout.setNpc(dot)
 
     def createSecretRoom(self):
+        """
+            TO DO
+        :return:
+        """
         if self.player.hasKey and self.player.currentRoom is self.aisleFive:
             self.secretAisle.setExit("WEST", self.aisleFive)
             self.aisleFive.setExit("EAST", self.secretAisle)
@@ -148,6 +156,14 @@ class Game:
         for aisle in self.aisles:
             self.tempShoppingList.extend(random.sample(aisle.items, 2))
         return self.tempShoppingList
+
+    def getSecretItems(self):
+        """
+            Gets secret items from secret aisle to make them accessible to Player class
+        :return: list to be passed into the permanent shopping list.
+        """
+        self.secretItems.update(self.secretAisle.items)
+
 
     def setBonusItem(self):
         """
@@ -233,6 +249,8 @@ class Game:
             self.player.doCheckTime()
         elif commandWord == "UNLOCK":
             self.createSecretRoom()
+        elif commandWord == "TEST":
+            self.player.test()
         elif commandWord == "QUIT":
             self.wantToQuit = True
         else:
