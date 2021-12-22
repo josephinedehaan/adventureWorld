@@ -1,13 +1,11 @@
 from TextUI import TextUI
 import time
 
-
 """
     A player class, to store all functions related to
     the player: these include shopping basket and
     shopping list.
 """
-
 
 class Player:
     def __init__(self, currentRoom):

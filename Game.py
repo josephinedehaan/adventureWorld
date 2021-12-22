@@ -2,7 +2,6 @@ from Player import Player
 from Room import Room
 from TextUI import TextUI
 from Npc import Npc
-
 import random
 
 """
@@ -12,7 +11,6 @@ import random
     executes the commands that the parser returns.
 
 """
-
 
 class Game:
 

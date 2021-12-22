@@ -3,6 +3,7 @@
     a framework for setting up NPCs.
 """
 
+
 class Npc:
     def __init__(self, name):
         """
