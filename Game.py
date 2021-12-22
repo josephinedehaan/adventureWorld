@@ -211,58 +211,14 @@ class Game:
         """
         return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
 
-    def processCommand(self, command):
-        """
-            Process a command from the TextUI
-        :param command: a 2-tuple of the form (commandWord, secondWord)
-        :return: True if the game has been quit, False otherwise
-        """
-        commandWord, secondWord = command
-        if commandWord != None:
-            commandWord = commandWord.upper()
-        if secondWord != None:
-            secondWord = secondWord.upper()
-
-        if commandWord == "HELP":
-            self.doPrintHelp()
-        elif commandWord == "GO":
-            self.player.doGoCommand(secondWord)
-        elif commandWord == "LOOK":
-            self.player.doLookAround()
-        elif commandWord == "TALKTO":
-            self.player.doSpeak(secondWord)
-        elif commandWord == "TAKE":
-            self.player.doTake(secondWord)
-        elif commandWord == "LIST":
-            self.player.doReadShoppingList()
-        elif commandWord == "BASKET":
-            self.player.doSeeBasket()
-        elif commandWord == "COMPARE":
-            self.player.doCompare()
-        elif commandWord == "SCORE":
-            self.player.doSeePoints()
-        elif commandWord == "GUESS":
-            self.player.doGuess(secondWord)
-        elif commandWord == "TIME":
-            self.player.doCheckTime()
-        elif commandWord == "UNLOCK":
-            self.createSecretRoom()
-        elif commandWord == "TEST":
-            self.player.test()
-        elif commandWord == "QUIT":
-            self.wantToQuit = True
-        else:
-            # Unknown command ...
-            self.textUI.printtoTextUI("Don't know what you mean")
-
-        return self.wantToQuit
 
     def doPrintHelp(self):
         """
             Display some useful help text
         :return: None
         """
-        self.textUI.printtoTextUI(f'Your command words are: {self.showCommandWords()}')
+        message = f'Your command words are: {self.showCommandWords()}'
+        return message
 
 
 def main():
