@@ -104,24 +104,25 @@ class Game:
         :return: None
         """
         lisa = Npc("LISA")
-        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.")
-        lisa.addLine("I have made a shopping list for you. To see your list just use the command 'list'.")
-        lisa.addLine("Your goal is to fill your basket with as many of items on the list as possible.")
-        lisa.addLine("To check what items you have in you basket, use the command word 'basket'.")
-        lisa.addLine("To see which items you still need to collect, use the command word 'compare'.")
+        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.\n"
+                     "I have made a shopping list for you. To see your list just use the command 'list'.\n"
+                     "Your goal is to fill your basket with as many of items on the list as possible.\n"
+                     "To check what items you have in you basket, use the command word 'basket'.\n"
+                     "To see which items you still need to collect, use the command word 'compare'.")
 
         sam = Npc("SAM")
-        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.")
-        sam.addLine("I have a riddle that may help you find the bonus item.")
-        sam.addLine("If you think you have guessed the item, use the command word 'guess'.")
-        sam.addLine("The item will automatically be added to your basket.")
+        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.\n"
+                    "I have a riddle that may help you find the bonus item.\n"
+                    "If you think you have guessed the item, use the command word 'guess'.\n"
+                    "The item will automatically be added to your basket.")
 
         eddy = Npc("EDDY")
-        eddy.addLine("You've made it to the secret room!")
-        eddy.addLine("You must be hungry. You are allowed to snack on one of these items.")
-        eddy.addLine("All items are worth points, but I cannot tell you which one is worth more.")
-        eddy.addLine("Here is what's on the menu. Take one! Choose wisely. Good luck!")
-        eddy.addLine(list(self.secretAisle.items.keys()))
+        eddy.addLine(f'You\'ve made it to the secret room! You must be hungry. \n'
+                     f'You are allowed to snack on one of these items. All items are worth points,\n'
+                     f' but I cannot tell you which one is worth more. Here is what\'s on the menu.\n'
+                     f' Take one! Choose wisely. Good luck!\n'
+                     f'{list(self.secretAisle.items.keys())}')
+
 
         dot = Npc("DOT")
         dot.addLine("You must be ready to check out! Let's see how you've done.")
@@ -201,10 +202,11 @@ class Game:
         welcomeMsg = f'Welcome to Adventure World Supermarket! ' \
                      f'Your command words are: {self.showCommandWords()}'
 
-        if self.player.currentRoom == self.outside:
-            self.textUI.printtoTextUI("You are outside the supermarket. The entrance is up north.")
 
-        return welcomeMsg
+        if self.player.currentRoom == self.outside:
+            return  welcomeMsg + '\n' + "\nYou are outside the supermarket. The entrance is up north."
+
+
 
     def showCommandWords(self):
         """

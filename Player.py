@@ -64,11 +64,15 @@ class Player:
             Prints shopping list if the player has collected it.
         :param: None
         :return: None
+
         """
         if self.hasShoppingList:  # hasShoppingList becomes True when player speaks to Lisa
-            print(', '.join(self.shoppingList))  # to prevent player from seeing list before entering supermarket.
+            return ', '.join(self.shoppingList)  # to prevent player from seeing list before entering supermarket.
         else:
-            print("You do not have a shopping list yet.")
+            return "You do not have a shopping list yet."
+
+
+
 
     def doLookAround(self):
         """
@@ -77,7 +81,7 @@ class Player:
             they can speak to.
             :return: None
             """
-        self.textUI.printtoTextUI(self.currentRoom.getRoomDescription())
+        return self.currentRoom.getRoomDescription()
 
     def doGoCommand(self, secondWord):
         """
@@ -86,15 +90,14 @@ class Player:
         :return: None
         """
         if secondWord == None:
-            self.textUI.printtoTextUI("Go where?")
-            return
+            return "Go where?"
 
         nextRoom = self.currentRoom.getExit(secondWord)
         if nextRoom == None:
-            self.textUI.printtoTextUI("You can't go there.")
+            return "You can't go there."
         else:
             self.currentRoom = nextRoom
-            self.textUI.printtoTextUI(self.currentRoom.getRoomName())
+            return self.currentRoom.getRoomName()
 
     def doSpeak(self, secondWord):
         """
@@ -105,18 +108,18 @@ class Player:
         """
 
         if secondWord == None:
-            self.textUI.printtoTextUI("Talk to whom?")
+            return "Talk to whom?"
 
         if self.currentRoom.npc != None and secondWord == self.currentRoom.npc.name:
-            self.currentRoom.npc.speakDialogue()
             if secondWord == "LISA" and self.currentRoom.name == "lobby":
                 self.hasShoppingList = True
             if secondWord == "SAM" and self.currentRoom.name == "aisle 2":
-                print(list(self.bonusItem.values())[0])
+                return list(self.bonusItem.values())[0]
             if secondWord == "DOT" and self.currentRoom.name == "checkout":
                 self.doCheckOut()
+            return self.currentRoom.npc.speakDialogue()
         elif secondWord != None:
-            self.textUI.printtoTextUI(f"There is no one called {secondWord} here.")
+            return f"There is no one called {secondWord} here."
 
     def doTakeBasket(self):
         """
@@ -124,14 +127,13 @@ class Player:
         :return: None
         """
         if self.basket != None:  # so that user can only have one basket
-            self.textUI.printtoTextUI('You already have a basket!')
-            return
+            return 'You already have a basket!'
         elif self.currentRoom.name != "lobby":  # so that user can only take basket in lobby
-            self.textUI.printtoTextUI('There are no baskets here. Try going to the lobby.')
+            return 'There are no baskets here. Try going to the lobby.'
         elif self.currentRoom.name == "lobby" and self.basket is None:  # creates basket
             self.basket = []
-            self.textUI.printtoTextUI('You now have a basket.')
             self.startTime = time.time()
+            return 'You now have a basket.'
 
     def doTakeKey(self):
         """
@@ -139,12 +141,12 @@ class Player:
         :return:
         """
         if self.hasKey:       # player cannot take the key more than once.
-            self.textUI.printtoTextUI('You already have taken the key')
+            return 'You already have taken the key'
         elif self.currentRoom.name != "aisle 4":  # so that user can only take key is aisle 4
-            self.textUI.printtoTextUI('There are no keys here')
+            return 'There are no keys here'
         elif not self.hasKey and self.currentRoom.name == "aisle 4":
-            self.textUI.printtoTextUI("Key taken. Find the locked door! Remember to use the command 'UNLOCK to open it ")
             self.hasKey = True
+            return "Key taken. Find the locked door! Remember to use the command 'UNLOCK to open it "
 
     def doTakeSecretItem(self, secondWord):
         """
@@ -154,8 +156,7 @@ class Player:
         if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
             self.points = self.secretItems.get(secondWord) + self.points
             self.secretItemChosen = True
-            self.textUI.printtoTextUI(f'Your have chosen {secondWord}. {self.secretItems.get(secondWord)} points'
-                                      f' have been added to your score.')
+            return f'Your have chosen {secondWord}. {self.secretItems.get(secondWord)} points have been added to your score.'
 
 
     def doTake(self, secondWord):
@@ -166,29 +167,29 @@ class Player:
                 a grocery item which is stored in the basket list.
         """
         if secondWord == None:
-            self.textUI.printtoTextUI("Take what?")  # makes sure user typed 2nd word
+            return "Take what?"  # makes sure user typed 2nd word
         elif secondWord == "BASKET":
-            self.doTakeBasket()  # if 2nd word is right user takes basket
+            return self.doTakeBasket()  # if 2nd word is right user takes basket
         elif secondWord == "KEY":
-            self.doTakeKey()
+            return self.doTakeKey()
         elif secondWord in self.secretItems.keys():
-            self.doTakeSecretItem(secondWord)
+            return self.doTakeSecretItem(secondWord)
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items
-                    self.textUI.printtoTextUI('No shopping items to collect here. Go in an aisle.')
+                    return 'No shopping items to collect here. Go in an aisle.'
                 elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
-                    self.textUI.printtoTextUI('This item is not in this aisle, try looking somewhere else.')
                     self.points -= 2
+                    return 'This item is not in this aisle, try looking somewhere else.'
                 elif secondWord in self.currentRoom.items:  # checks it item is in aisle
                     if secondWord in self.basket:  # user has already taken item
-                        self.textUI.printtoTextUI('You already have collected this item.')
+                        return 'You already have collected this item.'
                     else:
                         self.basket.append(secondWord)
-                        self.textUI.printtoTextUI(f'You have added {secondWord} to your basket.')
                         self.points += 2
+                        return f'You have added {secondWord} to your basket.'
             else:
-                self.textUI.printtoTextUI('Not sure what you mean.')
+                return 'Not sure what you mean.'
 
     def doGuess(self, secondWord):
         """

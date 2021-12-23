@@ -28,5 +28,5 @@ class Npc:
             Iterates through dialogue list and prints all elements.
         :return: None
         """
-        for line in self.dialogue:
-            print(line)
+        return self.dialogue
+

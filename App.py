@@ -13,7 +13,7 @@ class App:
         # cannot share a parent frame. Here both frames are owned
         # by a top level instance root.
 
-        self.frame1 = tk.Frame(root, width=400, height=150, bg='WHITE', borderwidth=2)
+        self.frame1 = tk.Frame(root, width=600, height=250, bg='WHITE', borderwidth=2)
         self.frame1.pack_propagate(0)   # Prevents resizing
         self.frame2 = tk.Frame(root, width=400, height=150, bg='LIGHt GREY', borderwidth=2)
         self.frame2.grid_propagate(0)   # Prevents resizing
@@ -22,7 +22,7 @@ class App:
         self.frame2.pack()
 
         # Now add some useful widgets ...
-        self.textArea1 = tk.Label(self.frame1, text=self.game.printWelcome(), wraplength=400)
+        self.textArea1 = tk.Label(self.frame1, text=self.game.printWelcome(), wraplength=600)
         self.textArea1.pack()
         self.cmdArea = tk.Entry(self.frame2, text='')
         self.cmdArea.pack()
@@ -73,13 +73,13 @@ class App:
         elif commandWord == "GO":
             self.textArea1.configure(text=self.game.player.doGoCommand(secondWord))
         elif commandWord == "LOOK":
-            self.game.player.doLookAround()
+            self.textArea1.configure(text=self.game.player.doLookAround())
         elif commandWord == "TALKTO":
-            self.game.player.doSpeak(secondWord)
+            self.textArea1.configure(text=self.game.player.doSpeak(secondWord))
         elif commandWord == "TAKE":
-            self.game.player.doTake(secondWord)
+            self.textArea1.configure(text=self.game.player.doTake(secondWord))
         elif commandWord == "LIST":
-            self.game.player.doReadShoppingList()
+            self.textArea1.configure(text=self.game.player.doReadShoppingList())
         elif commandWord == "BASKET":
             self.game.player.doSeeBasket()
         elif commandWord == "COMPARE":
