@@ -22,7 +22,7 @@ class App:
         self.frame2.pack()
 
         # Now add some useful widgets ...
-        self.textArea1 = tk.Label(self.frame1, text='Hello')
+        self.textArea1 = tk.Label(self.frame1, text=self.game.printWelcome(), wraplength=400)
         self.textArea1.pack()
         self.cmdArea = tk.Entry(self.frame2, text='')
         self.cmdArea.pack()
@@ -104,6 +104,7 @@ class App:
 
 
 def main():
+
     win = tk.Tk()                           # Create a window
     win.title("Adventure World with GUI")   # Set window title
     win.geometry("800x300")                 # Set window size
@@ -112,6 +113,8 @@ def main():
     # Create the GUI as a Frame
     # and attach it to the window ...
     myApp = App(win)
+
+
 
     # Call the GUI mainloop ...
     win.mainloop()

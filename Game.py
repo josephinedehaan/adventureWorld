@@ -198,11 +198,13 @@ class Game:
             Displays a welcome message.
         :return: None
         """
-        self.textUI.printtoTextUI("Welcome to Adventure World Supermarket!")
-        self.textUI.printtoTextUI(f'Your command words are: {self.showCommandWords()}')
-        self.textUI.printtoTextUI("")
+        welcomeMsg = f'Welcome to Adventure World Supermarket! ' \
+                     f'Your command words are: {self.showCommandWords()}'
+
         if self.player.currentRoom == self.outside:
             self.textUI.printtoTextUI("You are outside the supermarket. The entrance is up north.")
+
+        return welcomeMsg
 
     def showCommandWords(self):
         """
