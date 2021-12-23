@@ -81,33 +81,30 @@ class App:
         elif commandWord == "LIST":
             self.textArea1.configure(text=self.game.player.doReadShoppingList())
         elif commandWord == "BASKET":
-            self.game.player.doSeeBasket()
+            self.textArea1.configure(text=self.game.player.doSeeBasket())
         elif commandWord == "COMPARE":
-            self.game.player.doCompare()
+            self.textArea1.configure(text=self.game.player.doCompare())
         elif commandWord == "SCORE":
-            self.game.player.doSeePoints()
+            self.textArea1.configure(text=self.game.player.doSeePoints())
         elif commandWord == "GUESS":
-            self.game.player.doGuess(secondWord)
+            self.textArea1.configure(text=self.game.player.doGuess(secondWord))
         elif commandWord == "TIME":
-            self.game.player.doCheckTime()
+            self.textArea1.configure(text=self.game.player.doCheckTime())
         elif commandWord == "UNLOCK":
-            self.game.createSecretRoom()
-        elif commandWord == "TEST":
-            self.game.player.test()
+            self.textArea1.configure(text=self.game.createSecretRoom())
         elif commandWord == "QUIT":
-            self.game.wantToQuit = True
+            exit()
         else:
             # Unknown command ...
             self.textArea1.configure(text="Don't know what you mean")
 
-        return self.game.wantToQuit
 
 
 def main():
 
     win = tk.Tk()                           # Create a window
     win.title("Adventure World with GUI")   # Set window title
-    win.geometry("800x300")                 # Set window size
+    win.geometry("800x400")                 # Set window size
     win.resizable(False, False)             # Both x and y dimensions ...
 
     # Create the GUI as a Frame

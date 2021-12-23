@@ -1,6 +1,5 @@
 from Player import Player
 from Room import Room
-from TextUI import TextUI
 from Npc import Npc
 import random
 
@@ -20,7 +19,6 @@ class Game:
         """
         self.setupSupermarket()
         self.setupNPCs()
-        self.textUI = TextUI()
         self.player = Player(self.outside)
         self.tempShoppingList = []
         self.createShoppingList()
@@ -32,7 +30,6 @@ class Game:
         self.secretItems = {}
         self.getSecretItems()
         self.player.setSecretIems(self.secretItems)
-        self.wantToQuit = False
 
     def setupSupermarket(self):
         """
@@ -140,11 +137,11 @@ class Game:
         if self.player.hasKey and self.player.currentRoom is self.aisleFive:
             self.secretAisle.setExit("WEST", self.aisleFive)
             self.aisleFive.setExit("EAST", self.secretAisle)
-            self.textUI.printtoTextUI("Door unlocked. Go east to enter the secret aisle.")
+            return "Door unlocked. Go east to enter the secret aisle."
         elif not self.player.hasKey:
-            self.textUI.printtoTextUI("You can't unlock unless you have found the key.")
+            return "You can't unlock unless you have found the key."
         elif self.player.currentRoom != self.aisleFive:
-            self.textUI.printtoTextUI("There are no doors to unlock here... Try going somewhere else!")
+            return "There are no doors to unlock here... Try going somewhere else!"
 
     def createShoppingList(self):
         """
@@ -181,18 +178,6 @@ class Game:
         randItem = random.choice(list(bonusItems))
         self.selectedBonusItem[randItem] = bonusItems[randItem]
 
-    def play(self):
-        """
-            The main play loop.
-        :return: None
-        """
-        self.printWelcome()
-        finished = False
-        while (finished == False):
-            command = self.textUI.getCommand()  # Returns a 2-tuple
-            finished = self.processCommand(command)
-
-        print("Thank you for playing!")
 
     def printWelcome(self):
         """
@@ -206,15 +191,12 @@ class Game:
         if self.player.currentRoom == self.outside:
             return  welcomeMsg + '\n' + "\nYou are outside the supermarket. The entrance is up north."
 
-
-
     def showCommandWords(self):
         """
             Show a list of available commands.
         :return: None
         """
         return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
-
 
     def doPrintHelp(self):
         """
@@ -223,12 +205,3 @@ class Game:
         """
         message = f'Your command words are: {self.showCommandWords()}'
         return message
-
-
-def main():
-    game = Game()
-    game.play()
-
-
-if __name__ == "__main__":
-    main()
