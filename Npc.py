@@ -28,5 +28,6 @@ class Npc:
             Iterates through dialogue list and prints all elements.
         :return: None
         """
+        self.dialogue = ''.join(self.dialogue)
         return self.dialogue
 

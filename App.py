@@ -13,52 +13,80 @@ class App:
         # cannot share a parent frame. Here both frames are owned
         # by a top level instance root.
 
-        self.textArea1 = tk.Label(text=self.game.printWelcome(), wraplength=600)
+        self.textArea1 = tk.Label(text=self.game.printWelcome(), width=50, height=8,
+                                  bg='light grey', fg='black', wraplength=400, justify='center')
         self.textArea1.grid(row=9, column=2, rowspan=2, columnspan=2)
-        self.entryBox = tk.Entry(text='')
-        self.entryBox.grid(row=7, column=0)
+        self.textArea1.grid_propagate(0)
+
+        self.entryBox = tk.Entry(text='', width=2)
+        self.entryBox.grid(row=7, column=0, columnspan=2, sticky='nsew')
+
+        self.timerArea = tk.Label(text='TIMER:', width=25,
+                                  bg='pink', fg='black')
+        self.timerArea.grid(row=0, column=2)
+
+        self.scoreArea = tk.Label(text='SCORE:', width=25,
+                                  bg='light grey', fg='black')
+        self.scoreArea.grid(row=0, column=3,)
         self.buildGUI()
 
+
     def buildGUI(self):
-        self.doHelp = tk.Button(text='Help', fg='black', command=self.doHelp)
-        self.doHelp.grid(row=0, column=0, columnspan=2)
-        self.doLook = tk.Button(text='Look', fg='black', command=self.doLook)
-        self.doLook.grid(row=1, column=0, columnspan=2)
-        self.doSpeak = tk.Button(text='Speak', fg='black', command=self.doSpeak)
-        self.doSpeak.grid(row=2, column=0, columnspan=2)
-        self.doList = tk.Button(text='List', fg='black', command=self.doList)
-        self.doList.grid(row=3, column=0, columnspan=2)
-        self.doCompare = tk.Button(text='Compare', fg='black', command=self.doCompare)
-        self.doCompare.grid(row=4, column=0, columnspan=2)
-        self.doUnlock = tk.Button(text='Unlock', fg='black', command=self.doUnlock)
-        self.doUnlock.grid(row=5, column=0, columnspan=2)
-        self.doQuit = tk.Button(text='Quit', fg='black')    # functionality needs to be implemented
-        self.doQuit.grid(row=6, column=0, columnspan=2)     # program quits if i put exit() as command, look up!
+        # Commands
+        self.doHelp = tk.Button(text='Help', fg='black', width=10, command=self.doHelp)
+        self.doHelp.grid(row=0, column=0, columnspan=2, sticky='w')
+        self.doLook = tk.Button(text='Look', fg='black', width=10, command=self.doLook)
+        self.doLook.grid(row=1, column=0, columnspan=2, sticky='w')
+        self.doSpeak = tk.Button(text='Speak', fg='black', width=10, command=self.doSpeak)
+        self.doSpeak.grid(row=2, column=0, columnspan=2, sticky='w')
+        self.doList = tk.Button(text='List', fg='black', width=10, command=self.doList)
+        self.doList.grid(row=3, column=0, columnspan=2, sticky='w')
+        self.doCompare = tk.Button(text='Compare', fg='black', width=10, command=self.doCompare)
+        self.doCompare.grid(row=4, column=0, columnspan=2, sticky='w')
+        self.doUnlock = tk.Button(text='Unlock', fg='black', width=10, command=self.doUnlock)
+        self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='w')
+        self.doQuit = tk.Button(text='Quit',width=10, fg='black')    # functionality needs to be implemented
+        self.doQuit.grid(row=6, column=0, columnspan=2, sticky='w')     # program quits if i put exit() as command, look up!
+        self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
+        self.Take.grid(row=8, column=0, columnspan=1, stick='nsew')
+        self.guess = tk.Button(text='Guess', fg='black', width=2, command=self.doGuess)
+        self.guess.grid(row=8, column=1,columnspan=1, sticky='nsew')
+
+        # Direction commands
+        self.goNorth = tk.Button(text='Go North ^', fg='black', width=10, command=self.doGoNorth)
+        self.goNorth.grid(row=9, column=0, columnspan=2, sticky='s')
+        self.goSouth = tk.Button(text='Go South', fg='black', width=10, command=self.doGoSouth)
+        self.goSouth.grid(row=10, column=0, columnspan=2, sticky='n')
+        self.goEast = tk.Button(text='Go East >', fg='black', width=10, command=self.doGoEast)
+        self.goEast.grid(row=9, column=4, columnspan=2, sticky='s')
+        self.goWest = tk.Button(text='Go West <', fg='black', width=10, command=self.doGoWest)
+        self.goWest.grid(row=10, column=4, columnspan=2, sticky='n')
+
+        # Timer and score counter
 
 
 
-        self.runCommand = tk.Button(text='Run command', fg='purple', bd=1, command=self.doCommand)
-        self.runCommand.grid(row=8, column=0)
 
 
-        self.goNorth = tk.Button(text='Go North ^', fg='black', command=self.doGoNorth)
-        self.goNorth.grid(row=9, column=0, columnspan=2)
 
-        self.goSouth = tk.Button(text='Go South', fg='black', command=self.doGoSouth)
-        self.goSouth.grid(row=10, column=0, columnspan=2)
-
-        self.goEast = tk.Button(text='Go East >', fg='black', command=self.doGoEast)
-        self.goEast.grid(row=9, column=4, columnspan=2)
-
-        self.goWest = tk.Button(text='Go West <', fg='black', command=self.doGoWest)
-        self.goWest.grid(row=10, column=4, columnspan=2)
 
 
         self.textArea1.configure(text=self.game.printWelcome())
 
-    def doCommand(self):
-        command = self.entryBox.get()  # Returns a 2-tuple
-        self.processCommand(command)
+
+    def doTake(self):
+        item = self.entryBox.get()
+        self.processCommand('TAKE ' + item)
+
+    def doGuess(self):
+        item = self.entryBox.get()
+        self.processCommand('GUESS ' + item)
+
+
+
+    # def doCommand(self):
+    #     command = self.entryBox.get()  # Returns a 2-tuple
+    #     self.processCommand(command)
 
     def doHelp(self):
         x = self.game.doPrintHelp()
@@ -99,6 +127,7 @@ class App:
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
         self.textArea1.configure(text=x)
+
 
 
 

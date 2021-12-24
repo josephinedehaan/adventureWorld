@@ -101,10 +101,10 @@ class Game:
         :return: None
         """
         lisa = Npc("LISA")
-        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you.\n"
-                     "I have made a shopping list for you. To see your list just use the command 'list'.\n"
-                     "Your goal is to fill your basket with as many of items on the list as possible.\n"
-                     "To check what items you have in you basket, use the command word 'basket'.\n"
+        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you."
+                     "I have made a shopping list for you. To see your list just use the command 'list'."
+                     "Your goal is to fill your basket with as many of items on the list as possible."
+                     "To check what items you have in you basket, use the command word 'basket'."
                      "To see which items you still need to collect, use the command word 'compare'.")
 
         sam = Npc("SAM")

@@ -270,7 +270,7 @@ class Player:
             seconds = int(showTimer % 60)
             return f'Time: {self.minutes}:{seconds}'
         else:
-            return 'Timer starts once you have collected your basket.'
+            return '00:00'
 
 
 
