@@ -95,23 +95,19 @@ class Player:
             self.currentRoom = nextRoom
             return self.currentRoom.getRoomName()
 
-    def doSpeak(self, secondWord):
+    def doSpeak(self):
         """
             Allows the player to speak to the store workers
             to get information and tips.
-        :param secondWord: the name of the store worker the player wishes to speak to.
         :return:
         """
 
-        if secondWord == None:
-            return "Talk to whom?"
-
-        if self.currentRoom.npc != None and secondWord == self.currentRoom.npc.name:
-            if secondWord == "LISA" and self.currentRoom.name == "lobby":
+        if self.currentRoom.npc != None:
+            if self.currentRoom.name == "lobby":
                 self.hasShoppingList = True
-            if secondWord == "SAM" and self.currentRoom.name == "aisle 2":
+            if self.currentRoom.name == "aisle 2":
                 return list(self.bonusItem.values())[0]
-            if secondWord == "DOT" and self.currentRoom.name == "checkout":
+            if self.currentRoom.name == "checkout":
                 self.doCheckOut()
             return self.currentRoom.npc.speakDialogue()
         elif secondWord != None:

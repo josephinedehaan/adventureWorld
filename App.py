@@ -80,8 +80,8 @@ class App:
             self.textArea1.configure(text=self.game.player.doGoCommand(secondWord))
         elif commandWord == "LOOK":
             self.textArea1.configure(text=self.game.player.doLookAround())
-        elif commandWord == "TALKTO":
-            self.textArea1.configure(text=self.game.player.doSpeak(secondWord))
+        elif commandWord == "SPEAK":
+            self.textArea1.configure(text=self.game.player.doSpeak())
         elif commandWord == "TAKE":
             self.textArea1.configure(text=self.game.player.doTake(secondWord))
         elif commandWord == "LIST":

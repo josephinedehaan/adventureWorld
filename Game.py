@@ -196,7 +196,7 @@ class Game:
             Show a list of available commands.
         :return: None
         """
-        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'TALKTO', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
+        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'SPEAK', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
 
     def doPrintHelp(self):
         """
