@@ -13,9 +13,9 @@ class App:
         # cannot share a parent frame. Here both frames are owned
         # by a top level instance root.
 
-        self.frame1 = tk.Frame(root, width=600, height=250, bg='WHITE', borderwidth=2)
+        self.frame1 = tk.Frame(root, width=400, height=250, bg='WHITE', borderwidth=2)
         self.frame1.pack_propagate(0)   # Prevents resizing
-        self.frame2 = tk.Frame(root, width=400, height=150, bg='LIGHt GREY', borderwidth=2)
+        self.frame2 = tk.Frame(root, width=200, height=150, bg='LIGHt GREY', borderwidth=2)
         self.frame2.grid_propagate(0)   # Prevents resizing
         # This packs both frames into the root window ...
         self.frame1.pack()
@@ -24,20 +24,26 @@ class App:
         # Now add some useful widgets ...
         self.textArea1 = tk.Label(self.frame1, text=self.game.printWelcome(), wraplength=600)
         self.textArea1.pack()
-        self.cmdArea = tk.Entry(self.frame2, text='')
-        self.cmdArea.pack()
+        self.entryBox = tk.Entry(self.frame2, text='')
+        self.entryBox.pack()
         self.buildGUI()
 
     def buildGUI(self):
-        self.doCmd = tk.Button(self.frame2, text='Run command',
-                               fg='black', bg='blue',
-                               command=self.doCommand)
-        self.doCmd.pack()
+        self.runCommand = tk.Button(self.frame2, text='Run command', fg='purple', bd=1, command=self.doCommand)
+        self.runCommand.pack()
+
+        self.goNorth = tk.Button(self.frame2, text='North', fg='black', command=self.doGoNorth)
+        self.goNorth.pack()
+
         self.textArea1.configure(text=self.game.printWelcome())
 
     def doCommand(self):
-        command = self.cmdArea.get()  # Returns a 2-tuple
+        command = self.entryBox.get()  # Returns a 2-tuple
         self.processCommand(command)
+
+    def doGoNorth(self):
+        x = self.game.player.doGoCommand('NORTH')
+        self.textArea1.configure(text=x)
 
     def getCommandString(self, inputLine):
         """
