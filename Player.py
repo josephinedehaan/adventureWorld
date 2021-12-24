@@ -110,8 +110,8 @@ class Player:
             if self.currentRoom.name == "checkout":
                 self.doCheckOut()
             return self.currentRoom.npc.speakDialogue()
-        elif secondWord != None:
-            return f"There is no one called {secondWord} here."
+        else:
+            return f"There is no one to talk to here."
 
     def doTakeBasket(self):
         """
