@@ -8,26 +8,28 @@ class App:
 
         self.game = Game()
 
-        # Create two frames owned by the window root
-        # In order to use multiple layout managers, the frames
-        # cannot share a parent frame. Here both frames are owned
-        # by a top level instance root.
+        # Text area where all text is printed
 
-        self.textArea1 = tk.Label(text=self.game.printWelcome(), width=50, height=8,
+        self.textArea1 = tk.Label(text=self.game.printWelcome(), width=50, height=8,  borderwidth=1, relief='solid',
                                   bg='light grey', fg='black', wraplength=400, justify='center')
         self.textArea1.grid(row=9, column=2, rowspan=2, columnspan=2)
-        self.textArea1.grid_propagate(0)
 
+        # Entry box for the guss and take commands
         self.entryBox = tk.Entry(text='', width=2)
         self.entryBox.grid(row=7, column=0, columnspan=2, sticky='nsew')
 
-        self.timerArea = tk.Label(text='TIMER:', width=25,
-                                  bg='pink', fg='black')
-        self.timerArea.grid(row=0, column=2)
+        # Image area
+        self.pictureArea = tk.Label(text='images will show here', bg='light grey', fg='grey')
+        self.pictureArea.grid(row=1, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
-        self.scoreArea = tk.Label(text='SCORE:', width=25,
-                                  bg='light grey', fg='black')
-        self.scoreArea.grid(row=0, column=3,)
+        # Basket area
+        self.labelframe = tk.LabelFrame(text="Your Basket")
+        self.labelframe.grid(row=1, column=4, rowspan=8, columnspan=2, sticky='nsew')
+        self.left = tk.Label(self.labelframe,wraplength=150, text="")
+        self.left.grid()
+
+
+
         self.buildGUI()
 
 
@@ -41,28 +43,34 @@ class App:
         self.doSpeak.grid(row=2, column=0, columnspan=2, sticky='w')
         self.doList = tk.Button(text='List', fg='black', width=10, command=self.doList)
         self.doList.grid(row=3, column=0, columnspan=2, sticky='w')
-        self.doCompare = tk.Button(text='Compare', fg='black', width=10, command=self.doCompare)
+        self.doCompare = tk.Button(text='Compare', relief='raised', fg='black', width=10, command=self.doCompare)
         self.doCompare.grid(row=4, column=0, columnspan=2, sticky='w')
         self.doUnlock = tk.Button(text='Unlock', fg='black', width=10, command=self.doUnlock)
         self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='w')
-        self.doQuit = tk.Button(text='Quit',width=10, fg='black')    # functionality needs to be implemented
-        self.doQuit.grid(row=6, column=0, columnspan=2, sticky='w')     # program quits if i put exit() as command, look up!
+
+        self.doQuit = tk.Button(text='Quit', width=10, fg='black')            # functionality needs to be implemented
+        self.doQuit.grid(row=0, column=4, columnspan=2, sticky='w')          # program quits if i put exit() as command, look up!
+
         self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
         self.Take.grid(row=8, column=0, columnspan=1, stick='nsew')
         self.guess = tk.Button(text='Guess', fg='black', width=2, command=self.doGuess)
         self.guess.grid(row=8, column=1,columnspan=1, sticky='nsew')
 
         # Direction commands
-        self.goNorth = tk.Button(text='Go North ^', fg='black', width=10, command=self.doGoNorth)
+        self.goNorth = tk.Button(text='↑', fg='black', width=10, command=self.doGoNorth)
         self.goNorth.grid(row=9, column=0, columnspan=2, sticky='s')
-        self.goSouth = tk.Button(text='Go South', fg='black', width=10, command=self.doGoSouth)
+        self.goSouth = tk.Button(text='↓', fg='black', width=10, command=self.doGoSouth)
         self.goSouth.grid(row=10, column=0, columnspan=2, sticky='n')
-        self.goEast = tk.Button(text='Go East >', fg='black', width=10, command=self.doGoEast)
+        self.goEast = tk.Button(text='→', fg='black', width=10, command=self.doGoEast)
         self.goEast.grid(row=9, column=4, columnspan=2, sticky='s')
-        self.goWest = tk.Button(text='Go West <', fg='black', width=10, command=self.doGoWest)
+        self.goWest = tk.Button(text='←', fg='black', width=10, command=self.doGoWest)
         self.goWest.grid(row=10, column=4, columnspan=2, sticky='n')
 
         # Timer and score counter
+        self.timerArea = tk.Label(text=self.game.player.doCheckTime(), width=25, bg='pink', fg='black')
+        self.timerArea.grid(row=0, column=2)
+        self.scoreArea = tk.Label(text='SCORE:', width=25, bg='light grey', fg='black')
+        self.scoreArea.grid(row=0, column=3,)
 
 
 
@@ -81,12 +89,6 @@ class App:
     def doGuess(self):
         item = self.entryBox.get()
         self.processCommand('GUESS ' + item)
-
-
-
-    # def doCommand(self):
-    #     command = self.entryBox.get()  # Returns a 2-tuple
-    #     self.processCommand(command)
 
     def doHelp(self):
         x = self.game.doPrintHelp()
@@ -195,7 +197,7 @@ def main():
 
     win = tk.Tk()                           # Create a window
     win.title("Adventure World with GUI")   # Set window title
-    win.geometry("900x400")                 # Set window size
+    win.geometry("720x400")                 # Set window size
     win.resizable(False, False)             # Both x and y dimensions ...
 
     # Create the GUI as a Frame
