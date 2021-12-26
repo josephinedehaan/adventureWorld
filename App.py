@@ -133,22 +133,27 @@ class App:
     # Directions
     def doGoNorth(self):
         x = self.game.player.doGoCommand('NORTH')
-        self.textArea1.configure(text=x)
+        self.locationArea.configure(text=x)
+        self.textArea1.configure(text=self.game.player.doLookAround())
+
         self.changeImage()
 
     def doGoSouth(self):
         x = self.game.player.doGoCommand('SOUTH')
-        self.textArea1.configure(text=x)
+        self.locationArea.configure(text=x)
+        self.textArea1.configure(text=self.game.player.doLookAround())
         self.changeImage()
 
     def doGoEast(self):
         x = self.game.player.doGoCommand('EAST')
-        self.textArea1.configure(text=x)
+        self.locationArea.configure(text=x)
+        self.textArea1.configure(text=self.game.player.doLookAround())
         self.changeImage()
 
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
-        self.textArea1.configure(text=x)
+        self.locationArea.configure(text=x)
+        self.textArea1.configure(text=self.game.player.doLookAround())
         self.changeImage()
 
     def changeImage(self):
@@ -213,8 +218,8 @@ class App:
             self.textArea1.configure(text=self.game.doPrintHelp())
         # elif commandWord == "GO":
         #     self.locationArea.configure(text=self.game.player.doGoCommand(secondWord))
-        elif commandWord == "LOOK":
-            self.textArea1.configure(text=self.game.player.doLookAround())
+        # elif commandWord == "LOOK":
+        #     self.textArea1.configure(text=self.game.player.doLookAround())
         elif commandWord == "SPEAK":
             self.textArea1.configure(text=self.game.player.doSpeak())
         elif commandWord == "TAKE":

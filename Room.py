@@ -48,14 +48,14 @@ class Room:
             Fetch name and exits of room.
         :return: text description.
         """
-        return f'Location: {self.name}, Possible directions: {self.getExits()} '
+        return f'Location: {self.name}. Possible directions: {self.getExits()} '
 
     def getRoomDescription(self):
         """
             Fetch a  description including available exits
         :return: text description.
         """
-        return f'{self.description}. Possible directions: {self.getExits()} '
+        return f'{self.description}.'
 
     def getExits(self):
         """
@@ -63,7 +63,7 @@ class Room:
         :return: list of all available exits
         """
         allExits = self.exits.keys()
-        return list(allExits)
+        return ','.join(list(allExits))
 
     def getExit(self, direction):
         """
