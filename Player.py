@@ -91,7 +91,7 @@ class Player:
             return "You can't go there."
         else:
             self.currentRoom = nextRoom
-            return self.currentRoom.getRoomName()
+            return self.currentRoom.getRmNameAndExits()
 
     def doSpeak(self):
         """

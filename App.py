@@ -16,11 +16,11 @@ class App:
         self.entryBox.grid(row=7, column=0, columnspan=2, sticky='nsew')
 
         # Image area
-
-        self.outside_image = ImageTk.PhotoImage(Image.open("outside.jpeg"))
-        self.pictureArea = tk.Label(image=self.outside_image, height=10)
+        self.outsidePic = ImageTk.PhotoImage(Image.open("outside.jpeg"))
+        self.pictureArea = tk.Label(image=self.outsidePic, height=10)
         self.pictureArea.grid(row=1, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
+        # Score area
         self.scoreArea = tk.Label(text="Your score: 0", width=25, bg='light grey', fg='black', anchor='w', justify='left')
         self.scoreArea.grid(row=0, column=3)
 
@@ -61,10 +61,8 @@ class App:
         self.goNorth.grid(row=9, column=0, columnspan=2, sticky='s')
         self.goSouth = tk.Button(text='↓', fg='black', width=10, command=self.doGoSouth)
         self.goSouth.grid(row=10, column=0, columnspan=2, sticky='n')
-
         self.goEast = tk.Button(text='→', fg='black', width=10, command=self.doGoEast)
         self.goEast.grid(row=9, column=4, columnspan=2, sticky='s')
-
         self.goWest = tk.Button(text='←', fg='black', width=10, command=self.doGoWest)
         self.goWest.grid(row=10, column=4, columnspan=2, sticky='n')
 
@@ -75,6 +73,7 @@ class App:
 
         # Welcome message
         self.textArea1.configure(text=self.game.printWelcome())
+
 
     def scoreCounter(self):
         score = self.game.player.doSeePoints()
@@ -119,19 +118,57 @@ class App:
     def doGoNorth(self):
         x = self.game.player.doGoCommand('NORTH')
         self.textArea1.configure(text=x)
+        self.changeImage()
 
     def doGoSouth(self):
         x = self.game.player.doGoCommand('SOUTH')
         self.textArea1.configure(text=x)
+        self.changeImage()
+
 
     def doGoEast(self):
         x = self.game.player.doGoCommand('EAST')
         self.textArea1.configure(text=x)
+        self.changeImage()
 
 
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
         self.textArea1.configure(text=x)
+        self.changeImage()
+
+
+
+    def changeImage(self):
+        self.lobbyPic = ImageTk.PhotoImage(Image.open("lobby.jpg"))
+        self.aisle1Pic = ImageTk.PhotoImage(Image.open("aisle_1.jpg"))
+        self.aisle2Pic = ImageTk.PhotoImage(Image.open("aisle_2.jpg"))
+        self.aisle3Pic = ImageTk.PhotoImage(Image.open("aisle_3.jpg"))
+        self.aisle4Pic = ImageTk.PhotoImage(Image.open("aisle_4.jpg"))
+        self.aisle5Pic = ImageTk.PhotoImage(Image.open("aisle_5.jpg"))
+        # self.aisle6Pic = ImageTk.PhotoImage(Image.open())
+        self.checkoutPic = ImageTk.PhotoImage(Image.open("checkout.jpg"))
+
+        if self.game.player.currentRoom == self.game.lobby:
+            self.pictureArea.configure(image=self.lobbyPic)
+        elif self.game.player.currentRoom == self.game.outside:
+            self.pictureArea.configure(image=self.outsidePic)
+        elif self.game.player.currentRoom == self.game.aisleOne:
+            self.pictureArea.configure(image=self.aisle1Pic)
+        elif self.game.player.currentRoom == self.game.aisleTwo:
+            self.pictureArea.configure(image=self.aisle2Pic)
+        elif self.game.player.currentRoom == self.game.aisleThree:
+            self.pictureArea.configure(image=self.aisle3Pic)
+        elif self.game.player.currentRoom == self.game.aisleFour:
+            self.pictureArea.configure(image=self.aisle4Pic)
+        elif self.game.player.currentRoom == self.game.aisleFive:
+            self.pictureArea.configure(image=self.aisle5Pic)
+        # elif self.game.player.currentRoom == self.game.aisleSix:
+        #     self.pictureArea.configure(image=self.aisle6Pic)
+        elif self.game.player.currentRoom == self.game.checkout:
+            self.pictureArea.configure(image=self.checkoutPic)
+
+
 
     def getCommandString(self, inputLine):
         """
