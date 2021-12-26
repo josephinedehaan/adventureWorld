@@ -2,31 +2,38 @@ import tkinter as tk
 from Game import Game
 from PIL import ImageTk, Image
 
+
 class App:
     def __init__(self, root):
         self.game = Game()
 
         # Text area where all text is printed
-        self.textArea1 = tk.Label(text=self.game.printWelcome(), width=50, height=8,  borderwidth=1, relief='solid',
+        self.textArea1 = tk.Label(text=self.game.printWelcome(), width=44, height=8, borderwidth=1, relief='solid',
                                   bg='light grey', fg='black', wraplength=400, justify='center')
-        self.textArea1.grid(row=9, column=2, rowspan=2, columnspan=2)
+        self.textArea1.grid(row=10, column=2, rowspan=3, columnspan=2, sticky='s')
 
         # Entry box for the guss and take commands
         self.entryBox = tk.Entry(text='', width=2)
-        self.entryBox.grid(row=7, column=0, columnspan=2, sticky='nsew')
+        self.entryBox.grid(row=10, column=0, columnspan=2, sticky='sew')
 
         # Image area
         self.outsidePic = ImageTk.PhotoImage(Image.open("outside.jpeg"))
-        self.pictureArea = tk.Label(image=self.outsidePic, height=10)
-        self.pictureArea.grid(row=1, column=2, rowspan=8, columnspan=2, sticky='nsew')
+        self.pictureArea = tk.Label(image=self.outsidePic)
+        self.pictureArea.grid(row=2, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
         # Score area
-        self.scoreArea = tk.Label(text="Your score: 0", width=25, bg='light grey', fg='black', anchor='w', justify='left')
+        self.scoreArea = tk.Label(text=" Your score: 0", width=22, bg='light grey', fg='black', anchor='w',
+                                  justify='left', borderwidth=1, relief='solid')
         self.scoreArea.grid(row=0, column=3)
+
+        # Current Room area
+        self.locationArea = tk.Label(text="Outside. Possible directions: NORTH", width=44, bg='light grey', fg='black',
+                                     borderwidth=1, relief='solid')
+        self.locationArea.grid(row=1, column=2, columnspan=2, sticky='nsew')
 
         # Basket area
         self.basketframe = tk.LabelFrame(text="Your Basket")
-        self.basketframe.grid(row=1, column=4, rowspan=8, columnspan=2, sticky='nsew')
+        self.basketframe.grid(row=2, column=4, rowspan=7, columnspan=3, sticky='nsew')
         self.basketArea = tk.Label(self.basketframe, wraplength=100, text="", anchor='w', justify='left')
         self.basketArea.grid()
 
@@ -35,45 +42,54 @@ class App:
 
     def buildGUI(self):
         # Command Buttons
-        self.doHelp = tk.Button(text='Help', fg='black', width=10, command=self.doHelp)
-        self.doHelp.grid(row=0, column=0, columnspan=2, sticky='w')
+        self.doHelp = tk.Button(text='HELP', fg='black', width=5, command=self.doHelp)
+        self.doHelp.grid(row=0, column=0, columnspan=2, sticky='s')
         self.doLook = tk.Button(text='Look', fg='black', width=10, command=self.doLook)
-        self.doLook.grid(row=1, column=0, columnspan=2, sticky='w')
+        self.doLook.grid(row=2, column=0, columnspan=2, sticky='s')
         self.doSpeak = tk.Button(text='Speak', fg='black', width=10, command=self.doSpeak)
-        self.doSpeak.grid(row=2, column=0, columnspan=2, sticky='w')
+        self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
         self.doList = tk.Button(text='List', fg='black', width=10, command=self.doList)
-        self.doList.grid(row=3, column=0, columnspan=2, sticky='w')
+        self.doList.grid(row=4, column=0, columnspan=2, sticky='s')
         self.doCompare = tk.Button(text='Compare', relief='raised', fg='black', width=10, command=self.doCompare)
-        self.doCompare.grid(row=4, column=0, columnspan=2, sticky='w')
+        self.doCompare.grid(row=5, column=0, columnspan=2, sticky='s')
         self.doUnlock = tk.Button(text='Unlock', fg='black', width=10, command=self.doUnlock)
-        self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='w')
+        self.doUnlock.grid(row=6, column=0, columnspan=2, sticky='s')
 
-        self.doQuit = tk.Button(text='Quit', width=10, fg='black')            # functionality needs to be implemented
-        self.doQuit.grid(row=0, column=4, columnspan=2, sticky='w')                             # program quits if i put exit() as command, look up!
+        self.doQuit = tk.Button(text='QUIT', width=10, fg='red')  # functionality needs to be implemented
+        self.doQuit.grid(row=0, column=4, columnspan=3)  # program quits if i put exit() as command, look up!
 
         self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
-        self.Take.grid(row=8, column=0, columnspan=1, stick='nsew')
+        self.Take.grid(row=11, column=0, columnspan=1, stick='new')
         self.guess = tk.Button(text='Guess', fg='black', width=2, command=self.doGuess)
-        self.guess.grid(row=8, column=1,columnspan=1, sticky='nsew')
+        self.guess.grid(row=11, column=1, columnspan=1, sticky='new')
 
         # Direction buttons
-        self.goNorth = tk.Button(text='↑', fg='black', width=10, command=self.doGoNorth)
-        self.goNorth.grid(row=9, column=0, columnspan=2, sticky='s')
-        self.goSouth = tk.Button(text='↓', fg='black', width=10, command=self.doGoSouth)
-        self.goSouth.grid(row=10, column=0, columnspan=2, sticky='n')
-        self.goEast = tk.Button(text='→', fg='black', width=10, command=self.doGoEast)
-        self.goEast.grid(row=9, column=4, columnspan=2, sticky='s')
-        self.goWest = tk.Button(text='←', fg='black', width=10, command=self.doGoWest)
-        self.goWest.grid(row=10, column=4, columnspan=2, sticky='n')
+        self.northIcon = ImageTk.PhotoImage(Image.open('north.png'))
+        self.southIcon = ImageTk.PhotoImage(Image.open('south.png'))
+        self.eastIcon = ImageTk.PhotoImage(Image.open('east.png'))
+        self.westIcon = ImageTk.PhotoImage(Image.open('west.png'))
+        self.midIcon = ImageTk.PhotoImage(Image.open('middle.png'))
+
+        self.goNorth = tk.Button(image=self.northIcon, command=self.doGoNorth, width=20)
+        self.goNorth.grid(row=10, column=5, sticky='nsew')
+        self.goSouth = tk.Button(image=self.southIcon, command=self.doGoSouth)
+        self.goSouth.grid(row=12, column=5, sticky='nsew')
+
+        self.middle = tk.Label(image=self.midIcon, command=None)
+        self.middle.grid(row=11, column=5, sticky='nsew')
+
+        self.goEast = tk.Button(image=self.eastIcon, command=self.doGoEast)
+        self.goEast.grid(row=11, column=6, sticky='nsew')
+        self.goWest = tk.Button(image=self.westIcon, command=self.doGoWest)
+        self.goWest.grid(row=11, column=4, sticky='nsew')
 
         # Timer and score counter display
-        self.timerArea = tk.Label(text=self.game.player.doCheckTime(), width=25, bg='pink', fg='black')
+        self.timerArea = tk.Label(text=" " + self.game.player.doCheckTime(), width=22, bg='light grey', fg='black',
+                                  anchor='w', justify='left', borderwidth=1, relief='solid')
         self.timerArea.grid(row=0, column=2)
-
 
         # Welcome message
         self.textArea1.configure(text=self.game.printWelcome())
-
 
     def scoreCounter(self):
         score = self.game.player.doSeePoints()
@@ -125,19 +141,15 @@ class App:
         self.textArea1.configure(text=x)
         self.changeImage()
 
-
     def doGoEast(self):
         x = self.game.player.doGoCommand('EAST')
         self.textArea1.configure(text=x)
         self.changeImage()
 
-
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
         self.textArea1.configure(text=x)
         self.changeImage()
-
-
 
     def changeImage(self):
         self.lobbyPic = ImageTk.PhotoImage(Image.open("lobby.jpg"))
@@ -167,8 +179,6 @@ class App:
         #     self.pictureArea.configure(image=self.aisle6Pic)
         elif self.game.player.currentRoom == self.game.checkout:
             self.pictureArea.configure(image=self.checkoutPic)
-
-
 
     def getCommandString(self, inputLine):
         """
@@ -201,8 +211,8 @@ class App:
 
         if commandWord == "HELP":
             self.textArea1.configure(text=self.game.doPrintHelp())
-        elif commandWord == "GO":
-            self.textArea1.configure(text=self.game.player.doGoCommand(secondWord))
+        # elif commandWord == "GO":
+        #     self.locationArea.configure(text=self.game.player.doGoCommand(secondWord))
         elif commandWord == "LOOK":
             self.textArea1.configure(text=self.game.player.doLookAround())
         elif commandWord == "SPEAK":
@@ -229,11 +239,10 @@ class App:
 
 
 def main():
-
-    win = tk.Tk()                           # Create a window
-    win.title("Adventure World with GUI")   # Set window title
-    win.geometry("720x400")                 # Set window size
-    win.resizable(False, False)             # Both x and y dimensions ...
+    win = tk.Tk()  # Create a window
+    win.title("Adventure World with GUI")  # Set window title
+    win.geometry("780x450")  # Set window size
+    win.resizable(False, False)  # Both x and y dimensions ...
 
     App(win)
 
