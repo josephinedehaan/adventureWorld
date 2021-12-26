@@ -41,22 +41,23 @@ class App:
         self.buildGUI()
 
     def buildGUI(self):
-        # Command Buttons
         self.doHelp = tk.Button(text='HELP', fg='black', width=5, command=self.doHelp)
         self.doHelp.grid(row=0, column=0, columnspan=2, sticky='s')
-        self.doLook = tk.Button(text='Look', fg='black', width=10, command=self.doLook)
-        self.doLook.grid(row=2, column=0, columnspan=2, sticky='s')
-        self.doSpeak = tk.Button(text='Speak', fg='black', width=10, command=self.doSpeak)
-        self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
-        self.doList = tk.Button(text='List', fg='black', width=10, command=self.doList)
-        self.doList.grid(row=4, column=0, columnspan=2, sticky='s')
-        self.doCompare = tk.Button(text='Compare', relief='raised', fg='black', width=10, command=self.doCompare)
-        self.doCompare.grid(row=5, column=0, columnspan=2, sticky='s')
-        self.doUnlock = tk.Button(text='Unlock', fg='black', width=10, command=self.doUnlock)
-        self.doUnlock.grid(row=6, column=0, columnspan=2, sticky='s')
-
         self.doQuit = tk.Button(text='QUIT', width=10, fg='red')  # functionality needs to be implemented
         self.doQuit.grid(row=0, column=4, columnspan=3)  # program quits if i put exit() as command, look up!
+
+        # Command Buttons
+        self.speakIcon = ImageTk.PhotoImage(Image.open('speak.png'))
+        self.listIcon = ImageTk.PhotoImage(Image.open('list.png'))
+        self.unlockIcon = ImageTk.PhotoImage(Image.open('unlock.png'))
+
+        self.doSpeak = tk.Button(image=self.speakIcon, command=self.doSpeak)
+        self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
+        self.doCompare = tk.Button(image=self.listIcon, command=self.doCompare)
+        self.doCompare.grid(row=4, column=0, columnspan=2, sticky='s')
+        self.doUnlock = tk.Button(image=self.unlockIcon, command=self.doUnlock)
+        self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='s')
+
 
         self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
         self.Take.grid(row=11, column=0, columnspan=1, stick='new')
@@ -69,15 +70,12 @@ class App:
         self.eastIcon = ImageTk.PhotoImage(Image.open('east.png'))
         self.westIcon = ImageTk.PhotoImage(Image.open('west.png'))
         self.midIcon = ImageTk.PhotoImage(Image.open('middle.png'))
-
         self.goNorth = tk.Button(image=self.northIcon, command=self.doGoNorth, width=20)
         self.goNorth.grid(row=10, column=5, sticky='nsew')
         self.goSouth = tk.Button(image=self.southIcon, command=self.doGoSouth)
         self.goSouth.grid(row=12, column=5, sticky='nsew')
-
         self.middle = tk.Label(image=self.midIcon, command=None)
         self.middle.grid(row=11, column=5, sticky='nsew')
-
         self.goEast = tk.Button(image=self.eastIcon, command=self.doGoEast)
         self.goEast.grid(row=11, column=6, sticky='nsew')
         self.goWest = tk.Button(image=self.westIcon, command=self.doGoWest)
@@ -219,9 +217,9 @@ class App:
         # elif commandWord == "GO":
         #     self.locationArea.configure(text=self.game.player.doGoCommand(secondWord))
         # elif commandWord == "LOOK":
-        #     self.textArea1.configure(text=self.game.player.doLookAround())
-        elif commandWord == "SPEAK":
-            self.textArea1.configure(text=self.game.player.doSpeak())
+        # #     self.textArea1.configure(text=self.game.player.doLookAround())
+        # elif commandWord == "SPEAK":
+        #     self.textArea1.configure(text=self.game.player.doSpeak())
         elif commandWord == "TAKE":
             self.textArea1.configure(text=self.game.player.doTake(secondWord))
         elif commandWord == "LIST":
@@ -246,7 +244,7 @@ class App:
 def main():
     win = tk.Tk()  # Create a window
     win.title("Adventure World with GUI")  # Set window title
-    win.geometry("780x450")  # Set window size
+    win.geometry("650x450")  # Set window size
     win.resizable(False, False)  # Both x and y dimensions ...
 
     App(win)
