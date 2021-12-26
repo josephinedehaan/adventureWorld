@@ -6,9 +6,7 @@ import random
 """
     This class is the main class of the "Adventure World" application. 
     This main class creates and initialises all the others: it creates all
-    rooms, creates the parser and starts the game.  It also evaluates and
-    executes the commands that the parser returns.
-
+    rooms, creates the parser and starts the game. 
 """
 
 class Game:
@@ -77,18 +75,25 @@ class Game:
                                          "Talk to her if you are ready to checkout", None, None)
 
         self.outside.setExit("NORTH", self.lobby)
+
         self.lobby.setExit("NORTH", self.aisleOne)
         self.lobby.setExit("SOUTH", self.outside)
+
         self.aisleOne.setExit("EAST", self.aisleTwo)
         self.aisleOne.setExit("SOUTH", self.lobby)
+
         self.aisleTwo.setExit("EAST", self.aisleThree)
         self.aisleTwo.setExit("WEST", self.aisleOne)
+
         self.aisleThree.setExit("EAST", self.aisleFour)
         self.aisleThree.setExit("WEST", self.aisleTwo)
+
         self.aisleFour.setExit("EAST", self.aisleFive)
         self.aisleFour.setExit("WEST", self.aisleThree)
+
         self.aisleFive.setExit("WEST", self.aisleFour)
         self.aisleFive.setExit("SOUTH", self.checkout)
+
         self.checkout.setExit("NORTH", self.aisleFive)
         self.checkout.setExit("SOUTH", self.outside)
 
@@ -186,7 +191,6 @@ class Game:
         """
         welcomeMsg = f'Welcome to Adventure World Supermarket! ' \
                      f'Your command words are: {self.showCommandWords()}'
-
 
         if self.player.currentRoom == self.outside:
             return  welcomeMsg + '\n' + "\nYou are outside the supermarket. The entrance is up north."

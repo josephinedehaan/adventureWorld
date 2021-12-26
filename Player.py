@@ -26,8 +26,6 @@ class Player:
         self.secretItemChosen = False
         self.minutes = 0
 
-
-
     def setShoppingList(self, shoppingList):
         """
             Retrieves shopping list from Game and
@@ -263,7 +261,7 @@ class Player:
         :return: None
         """
 
-        if self.basket is not None and self.startTime is not None:
+        while self.basket is not None and self.startTime is not None:
             currentTime = time.time()
             showTimer = currentTime - self.startTime
             self.minutes = int(showTimer / 60)

@@ -1,15 +1,12 @@
 import tkinter as tk
 from Game import Game
+from PIL import ImageTk, Image
 
 class App:
-    # Creates a Frame for the application
-    # and populates the GUI ...
     def __init__(self, root):
-
         self.game = Game()
 
         # Text area where all text is printed
-
         self.textArea1 = tk.Label(text=self.game.printWelcome(), width=50, height=8,  borderwidth=1, relief='solid',
                                   bg='light grey', fg='black', wraplength=400, justify='center')
         self.textArea1.grid(row=9, column=2, rowspan=2, columnspan=2)
@@ -19,22 +16,25 @@ class App:
         self.entryBox.grid(row=7, column=0, columnspan=2, sticky='nsew')
 
         # Image area
-        self.pictureArea = tk.Label(text='images will show here', bg='light grey', fg='grey')
+
+        self.outside_image = ImageTk.PhotoImage(Image.open("outside.jpeg"))
+        self.pictureArea = tk.Label(image=self.outside_image, height=10)
         self.pictureArea.grid(row=1, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
+        self.scoreArea = tk.Label(text="Your score: 0", width=25, bg='light grey', fg='black', anchor='w', justify='left')
+        self.scoreArea.grid(row=0, column=3)
+
         # Basket area
-        self.labelframe = tk.LabelFrame(text="Your Basket")
-        self.labelframe.grid(row=1, column=4, rowspan=8, columnspan=2, sticky='nsew')
-        self.left = tk.Label(self.labelframe,wraplength=150, text="")
-        self.left.grid()
+        self.basketframe = tk.LabelFrame(text="Your Basket")
+        self.basketframe.grid(row=1, column=4, rowspan=8, columnspan=2, sticky='nsew')
+        self.basketArea = tk.Label(self.basketframe, wraplength=100, text="", anchor='w', justify='left')
+        self.basketArea.grid()
 
-
-
+        # Initialises GUI widgets
         self.buildGUI()
 
-
     def buildGUI(self):
-        # Commands
+        # Command Buttons
         self.doHelp = tk.Button(text='Help', fg='black', width=10, command=self.doHelp)
         self.doHelp.grid(row=0, column=0, columnspan=2, sticky='w')
         self.doLook = tk.Button(text='Look', fg='black', width=10, command=self.doLook)
@@ -49,42 +49,43 @@ class App:
         self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='w')
 
         self.doQuit = tk.Button(text='Quit', width=10, fg='black')            # functionality needs to be implemented
-        self.doQuit.grid(row=0, column=4, columnspan=2, sticky='w')          # program quits if i put exit() as command, look up!
+        self.doQuit.grid(row=0, column=4, columnspan=2, sticky='w')                             # program quits if i put exit() as command, look up!
 
         self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
         self.Take.grid(row=8, column=0, columnspan=1, stick='nsew')
         self.guess = tk.Button(text='Guess', fg='black', width=2, command=self.doGuess)
         self.guess.grid(row=8, column=1,columnspan=1, sticky='nsew')
 
-        # Direction commands
+        # Direction buttons
         self.goNorth = tk.Button(text='↑', fg='black', width=10, command=self.doGoNorth)
         self.goNorth.grid(row=9, column=0, columnspan=2, sticky='s')
         self.goSouth = tk.Button(text='↓', fg='black', width=10, command=self.doGoSouth)
         self.goSouth.grid(row=10, column=0, columnspan=2, sticky='n')
+
         self.goEast = tk.Button(text='→', fg='black', width=10, command=self.doGoEast)
         self.goEast.grid(row=9, column=4, columnspan=2, sticky='s')
+
         self.goWest = tk.Button(text='←', fg='black', width=10, command=self.doGoWest)
         self.goWest.grid(row=10, column=4, columnspan=2, sticky='n')
 
-        # Timer and score counter
+        # Timer and score counter display
         self.timerArea = tk.Label(text=self.game.player.doCheckTime(), width=25, bg='pink', fg='black')
         self.timerArea.grid(row=0, column=2)
-        self.scoreArea = tk.Label(text='SCORE:', width=25, bg='light grey', fg='black')
-        self.scoreArea.grid(row=0, column=3,)
 
 
-
-
-
-
-
-
+        # Welcome message
         self.textArea1.configure(text=self.game.printWelcome())
 
+    def scoreCounter(self):
+        score = self.game.player.doSeePoints()
+        self.scoreArea.configure(text=score)
 
     def doTake(self):
         item = self.entryBox.get()
+        basket = self.game.player.basket
         self.processCommand('TAKE ' + item)
+        self.basketArea.configure(text=basket)
+        self.scoreCounter()
 
     def doGuess(self):
         item = self.entryBox.get()
@@ -114,6 +115,7 @@ class App:
         x = self.game.createSecretRoom()
         self.textArea1.configure(text=x)
 
+    # Directions
     def doGoNorth(self):
         x = self.game.player.doGoCommand('NORTH')
         self.textArea1.configure(text=x)
@@ -126,12 +128,10 @@ class App:
         x = self.game.player.doGoCommand('EAST')
         self.textArea1.configure(text=x)
 
+
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
         self.textArea1.configure(text=x)
-
-
-
 
     def getCommandString(self, inputLine):
         """
@@ -191,8 +191,6 @@ class App:
             self.textArea1.configure(text="Don't know what you mean")
 
 
-
-
 def main():
 
     win = tk.Tk()                           # Create a window
@@ -200,14 +198,10 @@ def main():
     win.geometry("720x400")                 # Set window size
     win.resizable(False, False)             # Both x and y dimensions ...
 
-    # Create the GUI as a Frame
-    # and attach it to the window ...
-    myApp = App(win)
+    App(win)
 
-
-
-    # Call the GUI mainloop ...
     win.mainloop()
+
 
 if __name__ == "__main__":
     main()
