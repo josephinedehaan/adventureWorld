@@ -190,9 +190,12 @@ class Player:
         if secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
             self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
             self.bonusItemGuessed = True
+            self.points += 10
             return 'You have guessed the correct item! It has now been added to your basket'
         elif self.basket == None:  # user can only guess with basket
             return 'You can\'t guess yet, get a basket first!'
+        elif self.currentRoom.name != 'aisle 2':
+            return 'You can only guess in aisle 2!'
         elif secondWord == None:  # alerts user that they need a 2nd word
             return "Guess what?"
         elif self.bonusItemGuessed:  # bonus item has already been guessed

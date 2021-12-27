@@ -36,7 +36,8 @@ class Game:
         """
         self.outside = Room("outside", "There's not much out here... Try going inside!", None, None)
 
-        self.lobby = Room("lobby", "There is a stack of baskets next to you and a friendly store worker, Lisa",
+        self.lobby = Room("lobby", "There is a stack of baskets next to you.\n There's a friendly store worker, Lisa"
+                                   " - she wants to talk to you",
                           None, None)
 
         self.aisleOne = Room("aisle 1", "There are piles of colourful fresh fruits and vegetables",
@@ -106,11 +107,10 @@ class Game:
         :return: None
         """
         lisa = Npc("LISA")
-        lisa.addLine("Hello and welcome to Adventure World Supermarket! We have been waiting for you."
-                     "I have made a shopping list for you. To see your list just use the command 'list'."
+        lisa.addLine("Here is your shopping list. Once you've taken your basket, you will be able to see it using "
+                     "the list button on the left. \n"
                      "Your goal is to fill your basket with as many of items on the list as possible."
-                     "To check what items you have in you basket, use the command word 'basket'."
-                     "To see which items you still need to collect, use the command word 'compare'.")
+                     "The items in your basket will appear on the right.")
 
         sam = Npc("SAM")
         sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.\n"
@@ -189,8 +189,7 @@ class Game:
             Displays a welcome message.
         :return: None
         """
-        welcomeMsg = f'Welcome to Adventure World Supermarket! ' \
-                     f'Your command words are: {self.showCommandWords()}'
+        welcomeMsg = f'Welcome to Adventure World Supermarket!'
 
         if self.player.currentRoom == self.outside:
             return  welcomeMsg + '\n' + "\nYou are outside the supermarket. The entrance is up north."

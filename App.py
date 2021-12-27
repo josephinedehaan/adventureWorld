@@ -102,7 +102,12 @@ class App:
 
     def doGuess(self):
         item = self.entryBox.get()
+        basket = self.game.player.basket
         self.processCommand('GUESS ' + item)
+        self.scoreCounter()
+        self.basketArea.configure(text=basket)
+
+
 
     def doHelp(self):
         x = self.game.doPrintHelp()
@@ -121,8 +126,9 @@ class App:
         self.textArea1.configure(text=x)
 
     def doCompare(self):
+        y = self.game.player.doReadShoppingList()
         x = self.game.player.doCompare()
-        self.textArea1.configure(text=x)
+        self.textArea1.configure(text=f'Your list: {y} \n {x}')
 
     def doUnlock(self):
         x = self.game.createSecretRoom()
