@@ -167,7 +167,7 @@ class App:
         self.aisle3Pic = ImageTk.PhotoImage(Image.open("aisle_3.jpg"))
         self.aisle4Pic = ImageTk.PhotoImage(Image.open("aisle_4.jpg"))
         self.aisle5Pic = ImageTk.PhotoImage(Image.open("aisle_5.jpg"))
-        # self.aisle6Pic = ImageTk.PhotoImage(Image.open())
+        self.secretAislePic = ImageTk.PhotoImage(Image.open("secret_aisle.jpg"))
         self.checkoutPic = ImageTk.PhotoImage(Image.open("checkout.jpg"))
 
         if self.game.player.currentRoom == self.game.lobby:
@@ -184,8 +184,8 @@ class App:
             self.pictureArea.configure(image=self.aisle4Pic)
         elif self.game.player.currentRoom == self.game.aisleFive:
             self.pictureArea.configure(image=self.aisle5Pic)
-        # elif self.game.player.currentRoom == self.game.aisleSix:
-        #     self.pictureArea.configure(image=self.aisle6Pic)
+        elif self.game.player.currentRoom == self.game.secretAisle:
+            self.pictureArea.configure(image=self.secretAislePic)
         elif self.game.player.currentRoom == self.game.checkout:
             self.pictureArea.configure(image=self.checkoutPic)
 

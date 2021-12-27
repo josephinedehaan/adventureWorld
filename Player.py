@@ -103,11 +103,13 @@ class Player:
         if self.currentRoom.npc != None:
             if self.currentRoom.name == "lobby":
                 self.hasShoppingList = True
+                return self.currentRoom.npc.speakDialogue(),
             if self.currentRoom.name == "aisle 2":
-                return list(self.bonusItem.values())[0]
+                return self.currentRoom.npc.speakDialogue(), list(self.bonusItem.values())[0]
+            if self.currentRoom.name == "secret aisle":
+                return self.currentRoom.npc.speakDialogue()
             if self.currentRoom.name == "checkout":
-                self.doCheckOut()
-            return self.currentRoom.npc.speakDialogue()
+                return self.currentRoom.npc.speakDialogue(), self.doCheckOut()
         else:
             return f"There is no one to talk to here."
 

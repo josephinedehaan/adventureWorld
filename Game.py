@@ -44,8 +44,8 @@ class Game:
                              ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
                              {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
 
-        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meat, fish and eggs"
-                                        "and a friendly store worker, Sam",
+        self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meat, fish and eggs. \n"
+                                        "There is a store worker Sam, he wants to talk to you.",
                              ['YOGHURT', 'MILK', 'CHEDDAR', 'FETA', 'CHICKEN', 'FISHCAKES', 'HAM'],
                              {"EDAM": "The item you are looking for is a cheese which is made backwards",
                               "EGG": "The item you are looking for is one of the two main characters of a "
@@ -57,17 +57,17 @@ class Game:
                                 "BARLEY": "The item you are looking for was one of the first forms of "
                                           "currency used in ancient Mesopotamia."})
 
-        self.aisleFour = Room("aisle 4", "There bottles of juice, soda, mineral water and squash. There is a key on the"
-                                         "ground",
+        self.aisleFour = Room("aisle 4", "There bottles of juice, soda, mineral water and squash. "
+                                         "\nThere is a key on the ground",
                               ['WINE', 'WATER', 'LEMONADE', 'JUICE', 'BEER', 'FANTA', 'PEPSI', 'SPRITE'],
                               {"WATER": "The item you are looking for has the chemical formula H2O"})
 
-        self.aisleFive = Room("aisle 5", "There are freshly baked loaves of bread, cakes and pastries. There is also a "
-                                         "locked door",
+        self.aisleFive = Room("aisle 5", "There are freshly baked loaves of bread, cakes and pastries.\n "
+                                         "There is also a locked door",
                               ['BREAD', 'BAGUETTE', 'CUPCAKES', 'CROISSANTS', 'BAGELS', 'TORTILLAS'], None)
 
-        self.secretAisle = Room("secret aisle", "You are in what looks like a store room and there is a friendly "
-                                                    "store worker, Eddy, who wants to talk to you.",
+        self.secretAisle = Room("secret aisle", "You are in a secret aisle full of delicious items! \n"
+                                                "There is a friendly store worker, Eddy, who wants to talk to you.",
                                 {"PINEAPPLE": 6, "CHOCOLATE": 4, "PRETZELS": 8, "PIZZA": 8, "CHEESECAKE": 5,}, None)
 
 
@@ -119,11 +119,11 @@ class Game:
                     "The item will automatically be added to your basket.")
 
         eddy = Npc("EDDY")
-        eddy.addLine(f'You\'ve made it to the secret room! You must be hungry. \n'
-                     f'You are allowed to snack on one of these items. All items are worth points,\n'
-                     f' but I cannot tell you which one is worth more. Here is what\'s on the menu.\n'
-                     f' Take one! Choose wisely. Good luck!\n'
-                     f'{list(self.secretAisle.items.keys())}')
+        eddy.addLine(f'You\'ve made it to the secret room! You must be hungry.'
+                     f'You are allowed to snack on one of these items. All items are worth points,'
+                     f' but I cannot tell you which one is worth more. Here is what\'s on the menu.'
+                     f' Take one! Choose wisely. Good luck!'
+                     f'{", ".join(list(self.secretAisle.items.keys()))}')
 
 
         dot = Npc("DOT")
