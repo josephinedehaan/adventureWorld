@@ -25,6 +25,7 @@ class Player:
         self.secretItems = {}
         self.secretItemChosen = False
         self.minutes = 0
+        self.hasBasket = False
 
     def setShoppingList(self, shoppingList):
         """
@@ -109,6 +110,7 @@ class Player:
         elif self.currentRoom.name == "lobby" and self.basket is None:  # creates basket
             self.basket = []
             self.startTime = time.time()
+            self.hasBasket = True
             return 'You now have a basket.'
 
     def doTakeKey(self):
@@ -132,7 +134,7 @@ class Player:
         if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
             self.points = self.secretItems.get(secondWord) + self.points
             self.secretItemChosen = True
-            return f'Your have chosen {secondWord}. {self.secretItems.get(secondWord)} points have been added to your score.'
+            return f'Your have chosen {secondWord}. Enjoy your snack!'
 
 
     def doTake(self, secondWord):
@@ -151,7 +153,9 @@ class Player:
         elif secondWord in self.secretItems.keys():
             return self.doTakeSecretItem(secondWord)
         elif secondWord != "BASKET":
-            if secondWord in self.shoppingList:  # checks if item is in shopping list
+            if secondWord in self.shoppingList and not self.hasBasket:
+                return 'Go get a basket!'
+            if secondWord in self.shoppingList and self.hasBasket:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items
                     return 'No shopping items to collect here. Go in an aisle.'
                 elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location

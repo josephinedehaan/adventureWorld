@@ -19,9 +19,12 @@ class App:
         self.pictureArea = tk.Label(image=self.outsidePic)
         self.pictureArea.grid(row=2, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
-        # Score area
+        # Timer and score counter display
+        self.timerArea = tk.Label(text=" " + self.game.player.doCheckTime(), width=22, bg='light grey', fg='black',
+                                  anchor='w', justify='left', borderwidth=1, relief='solid')
         self.scoreArea = tk.Label(text=" Your score: 0", width=22, bg='light grey', fg='black', anchor='w',
                                   justify='left', borderwidth=1, relief='solid')
+        self.timerArea.grid(row=0, column=2)
         self.scoreArea.grid(row=0, column=3)
 
         # Current Room area
@@ -35,11 +38,11 @@ class App:
         self.basketArea = tk.Label(self.basketframe, wraplength=100, text="", anchor='w', justify='left')
         self.basketArea.grid()
 
-        # Initialises GUI widgets
+        # Help and Quit buttons
         self.doHelp = tk.Button(text='HELP', fg='black', width=5, command=self.doHelp)
         self.doHelp.grid(row=0, column=0, columnspan=2, sticky='s')
-        self.doQuit = tk.Button(text='QUIT', width=10, fg='red')  # functionality needs to be implemented
-        self.doQuit.grid(row=0, column=4, columnspan=3)  # program quits if i put exit() as command, look up!
+        self.doQuit = tk.Button(text='QUIT', width=10, fg='red')           # functionality needs to be implemented
+        self.doQuit.grid(row=0, column=4, columnspan=3)                    # program quits if i put exit() as command, look up!
 
         # Command Buttons
         self.speakIcon = ImageTk.PhotoImage(Image.open('speak.png'))
@@ -77,14 +80,6 @@ class App:
         self.goWest = tk.Button(image=self.westIcon, command=self.doGoWest)
         self.goWest.grid(row=11, column=4, sticky='nsew')
 
-        # Timer and score counter display
-        self.timerArea = tk.Label(text=" " + self.game.player.doCheckTime(), width=22, bg='light grey', fg='black',
-                                  anchor='w', justify='left', borderwidth=1, relief='solid')
-        self.timerArea.grid(row=0, column=2)
-
-        # Welcome message
-        self.textArea1.configure(text=self.game.printWelcome())
-
     def scoreCounter(self):
         score = self.game.player.doSeePoints()
         self.scoreArea.configure(text=score)
@@ -92,23 +87,19 @@ class App:
     def doTake(self):
         item = self.entryBox.get()
         basket = self.game.player.basket
-        self.processCommand('TAKE ' + item)
+        self.processTypedCommand('TAKE ' + item)
         self.basketArea.configure(text=basket)
         self.scoreCounter()
 
     def doGuess(self):
         item = self.entryBox.get()
         basket = self.game.player.basket
-        self.processCommand('GUESS ' + item)
+        self.processTypedCommand('GUESS ' + item)
         self.scoreCounter()
         self.basketArea.configure(text=basket)
 
     def doHelp(self):
         x = self.game.doPrintHelp()
-        self.textArea1.configure(text=x)
-
-    def doLook(self):
-        x = self.game.player.currentRoom.description
         self.textArea1.configure(text=x)
 
     def doSpeak(self):
@@ -124,7 +115,10 @@ class App:
         x = self.game.createSecretRoom()
         self.textArea1.configure(text=x)
 
-    # Directions
+    def doLook(self):
+        x = self.game.player.currentRoom.description
+        self.textArea1.configure(text=x)
+
     def doGoNorth(self):
         x = self.game.player.doGoCommand('NORTH')
         self.locationArea.configure(text=x)
@@ -194,9 +188,9 @@ class App:
                 word2 = None
         return (word1, word2)
 
-    def processCommand(self, command):
+    def processTypedCommand(self, command):
         """
-            Process a command from the TextUI
+            Process a command from text entry for Guess and Take.
         :param command: a 2-tuple of the form (commandWord, secondWord)
         :return: True if the game has been quit, False otherwise
         """
@@ -210,8 +204,6 @@ class App:
             self.textArea1.configure(text=self.game.player.doTake(secondWord))
         elif commandWord == "GUESS":
             self.textArea1.configure(text=self.game.player.doGuess(secondWord))
-        else:
-            self.textArea1.configure(text="Don't know what you mean")
 
 
 def main():
