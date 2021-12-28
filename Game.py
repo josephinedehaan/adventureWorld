@@ -189,22 +189,21 @@ class Game:
             Displays a welcome message.
         :return: None
         """
-        welcomeMsg = f'Welcome to Adventure World Supermarket!'
+        welcomeMsg = f'Welcome to Adventure World Supermarket! \n ' \
+                     f'You are outside the supermarket. The entrance is up north.'
 
         if self.player.currentRoom == self.outside:
-            return  welcomeMsg + '\n' + "\nYou are outside the supermarket. The entrance is up north."
-
-    def showCommandWords(self):
-        """
-            Show a list of available commands.
-        :return: None
-        """
-        return ['HELP', 'GO', 'QUIT', 'LOOK', 'TAKE', 'SPEAK', 'LIST', 'BASKET', 'COMPARE', 'SCORE', 'TIME', 'UNLOCK']
+            return welcomeMsg
 
     def doPrintHelp(self):
         """
             Display some useful help text
         :return: None
         """
-        message = f'Your command words are: {self.showCommandWords()}'
+        message = f'The goal of the game is to collect all the items on the shopping list. A store worker will give you ' \
+                  f'your shopping list. There is a bonus item and a secret room... pay attention to the room ' \
+                  f'description to find out how to get these. You can check out when you have got all the items on the' \
+                  f'list. Bonus items are optional. If you take less than 3 minutes to complete the game, you will be ' \
+                  f'rewarded, and if you take more than 8 minutes you will be penalised! ' \
+                  f'Timer starts when you have taken a basket!'
         return message

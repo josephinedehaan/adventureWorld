@@ -6,15 +6,13 @@ from PIL import ImageTk, Image
 class App:
     def __init__(self, root):
         self.game = Game()
+        self.buildGUI()
 
+    def buildGUI(self):
         # Text area where all text is printed
         self.textArea1 = tk.Label(text=self.game.printWelcome(), width=44, height=8, borderwidth=1, relief='solid',
                                   bg='light grey', fg='black', wraplength=400, justify='center')
         self.textArea1.grid(row=10, column=2, rowspan=3, columnspan=2, sticky='s')
-
-        # Entry box for the guss and take commands
-        self.entryBox = tk.Entry(text='', width=2)
-        self.entryBox.grid(row=10, column=0, columnspan=2, sticky='sew')
 
         # Image area
         self.outsidePic = ImageTk.PhotoImage(Image.open("outside.jpeg"))
@@ -38,9 +36,6 @@ class App:
         self.basketArea.grid()
 
         # Initialises GUI widgets
-        self.buildGUI()
-
-    def buildGUI(self):
         self.doHelp = tk.Button(text='HELP', fg='black', width=5, command=self.doHelp)
         self.doHelp.grid(row=0, column=0, columnspan=2, sticky='s')
         self.doQuit = tk.Button(text='QUIT', width=10, fg='red')  # functionality needs to be implemented
@@ -50,7 +45,6 @@ class App:
         self.speakIcon = ImageTk.PhotoImage(Image.open('speak.png'))
         self.listIcon = ImageTk.PhotoImage(Image.open('list.png'))
         self.unlockIcon = ImageTk.PhotoImage(Image.open('unlock.png'))
-
         self.doSpeak = tk.Button(image=self.speakIcon, command=self.doSpeak)
         self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
         self.doCompare = tk.Button(image=self.listIcon, command=self.doCompare)
@@ -58,7 +52,9 @@ class App:
         self.doUnlock = tk.Button(image=self.unlockIcon, command=self.doUnlock)
         self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='s')
 
-
+        # Take and Guess Entry and buttons
+        self.entryBox = tk.Entry(text='', width=2)
+        self.entryBox.grid(row=10, column=0, columnspan=2, sticky='sew')
         self.Take = tk.Button(text='Take', fg='black', width=2, command=self.doTake)
         self.Take.grid(row=11, column=0, columnspan=1, stick='new')
         self.guess = tk.Button(text='Guess', fg='black', width=2, command=self.doGuess)
@@ -107,22 +103,16 @@ class App:
         self.scoreCounter()
         self.basketArea.configure(text=basket)
 
-
-
     def doHelp(self):
         x = self.game.doPrintHelp()
         self.textArea1.configure(text=x)
 
     def doLook(self):
-        x = self.game.player.doLookAround()
+        x = self.game.player.currentRoom.description
         self.textArea1.configure(text=x)
 
     def doSpeak(self):
         x = self.game.player.doSpeak()
-        self.textArea1.configure(text=x)
-
-    def doList(self):
-        x = self.game.player.doReadShoppingList()
         self.textArea1.configure(text=x)
 
     def doCompare(self):
@@ -138,26 +128,25 @@ class App:
     def doGoNorth(self):
         x = self.game.player.doGoCommand('NORTH')
         self.locationArea.configure(text=x)
-        self.textArea1.configure(text=self.game.player.doLookAround())
-
+        self.doLook()
         self.changeImage()
 
     def doGoSouth(self):
         x = self.game.player.doGoCommand('SOUTH')
         self.locationArea.configure(text=x)
-        self.textArea1.configure(text=self.game.player.doLookAround())
+        self.doLook()
         self.changeImage()
 
     def doGoEast(self):
         x = self.game.player.doGoCommand('EAST')
         self.locationArea.configure(text=x)
-        self.textArea1.configure(text=self.game.player.doLookAround())
+        self.doLook()
         self.changeImage()
 
     def doGoWest(self):
         x = self.game.player.doGoCommand('WEST')
         self.locationArea.configure(text=x)
-        self.textArea1.configure(text=self.game.player.doLookAround())
+        self.doLook()
         self.changeImage()
 
     def changeImage(self):
@@ -203,7 +192,6 @@ class App:
                 word2 = allWords[1]
             else:
                 word2 = None
-            # Just ignore any other words
         return (word1, word2)
 
     def processCommand(self, command):
@@ -218,32 +206,11 @@ class App:
         if secondWord != None:
             secondWord = secondWord.upper()
 
-        if commandWord == "HELP":
-            self.textArea1.configure(text=self.game.doPrintHelp())
-        # elif commandWord == "GO":
-        #     self.locationArea.configure(text=self.game.player.doGoCommand(secondWord))
-        # elif commandWord == "LOOK":
-        # #     self.textArea1.configure(text=self.game.player.doLookAround())
-        # elif commandWord == "SPEAK":
-        #     self.textArea1.configure(text=self.game.player.doSpeak())
-        elif commandWord == "TAKE":
+        if commandWord == "TAKE":
             self.textArea1.configure(text=self.game.player.doTake(secondWord))
-        elif commandWord == "LIST":
-            self.textArea1.configure(text=self.game.player.doReadShoppingList())
-        elif commandWord == "BASKET":
-            self.textArea1.configure(text=self.game.player.doSeeBasket())
-        elif commandWord == "COMPARE":
-            self.textArea1.configure(text=self.game.player.doCompare())
-        elif commandWord == "SCORE":
-            self.textArea1.configure(text=self.game.player.doSeePoints())
         elif commandWord == "GUESS":
             self.textArea1.configure(text=self.game.player.doGuess(secondWord))
-        elif commandWord == "TIME":
-            self.textArea1.configure(text=self.game.player.doCheckTime())
-        elif commandWord == "UNLOCK":
-            self.textArea1.configure(text=self.game.createSecretRoom())
         else:
-            # Unknown command ...
             self.textArea1.configure(text="Don't know what you mean")
 
 

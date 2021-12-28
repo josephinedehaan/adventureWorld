@@ -51,8 +51,6 @@ class Player:
         """
         self.secretItems = secretItems
 
-
-
     def doReadShoppingList(self):
         """
             Prints shopping list if the player has collected it.
@@ -65,28 +63,14 @@ class Player:
         else:
             return "You do not have a shopping list yet."
 
-
-
-
-    def doLookAround(self):
-        """
-            Allows the player to look around the aisles
-            to see what items are available and who
-            they can speak to.
-            :return: None
-            """
-        return self.currentRoom.getRoomDescription()
-
     def doGoCommand(self, secondWord):
         """
             Performs the GO command
         :param secondWord: the direction the player wishes to travel in
         :return: None
         """
-        if secondWord == None:
-            return "Go where?"
-
         nextRoom = self.currentRoom.getExit(secondWord)
+
         if nextRoom == None:
             return "You can't go there."
         else:
@@ -179,7 +163,7 @@ class Player:
                     else:
                         self.basket.append(secondWord)
                         self.points += 2
-                        return f'You have added {secondWord} to your basket.'
+                        return 'Added to basket.'
             else:
                 return 'Not sure what you mean.'
 
@@ -211,7 +195,7 @@ class Player:
         :return: Set containing difference
         """
         if self.basket == None:  # ensures user has basket
-            return None
+            return 'You need a basket'
         else:  # executes comparison
             return set(self.shoppingList) - set(self.basket)
 
@@ -224,7 +208,6 @@ class Player:
         """
         itemsLeft = self.getRemainingItems()
 
-
         if itemsLeft == None:
             return 'You can\'t compare without a basket.'
         if self.hasShoppingList == False:
@@ -235,7 +218,6 @@ class Player:
             return "Nothing left to collect! Go to checkout."
 
         # return itemsLeft      I DON'T THINK I NEED THIS? CAUSING ISSUES.
-
 
 
     def doSeeBasket(self):
@@ -285,7 +267,7 @@ class Player:
         itemsLeft = self.getRemainingItems()
 
         if itemsLeft == None:
-            return
+            return 'LOL'
 
         if self.bonusItemGuessed:
             self.points *= 2
