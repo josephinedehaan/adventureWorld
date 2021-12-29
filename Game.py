@@ -9,6 +9,7 @@ import random
     rooms, creates the parser and starts the game. 
 """
 
+
 class Game:
 
     def __init__(self):
@@ -42,7 +43,7 @@ class Game:
 
         self.aisleOne = Room("aisle 1", "There are piles of colourful fresh fruits and vegetables",
                              ['APPLES', 'BANANAS', 'CELERY', 'CARROTS', 'MELON', 'GRAPES', 'BROCCOLI', 'AVOCADOS'],
-                             {"KIWI": "The item you are looking for is the word for a bird, a food and a person."},)
+                             {"KIWI": "The item you are looking for is the word for a bird, a food and a person."}, )
 
         self.aisleTwo = Room("aisle 2", "There are fridges full of fresh milk, cheese, meat, fish and eggs. \n"
                                         "There is a store worker Sam, he wants to talk to you.",
@@ -68,8 +69,7 @@ class Game:
 
         self.secretAisle = Room("secret aisle", "You are in a secret aisle full of delicious items! \n"
                                                 "There is a friendly store worker, Eddy, who wants to talk to you.",
-                                {"PINEAPPLE": 6, "CHOCOLATE": 4, "PRETZELS": 8, "PIZZA": 8, "CHEESECAKE": 5,}, None)
-
+                                {"PINEAPPLE": 6, "CHOCOLATE": 4, "PRETZELS": 8, "PIZZA": 8, "CHEESECAKE": 5, }, None)
 
         self.checkout = Room("checkout", "There is a friendly store worker, Dot, at the checkout. "
                                          ""
@@ -100,7 +100,6 @@ class Game:
 
         self.aisles = [self.aisleOne, self.aisleTwo, self.aisleThree, self.aisleFour, self.aisleFive]
 
-
     def setupNPCs(self):
         """
             Sets up all NPC names, dialogue lines and location.
@@ -122,14 +121,13 @@ class Game:
         eddy.addLine(f'You\'ve made it to the secret room! You must be hungry.'
                      f'You are allowed to snack on one of these items. All items are worth points,'
                      f' but I cannot tell you which one is worth more. Here is what\'s on the menu.'
-                     f' Take one! Choose wisely. Good luck!'
+                     f' Take one! Choose wisely. Good luck! \n'
                      f'{", ".join(list(self.secretAisle.items.keys()))}')
-
 
         dot = Npc("DOT")
         dot.addLine("You must be ready to check out! Let's see how you've done.")
 
-        self.lobby.setNpc(lisa)         # assigns NPCs to various rooms
+        self.lobby.setNpc(lisa)  # assigns NPCs to various rooms
         self.aisleTwo.setNpc(sam)
         self.secretAisle.setNpc(eddy)
         self.checkout.setNpc(dot)
@@ -165,7 +163,6 @@ class Game:
         """
         self.secretItems.update(self.secretAisle.items)
 
-
     def setBonusItem(self):
         """
             Creates a new dictionary from the various Room() dictionary parameters
@@ -182,7 +179,6 @@ class Game:
 
         randItem = random.choice(list(bonusItems))
         self.selectedBonusItem[randItem] = bonusItems[randItem]
-
 
     def printWelcome(self):
         """

@@ -6,6 +6,7 @@ import time
     shopping list.
 """
 
+
 class Player:
     def __init__(self, currentRoom):
         """
@@ -118,13 +119,13 @@ class Player:
                 TO DO
         :return:
         """
-        if self.hasKey:       # player cannot take the key more than once.
+        if self.hasKey:  # player cannot take the key more than once.
             return 'You already have taken the key'
         elif self.currentRoom.name != "aisle 4":  # so that user can only take key is aisle 4
             return 'There are no keys here'
         elif not self.hasKey and self.currentRoom.name == "aisle 4":
             self.hasKey = True
-            return "Key taken. Find the locked door! Remember to use the command 'UNLOCK to open it "
+            return "Key taken. Go find the locked door! \n There's a treat for you there."
 
     def doTakeSecretItem(self, secondWord):
         """
@@ -135,7 +136,6 @@ class Player:
             self.points = self.secretItems.get(secondWord) + self.points
             self.secretItemChosen = True
             return f'Your have chosen {secondWord}. Enjoy your snack!'
-
 
     def doTake(self, secondWord):
         """
@@ -198,31 +198,33 @@ class Player:
             Checks difference between shopping list and basket
         :return: Set containing difference
         """
+
         if self.basket == None:  # ensures user has basket
-            return 'You need a basket'
+            return None
         else:  # executes comparison
             return set(self.shoppingList) - set(self.basket)
 
     def doCompare(self):
         """
             Compares shopping list to current basket and prints the items
-            which still need to be collected.
+            which still need to be collxected.
         :param: None
         :return itemsLeft: Set containing difference
         """
         itemsLeft = self.getRemainingItems()
+        msg1 = 'You can\'t compare without a basket.'
+        msg2 = 'You need a basket and a shopping list to compare!'
 
         if itemsLeft == None:
-            return 'You can\'t compare without a basket.'
+            return msg1
         if self.hasShoppingList == False:
-            return 'You need a basket and a shopping list to compare!'
+            return msg2
         elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
             return f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}'
         else:
             return "Nothing left to collect! Go to checkout."
 
         # return itemsLeft      I DON'T THINK I NEED THIS? CAUSING ISSUES.
-
 
     def doSeeBasket(self):
         """
@@ -257,11 +259,9 @@ class Player:
             showTimer = currentTime - self.startTime
             self.minutes = int(showTimer / 60)
             seconds = int(showTimer % 60)
-            return f'Time: {self.minutes}:{seconds}'
+            return f'{self.minutes}:{seconds}'
         else:
             return '00:00'
-
-
 
     def doCheckOut(self):
         """
@@ -271,7 +271,7 @@ class Player:
         itemsLeft = self.getRemainingItems()
 
         if itemsLeft == None:
-            return 'LOL'
+            return
 
         if self.bonusItemGuessed:
             self.points *= 2
@@ -279,20 +279,23 @@ class Player:
             if len(self.getRemainingItems()) == 0:  # executes comparison
                 self.doCheckTime()
                 if self.minutes < 3:
-                    self.points *= 2    # doubles points for fast play
+                    self.points *= 2  # doubles points for fast play
                 elif self.minutes > 8:
-                    self.points /= 2    # halves points for slow play
+                    self.points /= 2  # halves points for slow play
                 self.doSeePoints()
-                return 'CONGRATULATIONS! You have got all the items! \n' \
-                       'QUIT to exit'
+                return 'CONGRATULATIONS! You have got all the items!\n ' \
+                       f'Timer: {self.doCheckTime()}\n' \
+                       f'You score: {self.points}\n'
         elif not self.bonusItemGuessed:
             if len(self.getRemainingItems()) == 0:  # executes comparison
                 self.doCheckTime()
                 if self.minutes < 3:
-                    self.points *= 2    # doubles points for fast play
+                    self.points *= 2  # doubles points for fast play
                 elif self.minutes > 8:
-                    self.points /= 2    # halves points for slow play
+                    self.points /= 2  # halves points for slow play
                 self.doSeePoints()
-                return 'You have got all the items except for the bonus item!'
+                return 'You have got all the items except for the bonus item!' \
+                       f'Timer: {self.doCheckTime()}\n' \
+                       f'You score: {self.points}\n'
         else:  # alerts user that they have not collected all items
             return "You can't checkout until you have collected all the items on your shopping list!"
