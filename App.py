@@ -1,6 +1,13 @@
 import tkinter as tk
-from Game import Game
+from tkinter import messagebox
 from PIL import ImageTk, Image
+from Game import Game
+import os
+import sys
+
+"""
+    Class Description
+"""
 
 
 class App:
@@ -9,6 +16,11 @@ class App:
         self.buildGUI()
 
     def buildGUI(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         # Text area where all text is printed
         self.textArea1 = tk.Label(text=self.game.printWelcome(), width=44, height=8, borderwidth=1, relief='solid',
                                   bg='light grey', fg='black', wraplength=400, justify='center')
@@ -28,7 +40,7 @@ class App:
         self.scoreArea.grid(row=0, column=3)
 
         # Current Room area
-        self.locationArea = tk.Label(text="Outside. Possible directions: NORTH", width=44, bg='light grey', fg='black',
+        self.locationArea = tk.Label(text="Outside. Possible directions: NORTH", width=44, bg='light pink', fg='black',
                                      borderwidth=1, relief='solid')
         self.locationArea.grid(row=1, column=2, columnspan=2, sticky='nsew')
 
@@ -41,8 +53,8 @@ class App:
         # Help and Quit buttons
         self.doHelp = tk.Button(text='HELP', fg='black', width=5, command=self.doHelp)
         self.doHelp.grid(row=0, column=0, columnspan=2, sticky='s')
-        self.doQuit = tk.Button(text='QUIT', width=10, fg='red')           # functionality needs to be implemented
-        self.doQuit.grid(row=0, column=4, columnspan=3)                    # program quits if i put exit() as command, look up!
+        self.doQuit = tk.Button(text='QUIT', width=10, fg='red', command=self.quitPopUp)
+        self.doQuit.grid(row=0, column=4, columnspan=3)
 
         # Command Buttons
         self.speakIcon = ImageTk.PhotoImage(Image.open('speak.png'))
@@ -81,69 +93,171 @@ class App:
         self.goWest.grid(row=11, column=4, sticky='nsew')
 
     def scoreCounter(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         score = self.game.player.doSeePoints()
         self.scoreArea.configure(text=score)
 
     def doTake(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         item = self.entryBox.get()
         basket = self.game.player.basket
         self.processTypedCommand('TAKE ' + item)
         self.basketArea.configure(text=basket)
         self.scoreCounter()
+        self.entryBox.delete(0, 'end')
 
     def doGuess(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         item = self.entryBox.get()
         basket = self.game.player.basket
         self.processTypedCommand('GUESS ' + item)
         self.scoreCounter()
         self.basketArea.configure(text=basket)
+        self.entryBox.delete(0, 'end')
+
 
     def doHelp(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.doPrintHelp()
         self.textArea1.configure(text=x)
 
     def doSpeak(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.doSpeak()
         self.textArea1.configure(text=x)
+        self.endGame()
 
     def doCompare(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         y = self.game.player.doReadShoppingList()
         x = self.game.player.doCompare()
         self.textArea1.configure(text=f'Your list: {y} \n {x}')
 
     def doUnlock(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.createSecretRoom()
         self.textArea1.configure(text=x)
 
     def doLook(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.currentRoom.description
         self.textArea1.configure(text=x)
 
     def doGoNorth(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.doGoCommand('NORTH')
         self.locationArea.configure(text=x)
         self.doLook()
         self.changeImage()
 
     def doGoSouth(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.doGoCommand('SOUTH')
         self.locationArea.configure(text=x)
         self.doLook()
         self.changeImage()
 
     def doGoEast(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.doGoCommand('EAST')
         self.locationArea.configure(text=x)
         self.doLook()
         self.changeImage()
 
     def doGoWest(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         x = self.game.player.doGoCommand('WEST')
         self.locationArea.configure(text=x)
         self.doLook()
         self.changeImage()
 
+    def quitPopUp(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
+        quitResponse = messagebox.askyesno('Quit', 'Are you sure you want to quit??')
+        if quitResponse == 1:
+            quit()
+
+    def endGame(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
+        message = self.game.player.doCheckOut()
+
+        if self.game.player.checkOutAllowed and self.game.player.currentRoom is self.game.checkout:
+            response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
+            if response == 0:
+                quit()
+            else:
+                self.playAgain()
+
+    def playAgain(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+
     def changeImage(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
         self.lobbyPic = ImageTk.PhotoImage(Image.open("lobby.jpg"))
         self.aisle1Pic = ImageTk.PhotoImage(Image.open("aisle_1.jpg"))
         self.aisle2Pic = ImageTk.PhotoImage(Image.open("aisle_2.jpg"))

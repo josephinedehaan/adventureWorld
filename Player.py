@@ -27,6 +27,7 @@ class Player:
         self.secretItemChosen = False
         self.minutes = 0
         self.hasBasket = False
+        self.checkOutAllowed = False
 
     def setShoppingList(self, shoppingList):
         """
@@ -277,6 +278,7 @@ class Player:
             self.points *= 2
             self.shoppingList.extend(list(self.bonusItem.keys()))  # adds to shopping list for correct comparison
             if len(self.getRemainingItems()) == 0:  # executes comparison
+                self.checkOutAllowed = True
                 self.doCheckTime()
                 if self.minutes < 3:
                     self.points *= 2  # doubles points for fast play
@@ -288,14 +290,15 @@ class Player:
                        f'You score: {self.points}\n'
         elif not self.bonusItemGuessed:
             if len(self.getRemainingItems()) == 0:  # executes comparison
+                self.checkOutAllowed = True
                 self.doCheckTime()
                 if self.minutes < 3:
                     self.points *= 2  # doubles points for fast play
                 elif self.minutes > 8:
                     self.points /= 2  # halves points for slow play
                 self.doSeePoints()
-                return 'You have got all the items except for the bonus item!' \
-                       f'Timer: {self.doCheckTime()}\n' \
-                       f'You score: {self.points}\n'
+                return str('You have got all the items except for the bonus item!\n' 
+                           f'Timer: {self.doCheckTime()}\n' 
+                           f'You score: {self.points}')
         else:  # alerts user that they have not collected all items
             return "You can't checkout until you have collected all the items on your shopping list!"
