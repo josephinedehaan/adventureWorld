@@ -26,6 +26,7 @@ class Player:
         self.secretItems = {}
         self.secretItemChosen = False
         self.minutes = 0
+        self.seconds = 0
         self.hasBasket = False
         self.checkOutAllowed = False
 
@@ -254,13 +255,14 @@ class Player:
         :param: None
         :return: None
         """
-
         while self.basket is not None and self.startTime is not None:
             currentTime = time.time()
             showTimer = currentTime - self.startTime
             self.minutes = int(showTimer / 60)
-            seconds = int(showTimer % 60)
-            return f'{self.minutes}:{seconds}'
+            self.seconds = int(showTimer % 60)
+            minutesStr = str(self.minutes).zfill(2)
+            secondsStr = str(self.seconds).zfill(2)
+            return f'{minutesStr}:{secondsStr}'
         else:
             return '00:00'
 

@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from Game import Game
+import time
 import os
 import sys
 
@@ -12,10 +13,9 @@ import sys
 
 class App:
     def __init__(self, root):
-
         self.game = Game()
         self.buildGUI()
-
+        self.updateClock()
 
     def buildGUI(self):
         """
@@ -34,7 +34,7 @@ class App:
         self.pictureArea.grid(row=2, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
         # Timer and score counter display
-        self.timerArea = tk.Label(text=" " + self.game.player.doCheckTime(), width=22, bg='light grey', fg='black',
+        self.timerArea = tk.Label(text="", width=22, bg='light grey', fg='black',
                                   anchor='w', justify='left', borderwidth=1, relief='solid')
         self.scoreArea = tk.Label(text=" Your score: 0", width=22, bg='light grey', fg='black', anchor='w',
                                   justify='left', borderwidth=1, relief='solid')
@@ -94,6 +94,27 @@ class App:
         self.goWest = tk.Button(image=self.westIcon, command=self.doGoWest)
         self.goWest.grid(row=11, column=4, sticky='nsew')
 
+    def updateClock(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
+        self.timerArea.configure(text=" " + self.game.player.doCheckTime())
+        self.scoreArea.configure(text=" " + self.game.player.doSeePoints())
+
+        self.timerArea.after(1000, self.updateClock)
+
+    def doSpeak(self):
+        """
+            Description.
+        :param: None
+        :return: None
+        """
+        x = self.game.player.doSpeak()
+        self.textArea1.configure(text=x)
+        self.scoreCounter()
+
     def scoreCounter(self):
         """
             Description.
@@ -139,15 +160,6 @@ class App:
         x = self.game.doPrintHelp()
         self.textArea1.configure(text=x)
 
-    def doSpeak(self):
-        """
-            Description.
-        :param: None
-        :return: None
-        """
-        x = self.game.player.doSpeak()
-        self.textArea1.configure(text=x)
-        self.endGame()
 
     def doCompare(self):
         """
@@ -239,6 +251,8 @@ class App:
         """
         message = self.game.player.doCheckOut()
 
+        time.sleep(1000)
+
         if self.game.player.checkOutAllowed and self.game.player.currentRoom is self.game.checkout:
             response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
             if response == 0:
@@ -323,14 +337,14 @@ class App:
 
 
 def main():
-    win = tk.Tk()  # Create a window
-    win.title("Adventure World with GUI")  # Set window title
-    win.geometry("650x450")  # Set window size
-    win.resizable(False, False)  # Both x and y dimensions ...
+    root = tk.Tk()  # Create a window
+    root.title("Adventure World with GUI")  # Set window title
+    root.geometry("650x450")  # Set window size
+    root.resizable(False, False)  # Both x and y dimensions ...
 
-    App(win)
+    App(root)
 
-    win.mainloop()
+    root.mainloop()
 
 
 if __name__ == "__main__":
