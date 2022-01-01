@@ -12,8 +12,10 @@ import sys
 
 class App:
     def __init__(self, root):
+
         self.game = Game()
         self.buildGUI()
+
 
     def buildGUI(self):
         """
