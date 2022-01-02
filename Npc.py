@@ -28,4 +28,4 @@ class Npc:
             Iterates through dialogue list and prints all elements.
         :return: None
         """
-        return self.dialogue
+        return "".join(self.dialogue)

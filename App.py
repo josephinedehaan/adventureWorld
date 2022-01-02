@@ -96,18 +96,16 @@ class App:
 
     def updateClock(self):
         """
-            Description.
+            Updates timer every second.
         :param: None
         :return: None
         """
         self.timerArea.configure(text=" " + self.game.player.doCheckTime())
-        self.scoreArea.configure(text=" " + self.game.player.doSeePoints())
-
         self.timerArea.after(1000, self.updateClock)
 
     def doSpeak(self):
         """
-            Description.
+            Fetches dialogue and updates text area.
         :param: None
         :return: None
         """
@@ -117,7 +115,7 @@ class App:
 
     def scoreCounter(self):
         """
-            Description.
+            Fetches score and configures score area.
         :param: None
         :return: None
         """
@@ -126,7 +124,7 @@ class App:
 
     def doTake(self):
         """
-            Description.
+            Gets .
         :param: None
         :return: None
         """

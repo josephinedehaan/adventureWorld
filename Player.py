@@ -91,13 +91,13 @@ class Player:
         if self.currentRoom.npc != None:
             if self.currentRoom.name == "lobby":
                 self.hasShoppingList = True
-                return self.currentRoom.npc.speakDialogue(),
+                return self.currentRoom.npc.speakDialogue()
             if self.currentRoom.name == "aisle 2":
-                return self.currentRoom.npc.speakDialogue(), list(self.bonusItem.values())[0]
+                return self.currentRoom.npc.speakDialogue() + list(self.bonusItem.values())[0]
             if self.currentRoom.name == "secret aisle":
                 return self.currentRoom.npc.speakDialogue()
             if self.currentRoom.name == "checkout":
-                return self.currentRoom.npc.speakDialogue(), self.doCheckOut()
+                return self.currentRoom.npc.speakDialogue() + self.doCheckOut()
         else:
             return f"There is no one to talk to here."
 
@@ -138,6 +138,8 @@ class Player:
             self.points = self.secretItems.get(secondWord) + self.points
             self.secretItemChosen = True
             return f'Your have chosen {secondWord}. Enjoy your snack!'
+        elif self.secretItemChosen:
+            return 'You can only have one snack.'
 
     def doTake(self, secondWord):
         """
@@ -179,12 +181,8 @@ class Player:
         :param secondWord: the name of the store worker the player wishes to speak to.
         :return:
         """
-        if secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
-            self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
-            self.bonusItemGuessed = True
-            self.points += 10
-            return 'You have guessed the correct item! It has now been added to your basket'
-        elif self.basket == None:  # user can only guess with basket
+
+        if self.basket == None:  # user can only guess with basket
             return 'You can\'t guess yet, get a basket first!'
         elif self.currentRoom.name != 'aisle 2':
             return 'You can only guess in aisle 2!'
@@ -192,6 +190,11 @@ class Player:
             return "Guess what?"
         elif self.bonusItemGuessed:  # bonus item has already been guessed
             return "You've already guessed the bonus item!"
+        elif secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
+            self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
+            self.bonusItemGuessed = True
+            self.points += 10
+            return 'You have guessed the correct item! It has now been added to your basket'
         else:  # if user types incorrect answer
             return 'That\'s not the correct item, try again'
 
@@ -214,13 +217,11 @@ class Player:
         :return itemsLeft: Set containing difference
         """
         itemsLeft = self.getRemainingItems()
-        msg1 = 'You can\'t compare without a basket.'
-        msg2 = 'You need a basket and a shopping list to compare!'
 
         if itemsLeft == None:
-            return msg1
+            return 'You can\'t compare without a basket.'
         if self.hasShoppingList == False:
-            return msg2
+            return 'You need a basket and a shopping list to compare!'
         elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
             return f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}'
         else:
@@ -228,18 +229,6 @@ class Player:
 
         # return itemsLeft      I DON'T THINK I NEED THIS? CAUSING ISSUES.
 
-    def doSeeBasket(self):
-        """
-            Displays the contents of the basket.
-        :param: None
-        :return: None
-        """
-        if self.basket is None:  # alerts user can only check basket if they have a basket
-            return "You still need to take a basket."
-        elif len(self.basket) == 0:  # alerts user that basket is empty
-            return "Your basket is empty. Go fill it up!"
-        else:  # displays items in basket
-            return f'Your basket contains: {", ".join(self.basket)}'
 
     def doSeePoints(self):
         """
@@ -274,7 +263,7 @@ class Player:
         itemsLeft = self.getRemainingItems()
 
         if itemsLeft == None:
-            return
+            return 'You can\'t checkout until you have collected all the items'
 
         if self.bonusItemGuessed:
             self.points *= 2

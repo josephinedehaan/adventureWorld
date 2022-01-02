@@ -112,10 +112,10 @@ class Game:
                      "The items in your basket will appear on the right.")
 
         sam = Npc("SAM")
-        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket.\n"
-                    "I have a riddle that may help you find the bonus item.\n"
-                    "If you think you have guessed the item, use the command word 'guess'.\n"
-                    "The item will automatically be added to your basket.")
+        sam.addLine("Hello! I hope you're enjoying your time at Adventure World Supermarket."
+                    "I have a riddle that may help you find the bonus item."
+                    "If you think you have guessed the item, use the command word 'guess'."
+                    "The item will automatically be added to your basket. \n")
 
         eddy = Npc("EDDY")
         eddy.addLine(f'You\'ve made it to the secret room! You must be hungry.'
@@ -125,7 +125,6 @@ class Game:
                      f'{", ".join(list(self.secretAisle.items.keys()))}')
 
         dot = Npc("DOT")
-        dot.addLine("You must be ready to check out! Let's see how you've done.")
 
         self.lobby.setNpc(lisa)  # assigns NPCs to various rooms
         self.aisleTwo.setNpc(sam)
