@@ -101,7 +101,9 @@ class App:
         :return: None
         """
         self.timerArea.configure(text=" " + self.game.player.doCheckTime())
-        self.timerArea.after(1000, self.updateClock)
+        if not self.game.player.checkoutExecuted:
+            self.timerArea.after(1000, self.updateClock)
+
 
     def doSpeak(self):
         """
@@ -251,7 +253,7 @@ class App:
 
         time.sleep(1000)
 
-        if self.game.player.checkOutAllowed and self.game.player.currentRoom is self.game.checkout:
+        if self.game.player.checkoutExecuted and self.game.player.currentRoom is self.game.checkout:
             response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
             if response == 0:
                 quit()

@@ -28,7 +28,7 @@ class Player:
         self.minutes = 0
         self.seconds = 0
         self.hasBasket = False
-        self.checkOutAllowed = False
+        self.checkoutExecuted = False
 
     def setShoppingList(self, shoppingList):
         """
@@ -212,7 +212,7 @@ class Player:
     def doCompare(self):
         """
             Compares shopping list to current basket and prints the items
-            which still need to be collxected.
+            which still need to be collected.
         :param: None
         :return itemsLeft: Set containing difference
         """
@@ -263,13 +263,19 @@ class Player:
         itemsLeft = self.getRemainingItems()
 
         if itemsLeft == None:
-            return 'You can\'t checkout until you have collected all the items'
+            return 'You need to a basket and a list to checkout!'
+
+        if len(self.getRemainingItems()) != 0:
+            return f'You still need to collect: \n {", ".join(itemsLeft)} \n to checkout.'
+
+        if self.checkoutExecuted == True:
+            return 'You have already checked out. Goodbye!'
 
         if self.bonusItemGuessed:
             self.points *= 2
             self.shoppingList.extend(list(self.bonusItem.keys()))  # adds to shopping list for correct comparison
             if len(self.getRemainingItems()) == 0:  # executes comparison
-                self.checkOutAllowed = True
+                self.checkoutExecuted = True
                 self.doCheckTime()
                 if self.minutes < 3:
                     self.points *= 2  # doubles points for fast play
@@ -281,7 +287,7 @@ class Player:
                        f'You score: {self.points}\n'
         elif not self.bonusItemGuessed:
             if len(self.getRemainingItems()) == 0:  # executes comparison
-                self.checkOutAllowed = True
+                self.checkoutExecuted = True
                 self.doCheckTime()
                 if self.minutes < 3:
                     self.points *= 2  # doubles points for fast play
