@@ -88,89 +88,31 @@ class TestPlayer(unittest.TestCase):
         self.player.hasBasket = True
         self.assertEqual('This item is not in this aisle, try looking somewhere else.',
                          self.player.doTake('TestItem1'))
-        self.test_RoomOne.items = None
-        self.assertEqual('No shopping items to collect here. Go in an aisle.',
-                         self.player.doTake('TestItem1'))
 
-
-
-        pass
-
-        # elif secondWord != "BASKET":
-        #     if secondWord in self.shoppingList and not self.hasBasket:
-        #         return 'Go get a basket!'
-        #     if secondWord in self.shoppingList and self.hasBasket:  # checks if item is in shopping list
-        #         if self.currentRoom.items == None:  # only aisles have items
-        #             return 'No shopping items to collect here. Go in an aisle.'
-        #         elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
-        #             self.points -= 2
-        #             return 'This item is not in this aisle, try looking somewhere else.'
-
-        #         elif secondWord in self.currentRoom.items:  # checks it item is in aisle
-        #             if secondWord in self.basket:  # user has already taken item
-        #                 return 'You already have collected this item.'
-
-        #             else:
-        #                 self.basket.append(secondWord)
-        #                 self.points += 2
-        #                 return 'Added to basket.'
 
     def testDoGuess(self):
-        pass
-        #
-        # if self.basket == None:  # user can only guess with basket
-        #     return 'You can\'t guess yet, get a basket first!'
-        # elif self.currentRoom.name != 'aisle 2':
-        #     return 'You can only guess in aisle 2!'
-        # elif secondWord == None:  # alerts user that they need a 2nd word
-        #     return "Guess what?"
-        # elif self.bonusItemGuessed:  # bonus item has already been guessed
-        #     return "You've already guessed the bonus item!"
-        # elif secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
-        #     self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
-        #     self.bonusItemGuessed = True
-        #     self.points += 10
-        #     return 'You have guessed the correct item! It has now been added to your basket'
-        # else:  # if user types incorrect answer
-        #     return 'That\'s not the correct item, try again'
+        self.player.basket = None
+        self.assertEqual('You can\'t guess yet, get a basket first!', self.player.doGuess('Test'))
+        self.player.basket = []
+        self.assertEqual('You can only guess in aisle 2!', self.player.doGuess('Test'))
+        self.test_RoomOne.name = 'aisle 2'
+        self.assertEqual("Guess what?", self.player.doGuess(None))
+
+        self.player.bonusItem = {'TestKey': 'TestValue'}
+        self.assertEqual('That\'s not the correct item, try again', self.player.doGuess('IncorrectKey'))
+        self.assertEqual('You have guessed the correct item! It has now been added to your basket',
+                         self.player.doGuess('TestKey'))
+        self.assertTrue(self.player.bonusItemGuessed)
+        self.player.bonusItemGuessed = True
+        self.assertEqual("You've already guessed the bonus item!", self.player.doGuess('Test'))
 
     def testGetRemainingItems(self):
-        pass
-        # if self.basket == None:  # ensures user has basket
-        #     return None
-        # else:  # executes comparison
-        #     return set(self.shoppingList) - set(self.basket)
+        self.player.basket = ['test1', 'test2']
+        self.player.shoppingList = ['test1', 'test2', 'test4']
+        self.assertEqual({'test4'}, self.player.getRemainingItems())
+        self.player.basket = None
+        self.assertEqual(None, self.player.getRemainingItems())
 
-    def testDoCompare(self):
-        pass
-        #
-        # itemsLeft = self.getRemainingItems()
-        #
-        # if itemsLeft is None:
-        #     return 'You can\'t compare without a basket.'
-        # if not self.hasShoppingList:
-        #     return 'You need a basket and a shopping list to compare!'
-        # elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
-        #     return f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}'
-        # else:
-        #     return "Nothing left to collect! Go to checkout."
-
-    def testDoSeePoints(self):
-        pass
-        # return f'Your score: {self.points}'
-
-    def testDoCheckTime(self):
-        pass
-        # while self.basket is not None and self.startTime is not None:
-        #     currentTime = time.time()
-        #     showTimer = currentTime - self.startTime
-        #     self.minutes = int(showTimer / 60)
-        #     self.seconds = int(showTimer % 60)
-        #     minutesStr = str(self.minutes).zfill(2)
-        #     secondsStr = str(self.seconds).zfill(2)
-        #     return f'{minutesStr}:{secondsStr}'
-        # else:
-        #     return '00:00'
 
     def testDoCheckOut(self):
         pass

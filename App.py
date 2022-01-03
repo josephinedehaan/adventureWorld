@@ -2,9 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from Game import Game
-import time
-import os
-import sys
+
 
 """
     This class is the GUI class for the "Adventure World" application. 
@@ -31,7 +29,7 @@ class App:
         self.textArea1.grid(row=10, column=2, rowspan=3, columnspan=2, sticky='s')
 
         # Image area
-        self.outsidePic = ImageTk.PhotoImage(Image.open("outside.jpeg"))
+        self.outsidePic = ImageTk.PhotoImage(Image.open("assets/outside.jpeg"))
         self.pictureArea = tk.Label(image=self.outsidePic)
         self.pictureArea.grid(row=2, column=2, rowspan=8, columnspan=2, sticky='nsew')
 
@@ -61,9 +59,9 @@ class App:
         self.doQuit.grid(row=0, column=4, columnspan=3)
 
         # Command Buttons
-        self.speakIcon = ImageTk.PhotoImage(Image.open('speak.png'))
-        self.listIcon = ImageTk.PhotoImage(Image.open('list.png'))
-        self.unlockIcon = ImageTk.PhotoImage(Image.open('unlock.png'))
+        self.speakIcon = ImageTk.PhotoImage(Image.open('assets/speak.png'))
+        self.listIcon = ImageTk.PhotoImage(Image.open('assets/list.png'))
+        self.unlockIcon = ImageTk.PhotoImage(Image.open('assets/unlock.png'))
         self.doSpeak = tk.Button(image=self.speakIcon, command=self.doSpeak)
         self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
         self.doCompare = tk.Button(image=self.listIcon, command=self.doSeeList)
@@ -80,11 +78,11 @@ class App:
         self.guess.grid(row=11, column=1, columnspan=1, sticky='new')
 
         # Direction buttons
-        self.northIcon = ImageTk.PhotoImage(Image.open('north.png'))
-        self.southIcon = ImageTk.PhotoImage(Image.open('south.png'))
-        self.eastIcon = ImageTk.PhotoImage(Image.open('east.png'))
-        self.westIcon = ImageTk.PhotoImage(Image.open('west.png'))
-        self.midIcon = ImageTk.PhotoImage(Image.open('middle.png'))
+        self.northIcon = ImageTk.PhotoImage(Image.open('assets/north.png'))
+        self.southIcon = ImageTk.PhotoImage(Image.open('assets/south.png'))
+        self.eastIcon = ImageTk.PhotoImage(Image.open('assets/east.png'))
+        self.westIcon = ImageTk.PhotoImage(Image.open('assets/west.png'))
+        self.midIcon = ImageTk.PhotoImage(Image.open('assets/middle.png'))
         self.goNorth = tk.Button(image=self.northIcon, command=self.doGoNorth, width=20)
         self.goNorth.grid(row=10, column=5, sticky='nsew')
         self.goSouth = tk.Button(image=self.southIcon, command=self.doGoSouth)
@@ -166,13 +164,13 @@ class App:
     def doSeeList(self):
         """
             Command for the list button updates the text area with the
-            shopping list and comparison list.
+            shopping list.
         :param: None
         :return: None
         """
         x = self.game.player.doReadShoppingList()
-        y = self.game.player.doSeeList()
-        self.textArea1.configure(text=f'Your list: {x} \n {y}')
+        self.textArea1.configure(text=f'Your list: \n {x}')
+
 
     def doUnlock(self):
         """
@@ -285,14 +283,14 @@ class App:
         :param: None
         :return: None
         """
-        self.lobbyPic = ImageTk.PhotoImage(Image.open("lobby.jpg"))
-        self.aisle1Pic = ImageTk.PhotoImage(Image.open("aisle_1.jpg"))
-        self.aisle2Pic = ImageTk.PhotoImage(Image.open("aisle_2.jpg"))
-        self.aisle3Pic = ImageTk.PhotoImage(Image.open("aisle_3.jpg"))
-        self.aisle4Pic = ImageTk.PhotoImage(Image.open("aisle_4.jpg"))
-        self.aisle5Pic = ImageTk.PhotoImage(Image.open("aisle_5.jpg"))
-        self.secretAislePic = ImageTk.PhotoImage(Image.open("secret_aisle.jpg"))
-        self.checkoutPic = ImageTk.PhotoImage(Image.open("checkout.jpg"))
+        self.lobbyPic = ImageTk.PhotoImage(Image.open("assets/lobby.jpg"))
+        self.aisle1Pic = ImageTk.PhotoImage(Image.open("assets/aisle_1.jpg"))
+        self.aisle2Pic = ImageTk.PhotoImage(Image.open("assets/aisle_2.jpg"))
+        self.aisle3Pic = ImageTk.PhotoImage(Image.open("assets/aisle_3.jpg"))
+        self.aisle4Pic = ImageTk.PhotoImage(Image.open("assets/aisle_4.jpg"))
+        self.aisle5Pic = ImageTk.PhotoImage(Image.open("assets/aisle_5.jpg"))
+        self.secretAislePic = ImageTk.PhotoImage(Image.open("assets/secret_aisle.jpg"))
+        self.checkoutPic = ImageTk.PhotoImage(Image.open("assets/checkout.jpg"))
 
         if self.game.player.currentRoom == self.game.lobby:
             self.pictureArea.configure(image=self.lobbyPic)

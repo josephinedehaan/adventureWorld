@@ -1,4 +1,5 @@
 import time
+from Utils import gameLog
 
 """
     A player class, to store all functions related to
@@ -79,6 +80,7 @@ class Player:
             return "You can't go there."
         else:
             self.currentRoom = nextRoom
+            gameLog(f'User went: {secondWord}')
             return self.currentRoom.getRmNameAndExits()
 
     def doSpeak(self):
@@ -89,6 +91,7 @@ class Player:
         """
 
         if self.currentRoom.npc != None:
+            gameLog(f'User spoke to: {self.currentRoom.npc.name}')
             if self.currentRoom.name == "lobby":
                 self.hasShoppingList = True
                 return self.currentRoom.npc.speakDialogue()
@@ -148,6 +151,8 @@ class Player:
                 Item can be a basket which creates a list, or
                 a grocery item which is stored in the basket list.
         """
+        itemTaken = True
+
         if secondWord == None:
             return "Take what?"  # makes sure user typed 2nd word
         elif secondWord == "BASKET":
@@ -173,6 +178,7 @@ class Player:
                         self.points += 2
                         return 'Added to basket.'
             else:
+                itemTaken = False
                 return 'Not sure what you mean.'
 
     def doGuess(self, secondWord):
@@ -208,26 +214,6 @@ class Player:
             return None
         else:  # executes comparison
             return set(self.shoppingList) - set(self.basket)
-
-    def doCompare(self):
-        """
-            Compares shopping list to current basket and prints the items
-            which still need to be collected.
-        :param: None
-        :return itemsLeft: Set containing difference
-        """
-        itemsLeft = self.getRemainingItems()
-
-        if itemsLeft is None:
-            return 'You can\'t compare without a basket.'
-        if not self.hasShoppingList:
-            return 'You need a basket and a shopping list to compare!'
-        elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
-            return f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}'
-        else:
-            return "Nothing left to collect! Go to checkout."
-
-        # return itemsLeft      I DON'T THINK I NEED THIS? CAUSING ISSUES.
 
     def doSeePoints(self):
         """
