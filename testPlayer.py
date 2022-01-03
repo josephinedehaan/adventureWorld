@@ -1,6 +1,7 @@
 import unittest
 from Room import Room
 from Player import Player
+from Npc import Npc
 
 
 class TestPlayer(unittest.TestCase):
@@ -15,6 +16,10 @@ class TestPlayer(unittest.TestCase):
         # Assign locations
         self.test_RoomOne.setExit("EAST", self.test_RoomTwo)
         self.test_RoomTwo.setExit("WEST", self.test_RoomOne)
+
+        self.test_npc = Npc('NPC')
+        self.test_npc.addLine('Testing')
+        self.test_RoomTwo.setNpc(self.test_npc)
 
         # Init player
         self.player = Player(self.test_RoomOne)
@@ -33,71 +38,64 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(self.player.doReadShoppingList(), ', '.join(self.player.shoppingList))
 
     def testDoGoCommand(self):
-        pass
-        # nextRoom = self.currentRoom.getExit(secondWord)
-        #
-        # if nextRoom == None:
-        #     return "You can't go there."
-        # else:
-        #     self.currentRoom = nextRoom
-        #     return self.currentRoom.getRmNameAndExits()
+        self.assertEqual(self.player.doGoCommand('NORTH'), "You can't go there.")
+        self.assertEqual('Location: test room 2. Possible directions: WEST ', self.player.doGoCommand('EAST'))
 
     def testDoSpeak(self):
-        pass
-        # if self.currentRoom.npc != None:
-        #     if self.currentRoom.name == "lobby":
-        #         self.hasShoppingList = True
-        #         return self.currentRoom.npc.speakDialogue()
-        #     if self.currentRoom.name == "aisle 2":
-        #         return self.currentRoom.npc.speakDialogue() + list(self.bonusItem.values())[0]
-        #     if self.currentRoom.name == "secret aisle":
-        #         return self.currentRoom.npc.speakDialogue()
-        #     if self.currentRoom.name == "checkout":
-        #         return self.currentRoom.npc.speakDialogue() + self.doCheckOut()
-        # else:
-        #     return f"There is no one to talk to here."
+        self.assertEqual(self.player.doSpeak(), 'There is no one to talk to here.')
+        self.player.currentRoom = self.test_RoomTwo
+        self.assertEqual(self.player.currentRoom.npc.speakDialogue(), 'Testing')
 
     def testDoTakeBasket(self):
-        pass
-        # if self.basket != None:  # so that user can only have one basket
-        #     return 'You already have a basket!'
-        # elif self.currentRoom.name != "lobby":  # so that user can only take basket in lobby
-        #     return 'There are no baskets here. Try going to the lobby.'
-        # elif self.currentRoom.name == "lobby" and self.basket is None:  # creates basket
-        #     self.basket = []
-        #     self.startTime = time.time()
-        #     self.hasBasket = True
-        #     return 'You now have a basket.'
+        self.assertEqual('There are no baskets here. Try going to the lobby.', self.player.doTakeBasket())
+        self.assertFalse(self.player.hasBasket)
+        self.test_RoomOne.name = "lobby"
+        self.assertEqual('You now have a basket.', self.player.doTakeBasket())
+        self.assertTrue(self.player.hasBasket)
+        self.assertEqual('You already have a basket!', self.player.doTakeBasket())
 
     def testDoTakeKey(self):
-        pass
-        # if self.hasKey:  # player cannot take the key more than once.
-        #     return 'You already have taken the key'
-        # elif self.currentRoom.name != "aisle 4":  # so that user can only take key is aisle 4
-        #     return 'There are no keys here'
-        # elif not self.hasKey and self.currentRoom.name == "aisle 4":
-        #     self.hasKey = True
-        #     return "Key taken. Go find the locked door! \n There's a treat for you there."
+        self.assertEqual('There are no keys here', self.player.doTakeKey())
+        self.test_RoomOne.name = "aisle 4"
+        self.assertEqual("Key taken. Go find the locked door! \n There's a treat for you there.",
+                         self.player.doTakeKey())
+        self.assertTrue(self.player.hasKey)
+        self.assertEqual('You already have taken the key', self.player.doTakeKey())
 
-    def testDoTakeSecretItem(self, secondWord):
+    def testDoTakeSecretItem(self):
+        self.player.secretItemChosen = True
+        self.assertEqual('You can only have one snack.', self.player.doTakeSecretItem('TEST'))
+
         pass
         # if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
         #     self.points = self.secretItems.get(secondWord) + self.points
         #     self.secretItemChosen = True
         #     return f'Your have chosen {secondWord}. Enjoy your snack!'
+
         # elif self.secretItemChosen:
         #     return 'You can only have one snack.'
-    def testDoTake(self, secondWord):
+
+    def testDoTake(self):
+        self.assertEqual('Not sure what you mean.', self.player.doTake('TestInvalidWord'))
+        self.assertEqual('Take what?', self.player.doTake(None))
+        self.assertEqual(self.player.doTakeBasket(), self.player.doTake('BASKET'))
+        self.assertEqual(self.player.doTakeKey(), self.player.doTake('KEY'))
+        self.player.secretItems = {'TestKey': 'TestValue'}
+        self.assertEqual(self.player.doTakeSecretItem('TestKey'), self.player.doTake('TestKey'))
+        self.player.hasBasket = False
+        self.player.shoppingList = ['TestItem1', 'TestItem2']
+        self.assertEqual('Go get a basket!', self.player.doTake('TestItem1'))
+        self.player.hasBasket = True
+        self.assertEqual('This item is not in this aisle, try looking somewhere else.',
+                         self.player.doTake('TestItem1'))
+        self.test_RoomOne.items = None
+        self.assertEqual('No shopping items to collect here. Go in an aisle.',
+                         self.player.doTake('TestItem1'))
+
+
+
         pass
-        #
-        # if secondWord == None:
-        #     return "Take what?"  # makes sure user typed 2nd word
-        # elif secondWord == "BASKET":
-        #     return self.doTakeBasket()  # if 2nd word is right user takes basket
-        # elif secondWord == "KEY":
-        #     return self.doTakeKey()
-        # elif secondWord in self.secretItems.keys():
-        #     return self.doTakeSecretItem(secondWord)
+
         # elif secondWord != "BASKET":
         #     if secondWord in self.shoppingList and not self.hasBasket:
         #         return 'Go get a basket!'
@@ -107,17 +105,17 @@ class TestPlayer(unittest.TestCase):
         #         elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
         #             self.points -= 2
         #             return 'This item is not in this aisle, try looking somewhere else.'
+
         #         elif secondWord in self.currentRoom.items:  # checks it item is in aisle
         #             if secondWord in self.basket:  # user has already taken item
         #                 return 'You already have collected this item.'
+
         #             else:
         #                 self.basket.append(secondWord)
         #                 self.points += 2
         #                 return 'Added to basket.'
-        #     else:
-        #         return 'Not sure what you mean.'
 
-    def testDoGuess(self, secondWord):
+    def testDoGuess(self):
         pass
         #
         # if self.basket == None:  # user can only guess with basket
