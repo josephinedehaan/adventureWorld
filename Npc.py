@@ -13,7 +13,6 @@ class Npc:
         self.name = name
         self.dialogue = []
 
-
     def addLine(self, text):
         """
             Appends lines of text to a dialogue list.
@@ -21,7 +20,6 @@ class Npc:
         :return: None
         """
         self.dialogue.append(text)
-
 
     def speakDialogue(self):
         """

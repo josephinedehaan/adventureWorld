@@ -7,7 +7,9 @@ import os
 import sys
 
 """
-    Class Description
+    This class is the GUI class for the "Adventure World" application. 
+    It creates the parser and starts the game. 
+    
 """
 
 
@@ -64,7 +66,7 @@ class App:
         self.unlockIcon = ImageTk.PhotoImage(Image.open('unlock.png'))
         self.doSpeak = tk.Button(image=self.speakIcon, command=self.doSpeak)
         self.doSpeak.grid(row=3, column=0, columnspan=2, sticky='s')
-        self.doCompare = tk.Button(image=self.listIcon, command=self.doCompare)
+        self.doCompare = tk.Button(image=self.listIcon, command=self.doSeeList)
         self.doCompare.grid(row=4, column=0, columnspan=2, sticky='s')
         self.doUnlock = tk.Button(image=self.unlockIcon, command=self.doUnlock)
         self.doUnlock.grid(row=5, column=0, columnspan=2, sticky='s')
@@ -101,9 +103,8 @@ class App:
         :return: None
         """
         self.timerArea.configure(text=" " + self.game.player.doCheckTime())
-        if not self.game.player.checkoutExecuted:
-            self.timerArea.after(1000, self.updateClock)
-
+        if not self.game.player.checkoutExecuted:  # updates timer once a second only
+            self.timerArea.after(1000, self.updateClock)  # until checkout has been executed
 
     def doSpeak(self):
         """
@@ -126,7 +127,8 @@ class App:
 
     def doTake(self):
         """
-            Gets .
+            Gets text input and sends it to be processed.
+            Updates score and basket areas.
         :param: None
         :return: None
         """
@@ -135,11 +137,12 @@ class App:
         self.processTypedCommand('TAKE ' + item)
         self.basketArea.configure(text=basket)
         self.scoreCounter()
-        self.entryBox.delete(0, 'end')
+        self.entryBox.delete(0, 'end')  # resets the entry box so that it's empty
 
     def doGuess(self):
         """
-            Description.
+            Gets text input and sends it to be processed.
+            Updates score and basket areas.
         :param: None
         :return: None
         """
@@ -148,32 +151,33 @@ class App:
         self.processTypedCommand('GUESS ' + item)
         self.scoreCounter()
         self.basketArea.configure(text=basket)
-        self.entryBox.delete(0, 'end')
-
+        self.entryBox.delete(0, 'end')  # resets the entry box so that it's empty
 
     def doHelp(self):
         """
-            Description.
+            Command for the help button updates the text area
+            with game instructions.
         :param: None
         :return: None
         """
         x = self.game.doPrintHelp()
         self.textArea1.configure(text=x)
 
-
-    def doCompare(self):
+    def doSeeList(self):
         """
-            Description.
+            Command for the list button updates the text area with the
+            shopping list and comparison list.
         :param: None
         :return: None
         """
-        y = self.game.player.doReadShoppingList()
-        x = self.game.player.doCompare()
-        self.textArea1.configure(text=f'Your list: {y} \n {x}')
+        x = self.game.player.doReadShoppingList()
+        y = self.game.player.doSeeList()
+        self.textArea1.configure(text=f'Your list: {x} \n {y}')
 
     def doUnlock(self):
         """
-            Description.
+            Command for the unlock button allows secret room to
+            be created and updates the text area.
         :param: None
         :return: None
         """
@@ -182,7 +186,8 @@ class App:
 
     def doLook(self):
         """
-            Description.
+            Fetches the room descriptions and
+            updates the text area accordingly.
         :param: None
         :return: None
         """
@@ -191,7 +196,8 @@ class App:
 
     def doGoNorth(self):
         """
-            Description.
+            Command for the north arrow button. Calls all functions
+            needed to update the GUI room description and image.
         :param: None
         :return: None
         """
@@ -202,7 +208,8 @@ class App:
 
     def doGoSouth(self):
         """
-            Description.
+            Command for the south arrow button. Calls all functions
+            needed to update the GUI room description and image.
         :param: None
         :return: None
         """
@@ -213,7 +220,8 @@ class App:
 
     def doGoEast(self):
         """
-            Description.
+            Command for the east arrow button. Calls all functions
+            needed to update the GUI room description and image.
         :param: None
         :return: None
         """
@@ -224,7 +232,8 @@ class App:
 
     def doGoWest(self):
         """
-            Description.
+            Command for the west arrow button. Calls all functions
+            needed to update the GUI room description and image.
         :param: None
         :return: None
         """
@@ -235,7 +244,8 @@ class App:
 
     def quitPopUp(self):
         """
-            Description.
+            Command for the quit button displays a message box which allows
+            the user to quit the game.
         :param: None
         :return: None
         """
@@ -243,34 +253,35 @@ class App:
         if quitResponse == 1:
             quit()
 
-    def endGame(self):
-        """
-            Description.
-        :param: None
-        :return: None
-        """
-        message = self.game.player.doCheckOut()
-
-        time.sleep(1000)
-
-        if self.game.player.checkoutExecuted and self.game.player.currentRoom is self.game.checkout:
-            response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
-            if response == 0:
-                quit()
-            else:
-                self.playAgain()
-
-    def playAgain(self):
-        """
-            Description.
-        :param: None
-        :return: None
-        """
-        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+    # def endGame(self):
+    #     """
+    #         Description.
+    #     :param: None
+    #     :return: None
+    #     """
+    #     message = self.game.player.doCheckOut()
+    #
+    #     time.sleep(1000)
+    #
+    #     if self.game.player.checkoutExecuted and self.game.player.currentRoom is self.game.checkout:
+    #         response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
+    #         if response == 0:
+    #             quit()
+    #         else:
+    #             self.playAgain()
+    #
+    # def playAgain(self):
+    #     """
+    #         Description.
+    #     :param: None
+    #     :return: None
+    #     """
+    #     os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
 
     def changeImage(self):
         """
-            Description.
+            Updates the image area with a visual
+            representation of the aisle.
         :param: None
         :return: None
         """
@@ -322,7 +333,7 @@ class App:
         """
             Process a command from text entry for Guess and Take.
         :param command: a 2-tuple of the form (commandWord, secondWord)
-        :return: True if the game has been quit, False otherwise
+        :return:
         """
         commandWord, secondWord = self.getCommandString(command)
         if commandWord != None:

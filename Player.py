@@ -218,9 +218,9 @@ class Player:
         """
         itemsLeft = self.getRemainingItems()
 
-        if itemsLeft == None:
+        if itemsLeft is None:
             return 'You can\'t compare without a basket.'
-        if self.hasShoppingList == False:
+        if not self.hasShoppingList:
             return 'You need a basket and a shopping list to compare!'
         elif self.hasShoppingList and itemsLeft != 0:  # displays items left to collect
             return f'You still need to collect: {", ".join(str(item) for item in itemsLeft)}'
@@ -228,7 +228,6 @@ class Player:
             return "Nothing left to collect! Go to checkout."
 
         # return itemsLeft      I DON'T THINK I NEED THIS? CAUSING ISSUES.
-
 
     def doSeePoints(self):
         """
@@ -294,8 +293,8 @@ class Player:
                 elif self.minutes > 8:
                     self.points /= 2  # halves points for slow play
                 self.doSeePoints()
-                return str('You have got all the items except for the bonus item!\n' 
-                           f'Timer: {self.doCheckTime()}\n' 
+                return str('You have got all the items except for the bonus item!\n'
+                           f'Timer: {self.doCheckTime()}\n'
                            f'You score: {self.points}')
         else:  # alerts user that they have not collected all items
             return "You can't checkout until you have collected all the items on your shopping list!"

@@ -39,14 +39,12 @@ class Room:
         """
         self.exits[direction] = neighbour
 
-
     def getRmNameAndExits(self):
         """
             Fetch name and exits of room.
         :return: text description.
         """
         return f'Location: {self.name}. Possible directions: {self.getExits()} '
-
 
     def getExits(self):
         """
