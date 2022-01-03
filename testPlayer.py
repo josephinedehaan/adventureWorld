@@ -63,8 +63,8 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual('You already have taken the key', self.player.doTakeKey())
 
     def testDoTakeSecretItem(self):
-        self.player.secretItemChosen = True
-        self.assertEqual('You can only have one snack.', self.player.doTakeSecretItem('TEST'))
+        #self.player.secretItemChosen = True
+        #self.assertEqual('You can only have one snack.', self.player.doTakeSecretItem('TEST'))
 
         pass
         # if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
@@ -80,8 +80,8 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual('Take what?', self.player.doTake(None))
         self.assertEqual(self.player.doTakeBasket(), self.player.doTake('BASKET'))
         self.assertEqual(self.player.doTakeKey(), self.player.doTake('KEY'))
-        self.player.secretItems = {'TestKey': 'TestValue'}
-        self.assertEqual(self.player.doTakeSecretItem('TestKey'), self.player.doTake('TestKey'))
+        self.player.snacks = {'TestKey': 'TestValue'}
+        self.assertEqual(self.player.doTakeSnack('TestKey'), self.player.doTake('TestKey'))
         self.player.hasBasket = False
         self.player.shoppingList = ['TestItem1', 'TestItem2']
         self.assertEqual('Go get a basket!', self.player.doTake('TestItem1'))
@@ -115,12 +115,44 @@ class TestPlayer(unittest.TestCase):
 
 
     def testDoCheckOut(self):
-        pass
+
+        self.assertEqual("You need to a basket and a list to checkout!", self.player.doCheckOut())
+
+        self.player.shoppingList = ["ONE", "TWO", "THREE"]
+        self.player.basket = ["ONE", "TWO"]
+
+        # Test if the remaining items needed is reported
+        self.assertEqual("You still need to collect: \n THREE \n to checkout.", self.player.doCheckOut()) 
+
+        # Test if bonus item has been guessed
+        self.player.basket = ["ONE", "TWO", "THREE"]
+        self.player.points = 100
+        self.player.minutes = 7 # 7 minutes to prevent the score halving or doubling due to penalty / reward
+        self.player.bonusItemGuessed = True
+        self.assertEqual('CONGRATULATIONS! You have got all the items!\n Timer: 00:00\nYou score: 200\n', self.player.doCheckOut())
+
+        # Test for each time:
+        self.player.points = 100
+        self.player.bonusItemGuessed = False     # Disable the bonus item
+        self.player.checkoutExecuted = False
+
+        # Fast player test (less than 3 minutes to double score)
+        self.player.minutes = 2
+        self.assertEqual('You have got all the items except for the bonus item!\nTimer: 00:00\nYou score: 200', self.player.doCheckOut())
+
+        # Slow player test (over 8 minutes to halve score)
+        self.player.points = 100
+        self.player.minutes = 69
+        self.player.checkoutExecuted = False
+        self.assertEqual('You have got all the items except for the bonus item!\nTimer: 00:00\nYou score: 50', self.player.doCheckOut())
+
         # itemsLeft = self.getRemainingItems()
         #
+        # Done:
         # if itemsLeft == None:
         #     return 'You need to a basket and a list to checkout!'
         #
+        # DONE:
         # if len(self.getRemainingItems()) != 0:
         #     return f'You still need to collect: \n {", ".join(itemsLeft)} \n to checkout.'
         #

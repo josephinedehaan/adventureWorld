@@ -134,9 +134,11 @@ class Game:
 
     def createSecretRoom(self):
         """
-            TO DO
-        :return:
+            Creates a secret room only
+            accessible with a key.
+        :return: Various string messages for the GUI
         """
+        # Checks that user has met all conditions to enter secret room
         if self.player.hasKey and self.player.currentRoom is self.aisleFive:
             self.secretAisle.setExit("WEST", self.aisleFive)
             self.aisleFive.setExit("EAST", self.secretAisle)
@@ -186,7 +188,7 @@ class Game:
     def printWelcome(self):
         """
             Displays a welcome message.
-        :return: None
+        :return: welcome message
         """
         welcomeMsg = f'Welcome to Adventure World Supermarket! \n ' \
                      f'You are outside the supermarket. The entrance is up north.'
@@ -197,7 +199,7 @@ class Game:
     def doPrintHelp(self):
         """
             Display some useful help text
-        :return: None
+        :return: help message
         """
         message = f'The goal of the game is to collect all the items on the shopping list. A store worker will give you ' \
                   f'your shopping list. There is a bonus item and a secret room... pay attention to the room ' \

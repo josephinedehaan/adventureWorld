@@ -1,0 +1,255 @@
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User tried checking out after already checking out.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User went: NORTH to <Room.Room object at 0x1072798b0>
+User went: NORTH to lobby
+User went: NORTH 
+Now in: <built-in method upper of str object at 0x1040202f0>
+User went: NORTH 
+Now in: LOBBY
+User went: NORTH 
+Now in: AISLE 1
+User went: EAST 
+Now in: AISLE 2
+User went: EAST 
+Now in: AISLE 3
