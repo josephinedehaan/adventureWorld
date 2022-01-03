@@ -114,6 +114,7 @@ class Player:
         elif self.currentRoom.name != "lobby":  # so that user can only take basket in lobby
             return 'There are no baskets here. Try going to the lobby.'
         elif self.currentRoom.name == "lobby" and self.basket is None:  # creates basket
+            gameLog('User took: BASKET')
             self.basket = []
             self.startTime = time.time()
             self.hasBasket = True
@@ -130,6 +131,7 @@ class Player:
             return 'There are no keys here'
         elif not self.hasKey and self.currentRoom.name == "aisle 4":
             self.hasKey = True
+            gameLog('User took: KEY')
             return "Key taken. Go find the locked door! \n There's a treat for you there."
 
     def doTakeSecretItem(self, secondWord):
@@ -140,8 +142,10 @@ class Player:
         if not self.secretItemChosen and self.currentRoom.name == "secret aisle":
             self.points = self.secretItems.get(secondWord) + self.points
             self.secretItemChosen = True
+            gameLog(f'User took snack: {secondWord}')
             return f'Your have chosen {secondWord}. Enjoy your snack!'
         elif self.secretItemChosen:
+            gameLog('User tried taking snack twice.')
             return 'You can only have one snack.'
 
     def doTake(self, secondWord):
@@ -151,9 +155,8 @@ class Player:
                 Item can be a basket which creates a list, or
                 a grocery item which is stored in the basket list.
         """
-        itemTaken = True
-
         if secondWord == None:
+            gameLog('User did not input second command word.')
             return "Take what?"  # makes sure user typed 2nd word
         elif secondWord == "BASKET":
             return self.doTakeBasket()  # if 2nd word is right user takes basket
@@ -163,22 +166,26 @@ class Player:
             return self.doTakeSecretItem(secondWord)
         elif secondWord != "BASKET":
             if secondWord in self.shoppingList and not self.hasBasket:
+                gameLog('User tried taking item without having take basket.')
                 return 'Go get a basket!'
             if secondWord in self.shoppingList and self.hasBasket:  # checks if item is in shopping list
                 if self.currentRoom.items == None:  # only aisles have items
+                    gameLog('User tried taking item in a room without items.')
                     return 'No shopping items to collect here. Go in an aisle.'
                 elif secondWord not in self.currentRoom.items:  # valid 2nd word but invalid location
                     self.points -= 2
+                    gameLog(f'User tried taking {secondWord} in the wrong aisle')
                     return 'This item is not in this aisle, try looking somewhere else.'
                 elif secondWord in self.currentRoom.items:  # checks it item is in aisle
                     if secondWord in self.basket:  # user has already taken item
+                        gameLog(f'User tried taking {secondWord} again.')
                         return 'You already have collected this item.'
                     else:
+                        gameLog(f'User took: {secondWord}')
                         self.basket.append(secondWord)
                         self.points += 2
                         return 'Added to basket.'
             else:
-                itemTaken = False
                 return 'Not sure what you mean.'
 
     def doGuess(self, secondWord):
@@ -189,19 +196,24 @@ class Player:
         """
 
         if self.basket == None:  # user can only guess with basket
+            gameLog('User tried guessing without a basket')
             return 'You can\'t guess yet, get a basket first!'
         elif self.currentRoom.name != 'aisle 2':
+            gameLog('User tried guessing in the wrong aisle')
             return 'You can only guess in aisle 2!'
         elif secondWord == None:  # alerts user that they need a 2nd word
             return "Guess what?"
         elif self.bonusItemGuessed:  # bonus item has already been guessed
+            gameLog('User tried guessing item after having already guessed it correctly.')
             return "You've already guessed the bonus item!"
         elif secondWord == list(self.bonusItem.keys())[0] and self.basket != None:
             self.basket.extend(list(self.bonusItem.keys()))  # adds to basket
             self.bonusItemGuessed = True
             self.points += 10
+            gameLog(f'User guessed: {secondWord}')
             return 'You have guessed the correct item! It has now been added to your basket'
         else:  # if user types incorrect answer
+            gameLog('User guessed incorrectly.')
             return 'That\'s not the correct item, try again'
 
     def getRemainingItems(self):
@@ -248,12 +260,15 @@ class Player:
         itemsLeft = self.getRemainingItems()
 
         if itemsLeft == None:
+            gameLog('User tried checking out without basket and list.')
             return 'You need to a basket and a list to checkout!'
 
         if len(self.getRemainingItems()) != 0:
+            gameLog('User tried checking out without having collected all items.')
             return f'You still need to collect: \n {", ".join(itemsLeft)} \n to checkout.'
 
         if self.checkoutExecuted == True:
+            gameLog('User tried checking out after already checking out.')
             return 'You have already checked out. Goodbye!'
 
         if self.bonusItemGuessed:
@@ -267,6 +282,7 @@ class Player:
                 elif self.minutes > 8:
                     self.points /= 2  # halves points for slow play
                 self.doSeePoints()
+                gameLog('User checked out successfully.')
                 return 'CONGRATULATIONS! You have got all the items!\n ' \
                        f'Timer: {self.doCheckTime()}\n' \
                        f'You score: {self.points}\n'
@@ -279,8 +295,9 @@ class Player:
                 elif self.minutes > 8:
                     self.points /= 2  # halves points for slow play
                 self.doSeePoints()
+                gameLog('User checked out successfully.')
                 return str('You have got all the items except for the bonus item!\n'
                            f'Timer: {self.doCheckTime()}\n'
                            f'You score: {self.points}')
-        else:  # alerts user that they have not collected all items
-            return "You can't checkout until you have collected all the items on your shopping list!"
+        # else:  # alerts user that they have not collected all items
+        #     return "You can't checkout until you have collected all the items on your shopping list!"

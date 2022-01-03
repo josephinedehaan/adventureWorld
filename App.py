@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from Game import Game
+from Utils import gameLog
 
 
 """
@@ -160,6 +161,7 @@ class App:
         """
         x = self.game.doPrintHelp()
         self.textArea1.configure(text=x)
+        gameLog('User asked for help.')
 
     def doSeeList(self):
         """
@@ -170,6 +172,8 @@ class App:
         """
         x = self.game.player.doReadShoppingList()
         self.textArea1.configure(text=f'Your list: \n {x}')
+        gameLog('User checked shopping list.')
+
 
 
     def doUnlock(self):
@@ -251,31 +255,6 @@ class App:
         if quitResponse == 1:
             quit()
 
-    # def endGame(self):
-    #     """
-    #         Description.
-    #     :param: None
-    #     :return: None
-    #     """
-    #     message = self.game.player.doCheckOut()
-    #
-    #     time.sleep(1000)
-    #
-    #     if self.game.player.checkoutExecuted and self.game.player.currentRoom is self.game.checkout:
-    #         response = messagebox.askyesno('Congratulations', message + '\n Would you like to play again?')
-    #         if response == 0:
-    #             quit()
-    #         else:
-    #             self.playAgain()
-    #
-    # def playAgain(self):
-    #     """
-    #         Description.
-    #     :param: None
-    #     :return: None
-    #     """
-    #     os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-
     def changeImage(self):
         """
             Updates the image area with a visual
@@ -341,6 +320,7 @@ class App:
 
         if commandWord == "TAKE":
             self.textArea1.configure(text=self.game.player.doTake(secondWord))
+
         elif commandWord == "GUESS":
             self.textArea1.configure(text=self.game.player.doGuess(secondWord))
 

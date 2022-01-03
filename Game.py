@@ -1,6 +1,7 @@
 from Player import Player
 from Room import Room
 from Npc import Npc
+from Utils import gameLog
 import random
 
 """
@@ -139,10 +140,13 @@ class Game:
         if self.player.hasKey and self.player.currentRoom is self.aisleFive:
             self.secretAisle.setExit("WEST", self.aisleFive)
             self.aisleFive.setExit("EAST", self.secretAisle)
+            gameLog('User unlocked secret room.')
             return "Door unlocked. Go east to enter the secret aisle."
         elif not self.player.hasKey:
+            gameLog('User tried unlocking room without key.')
             return "You can't unlock unless you have found the key."
         elif self.player.currentRoom != self.aisleFive:
+            gameLog('User tried unlocking room in the wrong aisle.')
             return "There are no doors to unlock here... Try going somewhere else!"
 
     def createShoppingList(self):
