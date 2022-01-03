@@ -253,3 +253,123 @@ User went: EAST
 Now in: AISLE 2
 User went: EAST 
 Now in: AISLE 3
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User went: NORTH 
+Now in: LOBBY
+User spoke to: LISA
+User checked shopping list.
+User took: BASKET
+User went: NORTH 
+Now in: AISLE 1
+User went: EAST 
+Now in: AISLE 2
+User went: EAST 
+Now in: AISLE 3
+User went: EAST 
+Now in: AISLE 4
+User went: EAST 
+Now in: AISLE 5
+User went: WEST 
+Now in: AISLE 4
+User took: KEY
+User went: EAST 
+Now in: AISLE 5
+User unlocked secret room.
+User went: EAST 
+Now in: SECRET AISLE
+User spoke to: EDDY
+User took snack: PINEAPPLE
+User tried taking snack twice.
+User went: WEST 
+Now in: AISLE 5
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User tried taking snack twice.
+User went: NORTH 
+Now in: LOBBY
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User took snack: test1
+User tried taking snack twice.
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User took snack: test1
+User tried taking snack twice.
