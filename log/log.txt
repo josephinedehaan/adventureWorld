@@ -373,3 +373,22 @@ User took: BASKET
 User took: KEY
 User took snack: test1
 User tried taking snack twice.
+User tried checking out without basket and list.
+User tried checking out without having collected all items.
+User checked out successfully.
+User checked out successfully.
+User checked out successfully.
+User went: EAST 
+Now in: TEST ROOM 2
+User tried guessing without a basket
+User tried guessing in the wrong aisle
+User guessed incorrectly.
+User guessed: TestKey
+User tried guessing item after having already guessed it correctly.
+User did not input second command word.
+User tried taking item without having take basket.
+User tried taking TestItem1 in the wrong aisle
+User took: BASKET
+User took: KEY
+User took snack: test1
+User tried taking snack twice.

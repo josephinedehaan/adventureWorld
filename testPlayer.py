@@ -28,11 +28,11 @@ class TestPlayer(unittest.TestCase):
         pass
 
     def testDoReadShoppingList(self):
-        # Make sure a shopping list has been given
+        # Makes sure a shopping list has been given
         self.player.hasShoppingList = False
         self.assertEqual(self.player.doReadShoppingList(), "You do not have a shopping list yet.")
 
-        # Add a shopping list and make sure it's printed ok
+        # Adds a shopping list and makes sure it's printed ok
         self.player.shoppingList = ["item1", "item2", "item3"]
         self.player.hasShoppingList = True
         self.assertEqual(self.player.doReadShoppingList(), ', '.join(self.player.shoppingList))

@@ -318,6 +318,7 @@ class Player:
                 return 'CONGRATULATIONS! You have got all the items!\n ' \
                        f'Timer: {self.doCheckTime()}\n' \
                        f'You score: {self.points}\n'
+
         elif not self.bonusItemGuessed:
             if len(self.getRemainingItems()) == 0:  # executes comparison
                 self.checkoutExecuted = True
