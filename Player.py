@@ -302,32 +302,21 @@ class Player:
             gameLog('User tried checking out after already checking out.')
             return 'You have already checked out. Goodbye!'
 
-        # Calculates point and checks out
+        # Adjusts points depending on play speed
+        self.checkoutExecuted = True
+        if self.minutes < 3:
+            self.points *= 2  # doubles points for fast play
+        elif self.minutes > 8:
+            self.points //= 2  # halves points for slow play
+
+        # Adjusts points  and checks out
         if self.bonusItemGuessed:
             self.points *= 2
-            self.shoppingList.extend(list(self.bonusItem.keys()))  # adds to shopping list for correct comparison
-            if len(self.getRemainingItems()) == 0:  # executes comparison
-                self.checkoutExecuted = True
-                self.doCheckTime()
-                if self.minutes < 3:
-                    self.points *= 2  # doubles points for fast play
-                elif self.minutes > 8:
-                    self.points //= 2  # halves points for slow play
-                self.doSeePoints()
-                gameLog('User checked out successfully.')
-                return 'CONGRATULATIONS! You have got all the items!\n ' \
-                       f'Timer: {self.doCheckTime()}\n' \
-                       f'You score: {self.points}\n'
-
+            gameLog('User checked out successfully.')
+            return 'CONGRATULATIONS! You have got all the items!\n ' \
+                    f'Timer: {self.doCheckTime()}\n' \
+                    f'You score: {self.points}\n'
         elif not self.bonusItemGuessed:
-            if len(self.getRemainingItems()) == 0:  # executes comparison
-                self.checkoutExecuted = True
-                self.doCheckTime()
-                if self.minutes < 3:
-                    self.points *= 2  # doubles points for fast play
-                elif self.minutes > 8:
-                    self.points //= 2  # halves points for slow play
-                self.doSeePoints()
                 gameLog('User checked out successfully.')
                 return str('You have got all the items except for the bonus item!\n'
                            f'Timer: {self.doCheckTime()}\n'
